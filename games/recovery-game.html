@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>American Studies Trouble Areas — Recovery Game</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap" id="app"></div>
+
+<script>
+const GAME_TITLE = "American Studies Trouble Areas — Most Missed Mastery Gauntlet";
+const questions = [
+  {
+    type:"single",
+    stem:"Which principle divides power between national and state governments?",
+    choices:["Federalism","Limited government","Popular sovereignty","Judicial review"],
+    answer:"Federalism",
+    hint:"Think about the principle that separates power vertically, not between branches.",
+    explain:"Federalism divides authority between the national government and state governments."
+  },
+  {
+    type:"single",
+    stem:"Which situation best reflects federalism?",
+    choices:["A governor and Congress both make laws within their own powers","The Supreme Court declares a law unconstitutional","The president vetoes a bill","Citizens vote in a national election"],
+    answer:"A governor and Congress both make laws within their own powers",
+    hint:"Look for shared governing authority at two different levels.",
+    explain:"Federalism exists when state and national governments each exercise powers in their own spheres."
+  },
+  {
+    type:"single",
+    stem:"Which group supported ratification of the Constitution?",
+    choices:["Federalists","Anti-Federalists","Abolitionists","Populists"],
+    answer:"Federalists",
+    hint:"This group argued the Articles were too weak and the new Constitution was necessary.",
+    explain:"Federalists supported ratification because they believed the nation needed a stronger national government."
+  },
+  {
+    type:"single",
+    stem:"Which document helped explain and defend the Constitution during ratification debates?",
+    choices:["Federalist Papers","Articles of Confederation","Common Sense","Northwest Ordinance"],
+    answer:"Federalist Papers",
+    hint:"Think of the series of essays written to persuade states to ratify.",
+    explain:"The Federalist Papers argued for the Constitution and explained how the new government would work."
+  },
+  {
+    type:"single",
+    stem:"What was a major concern of the Anti-Federalists?",
+    choices:["The Constitution did not protect individual liberties enough","The national government was too weak","The states had too little power under the Articles","The Constitution created too many local governments"],
+    answer:"The Constitution did not protect individual liberties enough",
+    hint:"Their biggest fear centered on liberty and concentrated power.",
+    explain:"Anti-Federalists feared a strong central government and pushed for a bill of rights to protect liberty."
+  },
+  {
+    type:"single",
+    stem:"Which principle did Anti-Federalists believe would best protect liberty?",
+    choices:["Strong state governments","A monarchy","Judicial supremacy","Unlimited executive power"],
+    answer:"Strong state governments",
+    hint:"They trusted government closer to the people more than a distant national government.",
+    explain:"Anti-Federalists believed strong state governments were less likely to threaten individual liberty."
+  },
+  {
+    type:"single",
+    stem:"Which right was protected in the Northwest Territory under the Northwest Ordinance?",
+    choices:["Trial by jury","Censorship of newspapers","Restricted religious practice","Military rule"],
+    answer:"Trial by jury",
+    hint:"Look for a civil liberty, not a limitation on liberty.",
+    explain:"The Northwest Ordinance protected civil liberties, including trial by jury and religious freedom."
+  },
+  {
+    type:"single",
+    stem:"Why did the Northwest Ordinance emphasize education?",
+    choices:["An informed citizenry was needed for self-government","Factories needed skilled machine workers immediately","The federal government wanted uniform textbooks","Education was required for military service"],
+    answer:"An informed citizenry was needed for self-government",
+    hint:"Connect education to republican government, not industry.",
+    explain:"The ordinance linked education to citizenship and the success of republican government."
+  },
+  {
+    type:"single",
+    stem:"Which evidence best shows the Declaration of Independence influenced modern government?",
+    choices:["Amendments expanding voting rights","Growth of industrialization","Construction of railroads","Development of skyscrapers"],
+    answer:"Amendments expanding voting rights",
+    hint:"Look for something that extends political rights based on equality and consent.",
+    explain:"Expanding voting rights reflects the Declaration’s ideas about equality and government by consent."
+  },
+  {
+    type:"single",
+    stem:"According to the Declaration of Independence, what is the main purpose of government?",
+    choices:["To protect individual rights","To expand national territory","To increase trade","To strengthen monarchies"],
+    answer:"To protect individual rights",
+    hint:"Go back to life, liberty, and the purpose of legitimate government.",
+    explain:"The Declaration states that governments are instituted to secure natural rights."
+  },
+  {
+    type:"multi",
+    stem:"Select ALL that apply. Which were goals of labor unions?",
+    choices:["Higher wages","Shorter workdays","Safer working conditions","Fewer protections for workers"],
+    answers:["Higher wages","Shorter workdays","Safer working conditions"],
+    hint:"Think bread-and-butter workplace reforms, not employer advantages.",
+    explain:"Labor unions pushed for higher wages, shorter hours, and safer working conditions."
+  },
+  {
+    type:"single",
+    stem:"A boycott is best defined as",
+    choices:["A refusal to buy goods or services to pressure a business","A violent attack on a factory","A legal appeal to the Supreme Court","A tax on imported goods"],
+    answer:"A refusal to buy goods or services to pressure a business",
+    hint:"This tactic uses consumer pressure rather than direct workplace violence.",
+    explain:"A boycott is an organized refusal to purchase goods or services in order to force change."
+  },
+  {
+    type:"multi",
+    stem:"Select ALL that apply. Which were Progressive reforms?",
+    choices:["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act","Black Codes"],
+    answers:["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act"],
+    hint:"Look for reforms aimed at regulation and public protection, not laws restricting rights.",
+    explain:"Progressive reforms targeted corruption, monopolies, and unsafe conditions through laws like these."
+  },
+  {
+    type:"single",
+    stem:"Journalists who exposed corruption and abuses during the Progressive Era were called",
+    choices:["Muckrakers","Isolationists","Nativists","Expansionists"],
+    answer:"Muckrakers",
+    hint:"Think of writers who 'raked up the muck' to expose problems.",
+    explain:"Muckrakers used journalism to expose political corruption and unsafe social conditions."
+  },
+  {
+    type:"single",
+    stem:"Which law most directly protected consumers from unsafe food and medicine?",
+    choices:["Pure Food and Drug Act","Homestead Act","Dawes Act","Neutrality Act"],
+    answer:"Pure Food and Drug Act",
+    hint:"Focus on consumer safety and accurate labeling.",
+    explain:"The Pure Food and Drug Act required safer products and more honest labeling."
+  },
+  {
+    type:"multi",
+    stem:"Select TWO. Which actions are examples of U.S. imperialism?",
+    choices:["Annexation of Hawaii","Spanish-American War","Federal Reserve Act","Social Security Act"],
+    answers:["Annexation of Hawaii","Spanish-American War"],
+    hint:"Choose the answers tied to expansion overseas, not domestic policy.",
+    explain:"The annexation of Hawaii and the Spanish-American War reflected U.S. imperialist expansion."
+  },
+  {
+    type:"single",
+    stem:"Big Stick Diplomacy is most closely associated with",
+    choices:["Theodore Roosevelt","Woodrow Wilson","Herbert Hoover","Lyndon Johnson"],
+    answer:"Theodore Roosevelt",
+    hint:"Think early-1900s foreign policy backed by military strength.",
+    explain:"Roosevelt’s foreign policy approach used the threat of force to influence events abroad."
+  },
+  {
+    type:"multi",
+    stem:"Select THREE. Which developments reflected U.S. efforts to maintain peace after World War I?",
+    choices:["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact","Lend-Lease Act"],
+    answers:["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact"],
+    hint:"Stay in the post-WWI peace-and-isolation moment, not the later road to WWII.",
+    explain:"These efforts reflected attempts to avoid future war after World War I."
+  },
+  {
+    type:"single",
+    stem:"Why did many Americans support isolationism in the 1920s?",
+    choices:["They wanted to avoid future overseas conflicts","They hoped to expand colonies in Asia","They wanted stronger alliances with Europe","They favored world government"],
+    answer:"They wanted to avoid future overseas conflicts",
+    hint:"Tie this to disappointment and sacrifice after World War I.",
+    explain:"Many Americans believed staying out of entangling alliances would keep the nation out of war."
+  },
+  {
+    type:"single",
+    stem:"The Red Scare of 1919–1920 was driven largely by fear of",
+    choices:["Radicalism and communism","Japanese expansion","Bank failures","Consumerism"],
+    answer:"Radicalism and communism",
+    hint:"This fear centered on political ideology and revolution at home.",
+    explain:"After WWI, bomb scares and unrest fueled fears of radicals and communists in the United States."
+  },
+  {
+    type:"single",
+    stem:"Which factor most contributed to the stock market crash of 1929?",
+    choices:["Speculation with borrowed money","The end of wartime rationing","The passage of the GI Bill","Rapid suburban growth"],
+    answer:"Speculation with borrowed money",
+    hint:"Think risky investing behavior, not postwar domestic policy.",
+    explain:"Speculation and buying on margin made the market dangerously unstable."
+  },
+  {
+    type:"single",
+    stem:"Which institution regulates the U.S. money supply?",
+    choices:["Federal Reserve System","Securities and Exchange Commission","Department of Commerce","Supreme Court"],
+    answer:"Federal Reserve System",
+    hint:"Look for the central banking system, not the agency policing stock fraud.",
+    explain:"The Federal Reserve controls major monetary tools such as interest rates and reserve policies."
+  },
+  {
+    type:"single",
+    stem:"Part A. The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis. Which period does this describe?",
+    choices:["New Deal","Progressive Era","Reconstruction","Cold War"],
+    answer:"New Deal",
+    hint:"This was Franklin Roosevelt’s major response to the Great Depression.",
+    explain:"The New Deal expanded federal action to address unemployment, banking failures, and economic instability."
+  },
+  {
+    type:"multi",
+    stem:"Select TWO. Which actions expanded the role of the federal government during the Great Depression?",
+    choices:["Social Security Act","SEC regulations","Homestead Act","Louisiana Purchase"],
+    answers:["Social Security Act","SEC regulations"],
+    hint:"Choose the policies tied to long-term federal economic protection and regulation.",
+    explain:"Both measures expanded federal responsibility in the economy and in citizens’ lives."
+  },
+  {
+    type:"single",
+    stem:"Which agency regulated the stock market to prevent fraud after the crash?",
+    choices:["SEC","FDIC","NATO","EPA"],
+    answer:"SEC",
+    hint:"Think securities and exchanges, not bank deposits.",
+    explain:"The Securities and Exchange Commission was created to regulate the stock market and reduce fraud."
+  },
+  {
+    type:"single",
+    stem:"Which policy allowed the United States to supply military aid to Allied nations before entering World War II?",
+    choices:["Lend-Lease Act","Dawes Act","Missouri Compromise","Interstate Commerce Act"],
+    answer:"Lend-Lease Act",
+    hint:"This policy moved the U.S. beyond strict neutrality without immediate direct entry into war.",
+    explain:"Lend-Lease let the U.S. send war materials to Allied nations before formally entering WWII."
+  },
+  {
+    type:"multi",
+    stem:"Select THREE. Which factors contributed to the outbreak of World War II?",
+    choices:["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions","Women’s suffrage"],
+    answers:["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions"],
+    hint:"Stay focused on aggression, failed diplomacy, and rising tension between nations.",
+    explain:"World War II grew out of aggressive expansion, failed peace efforts, and escalating tensions."
+  },
+  {
+    type:"single",
+    stem:"The United States became known as the 'Arsenal of Democracy' because it",
+    choices:["Produced massive amounts of war materials for the Allies","Established colonies in Europe","Ended all military production","Refused to help other nations"],
+    answer:"Produced massive amounts of war materials for the Allies",
+    hint:"Think industrial output and supplying democracies fighting Axis powers.",
+    explain:"U.S. factories produced enormous quantities of planes, tanks, ships, and supplies for the Allied war effort."
+  },
+  {
+    type:"multi",
+    stem:"Select ALL that apply. Which were examples of U.S. containment policies?",
+    choices:["Truman Doctrine","Marshall Plan","NATO","Dawes Act"],
+    answers:["Truman Doctrine","Marshall Plan","NATO"],
+    hint:"Containment meant resisting communist expansion after World War II.",
+    explain:"These policies were central parts of the U.S. effort to contain communism."
+  },
+  {
+    type:"single",
+    stem:"Which congressional body investigated suspected communist influence during the Cold War?",
+    choices:["HUAC","FDIC","SEC","TVA"],
+    answer:"HUAC",
+    hint:"This committee became famous for hearings about suspected subversion.",
+    explain:"HUAC, the House Un-American Activities Committee, investigated alleged communist influence."
+  },
+  {
+    type:"single",
+    stem:"McCarthyism is best defined as",
+    choices:["Accusing people of communist ties with little evidence","A civil rights sit-in campaign","A federal bank rescue program","A postwar housing policy"],
+    answer:"Accusing people of communist ties with little evidence",
+    hint:"This term is tied to fear-driven charges during the Cold War.",
+    explain:"McCarthyism refers to reckless accusations and investigations tied to anti-communist hysteria."
+  },
+  {
+    type:"multi",
+    stem:"Select TWO. Which were important actions of the civil rights movement?",
+    choices:["Freedom Rides","March on Washington","Kellogg-Briand Pact","Dawes Act"],
+    answers:["Freedom Rides","March on Washington"],
+    hint:"Pick direct civil rights activism, not unrelated federal laws from other eras.",
+    explain:"Both the Freedom Rides and the March on Washington were major civil rights actions."
+  },
+  {
+    type:"single",
+    stem:"Which legislation most directly outlawed discrimination in public accommodations?",
+    choices:["Civil Rights Act of 1964","Homestead Act","Patriot Act","Neutrality Act"],
+    answer:"Civil Rights Act of 1964",
+    hint:"Think landmark civil rights legislation under Lyndon Johnson.",
+    explain:"The Civil Rights Act of 1964 outlawed discrimination in public accommodations and employment."
+  },
+  {
+    type:"single",
+    stem:"Part A. Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same. Which practice is described?",
+    choices:["Redlining","Collective bargaining","Muckraking","Containment"],
+    answer:"Redlining",
+    hint:"This was a housing and lending practice, not a labor tactic or foreign policy.",
+    explain:"Redlining denied many minorities access to mortgages and suburban homeownership."
+  },
+  {
+    type:"single",
+    stem:"Which law changed immigration patterns by allowing more immigrants from Asia, Africa, and Latin America?",
+    choices:["Immigration and Nationality Act of 1965","Chinese Exclusion Act","Sedition Act","Homestead Act"],
+    answer:"Immigration and Nationality Act of 1965",
+    hint:"Look for the law that moved away from older quota systems.",
+    explain:"The 1965 Immigration Act reshaped immigration by opening the door to more global migration."
+  },
+  {
+    type:"single",
+    stem:"The USA PATRIOT Act raised concerns mainly because it",
+    choices:["Expanded government surveillance powers","Ended the Cold War","Banned immigration","Created labor unions"],
+    answer:"Expanded government surveillance powers",
+    hint:"This debate centered on civil liberties versus security.",
+    explain:"Many critics argued the PATRIOT Act expanded surveillance in ways that threatened civil liberties."
+  }
+];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+const state = {
+  name:"",
+  started:false,
+  index:0,
+  correct:0,
+  tried:0,
+  missed:[],
+  questions:shuffle(questions).map(q => ({...q, choices: shuffle(q.choices)}))
+};
+
+const app = document.getElementById("app");
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+}
+
+function startGame(){
+  const name = document.getElementById("studentName").value.trim();
+  if(!name) return;
+  state.name = name;
+  state.started = true;
+  render();
+}
+
+function progressPct(){
+  return Math.round((state.index / state.questions.length) * 100);
+}
+
+function render(){
+  if(!state.started){
+    app.innerHTML = `
+      <a class="back-link" href="index.html">← Back to Hub</a>
+      <section class="hero">
+        <div class="kicker">Legend Mastery Series • American Studies</div>
+        <h1>${GAME_TITLE}</h1>
+        <p class="sub">
+          Recovery build from the most-missed trouble areas across the uploaded American Studies review forms.
+          Same basic hub style: shuffled questions, directional hints, progress bar, auto-advance on correct,
+          and brief explanation linger so students actually absorb the correction.
+        </p>
+        <div class="pills">
+          <span class="pill">${state.questions.length} questions</span>
+          <span class="pill">Single + multi-select</span>
+          <span class="pill">Hint on miss</span>
+          <span class="pill">100% mindset</span>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-top:20px">
+        <h3>Student launch</h3>
+        <label for="studentName">Student name</label>
+        <input id="studentName" type="text" placeholder="Enter your name" />
+        <div class="btn-row">
+          <button class="btn" onclick="startGame()">Start Recovery Game</button>
+        </div>
+      </section>
+
+      <section class="grid grid-2" style="margin-top:20px">
+        <article class="card">
+          <h3>Most-missed focus</h3>
+          <ul class="list-clean">
+            <li>Federalism and ratification debates</li>
+            <li>Labor union and Progressive reform confusion</li>
+            <li>Post-WWI peace efforts and isolationism</li>
+            <li>New Deal expansion and WWII causation</li>
+            <li>Containment, HUAC, civil rights, and postwar change</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>How this round works</h3>
+          <ul class="list-clean">
+            <li>Wrong answer = hint only, not the answer</li>
+            <li>Correct answer = quick explanation + auto-advance</li>
+            <li>Multi-select items require exact choices</li>
+            <li>End screen shows misses for reteach/replay</li>
+          </ul>
+        </article>
+      </section>`;
+    return;
+  }
+
+  if(state.index >= state.questions.length){
+    const pct = Math.round((state.correct / state.questions.length) * 100);
+    app.innerHTML = `
+      <a class="back-link" href="index.html">← Back to Hub</a>
+      <section class="result-card">
+        <div class="kicker">Recovery Complete</div>
+        <h1>${escapeHtml(state.name)} — Trouble Areas Results</h1>
+        <p class="sub">Use the missed-question list below for a second pass or mini-conference reteach.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Score</div><div class="stat-value">${pct}%</div></div>
+          <div class="stat"><div class="stat-label">Correct</div><div class="stat-value">${state.correct}/${state.questions.length}</div></div>
+          <div class="stat"><div class="stat-label">Attempts</div><div class="stat-value">${state.tried}</div></div>
+          <div class="stat"><div class="stat-label">Missed at least once</div><div class="stat-value">${state.missed.length}</div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" onclick="location.reload()">Play Again</button>
+          <a class="btn secondary" href="recovery-test.html">Open Recovery Test</a>
+        </div>
+        ${state.missed.length ? `<div class="missed-list">${state.missed.map((m,i)=>`<div class="missed-item"><strong>${i+1}. ${escapeHtml(m.stem)}</strong><div class="muted" style="margin-top:8px"><strong>Correct:</strong> ${escapeHtml(m.correct)}</div><div class="muted" style="margin-top:6px">${escapeHtml(m.explain)}</div></div>`).join('')}</div>` : `<p class="sub" style="margin-top:18px">Perfect run. That is clean mastery, Legend style.</p>`}
+      </section>`;
+    return;
+  }
+
+  const q = state.questions[state.index];
+  app.innerHTML = `
+    <a class="back-link" href="index.html">← Back to Hub</a>
+    <section class="question-card">
+      <div class="hud">
+        <div class="hud-left">
+          <div class="hud-chip">Student: ${escapeHtml(state.name)}</div>
+          <div class="hud-chip">Question ${state.index + 1} / ${state.questions.length}</div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-chip">Correct: ${state.correct}</div>
+          <div class="hud-chip">Attempts: ${state.tried}</div>
+        </div>
+      </div>
+      <div class="progress-shell"><div class="progress-bar" style="width:${progressPct()}%"></div></div>
+      <div class="question-title">${escapeHtml(q.stem)}</div>
+      <div class="help">${q.type === 'single' ? 'Choose one answer.' : 'Select all required answers, then submit.'}</div>
+      <div class="choices" id="choices"></div>
+      <div class="btn-row" id="multiActions" ${q.type==='single' ? 'style="display:none"' : ''}>
+        <button class="btn" onclick="submitMulti()">Submit Answer</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </section>`;
+
+  const choicesDiv = document.getElementById('choices');
+  if(q.type === 'single'){
+    q.choices.forEach(choice => {
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.textContent = choice;
+      btn.onclick = () => submitSingle(choice, btn);
+      choicesDiv.appendChild(btn);
+    });
+  } else {
+    q.choices.forEach((choice, idx) => {
+      const label = document.createElement('label');
+      label.className = 'choice checkbox-row';
+      label.innerHTML = `<input type="checkbox" value="${escapeHtml(choice)}" id="c${idx}"><span>${escapeHtml(choice)}</span>`;
+      choicesDiv.appendChild(label);
+    });
+  }
+}
+
+function showFeedback(kind, title, msg){
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback show ${kind}`;
+  fb.innerHTML = `<div class="feedback-title">${title}</div><div>${msg}</div>`;
+}
+
+function markMiss(q){
+  if(!q._missedLogged){
+    state.missed.push({
+      stem:q.stem,
+      correct:q.type==='single' ? q.answer : q.answers.join(', '),
+      explain:q.explain
+    });
+    q._missedLogged = true;
+  }
+}
+
+function submitSingle(choice, btn){
+  const q = state.questions[state.index];
+  state.tried++;
+  const all = [...document.querySelectorAll('.choice')];
+  if(choice === q.answer){
+    state.correct++;
+    all.forEach(b => b.disabled = true);
+    btn.classList.add('correct');
+    showFeedback('good','Correct', q.explain);
+    setTimeout(()=>{ state.index++; render(); }, 2200);
+  } else {
+    markMiss(q);
+    btn.classList.add('incorrect');
+    btn.disabled = true;
+    showFeedback('bad','Try again', q.hint);
+  }
+}
+
+function submitMulti(){
+  const q = state.questions[state.index];
+  const checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value).sort();
+  const correct = [...q.answers].sort();
+  state.tried++;
+  if(JSON.stringify(checked) === JSON.stringify(correct)){
+    state.correct++;
+    document.querySelectorAll('input[type="checkbox"]').forEach(x => x.disabled = true);
+    document.getElementById('multiActions').querySelector('button').disabled = true;
+    showFeedback('good','Correct', q.explain);
+    setTimeout(()=>{ state.index++; render(); }, 2200);
+  } else {
+    markMiss(q);
+    showFeedback('bad','Try again', q.hint);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
