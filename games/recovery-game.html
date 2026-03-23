@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>American Studies Trouble Areas — Recovery Game</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
   <div class="wrap" id="app"></div>
@@ -342,7 +342,7 @@ function progressPct(){
 function render(){
   if(!state.started){
     app.innerHTML = `
-      <a class="back-link" href="index.html">← Back to Hub</a>
+      <a class="back-link" href="../index.html">← Back to Hub</a>
       <section class="hero">
         <div class="kicker">Legend Mastery Series • American Studies</div>
         <h1>${GAME_TITLE}</h1>
@@ -395,7 +395,7 @@ function render(){
   if(state.index >= state.questions.length){
     const pct = Math.round((state.correct / state.questions.length) * 100);
     app.innerHTML = `
-      <a class="back-link" href="index.html">← Back to Hub</a>
+      <a class="back-link" href="../index.html">← Back to Hub</a>
       <section class="result-card">
         <div class="kicker">Recovery Complete</div>
         <h1>${escapeHtml(state.name)} — Trouble Areas Results</h1>
@@ -417,7 +417,7 @@ function render(){
 
   const q = state.questions[state.index];
   app.innerHTML = `
-    <a class="back-link" href="index.html">← Back to Hub</a>
+    <a class="back-link" href="../index.html">← Back to Hub</a>
     <section class="question-card">
       <div class="hud">
         <div class="hud-left">
