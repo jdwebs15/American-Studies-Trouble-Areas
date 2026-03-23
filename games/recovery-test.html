@@ -5,152 +5,1006 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Recovery Test — Trouble Areas Assessment</title>
   <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .test-shell{max-width:1100px;margin:0 auto}
+    .panel-card,.question-block,.ticket,.summary-block,.launch-card{
+      background:var(--panel,#161b22);
+      border:1px solid var(--line,#2b3440);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.18);
+    }
+    .meta-grid,.ticket-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+    .meta-card,.ticket-cell{
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line,#2b3440);
+    }
+    .meta-label,.ticket-cell .label{
+      font-size:.8rem;
+      color:var(--muted,#9aa4b2);
+      margin-bottom:6px;
+    }
+    .meta-value,.ticket-cell .value{
+      font-size:1.05rem;
+      font-weight:700;
+    }
+    .launch-grid{
+      display:grid;
+      gap:16px;
+      margin-top:20px;
+    }
+    .student-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:end;
+      margin-top:16px;
+    }
+    .student-row input{
+      width:100%;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid var(--line,#2b3440);
+      background:#0f141a;
+      color:#fff;
+      font-size:1rem;
+      outline:none;
+    }
+    .student-row input:focus{
+      border-color:#4c8bf5;
+      box-shadow:0 0 0 3px rgba(76,139,245,.18);
+    }
+    .test-list{
+      display:grid;
+      gap:16px;
+      margin-top:22px;
+    }
+    .question-number{
+      font-size:.9rem;
+      color:var(--muted,#9aa4b2);
+      margin-bottom:8px;
+    }
+    .question-stem{
+      font-size:1.05rem;
+      font-weight:700;
+      line-height:1.42;
+      margin-bottom:10px;
+    }
+    .question-help{
+      font-size:.9rem;
+      color:var(--muted,#9aa4b2);
+      margin-bottom:12px;
+    }
+    .choice-list{
+      display:grid;
+      gap:10px;
+    }
+    .choice-row{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border:1px solid var(--line,#2b3440);
+      border-radius:12px;
+      background:rgba(255,255,255,.02);
+    }
+    .choice-row input{
+      margin-top:3px;
+      transform:scale(1.1);
+    }
+    .choice-row.correct-outline{border-color:#1f8f55}
+    .choice-row.incorrect-outline{border-color:#b64242}
+    .submit-bar{
+      position:sticky;
+      bottom:12px;
+      z-index:30;
+      margin-top:24px;
+    }
+    .submit-panel{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      padding:14px 16px;
+      border-radius:18px;
+      background:rgba(10,14,20,.95);
+      border:1px solid var(--line,#2b3440);
+      backdrop-filter:blur(8px);
+    }
+    .submit-panel .left{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .mini-pill{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line,#2b3440);
+      background:rgba(255,255,255,.03);
+      font-size:.9rem;
+    }
+    .ticket{
+      margin-top:24px;
+    }
+    .ticket h2{
+      margin:0 0 12px 0;
+    }
+    .status-good{
+      color:#7ee2a8;
+      font-weight:700;
+    }
+    .score-big{
+      font-size:2rem;
+      font-weight:800;
+      line-height:1;
+    }
+    .summary-line{
+      font-size:1rem;
+      color:var(--muted,#9aa4b2);
+      margin-top:4px;
+    }
+    .missed-review{
+      display:grid;
+      gap:12px;
+      margin-top:18px;
+    }
+    .missed-item{
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid var(--line,#2b3440);
+      background:rgba(255,255,255,.02);
+    }
+    .hidden{display:none}
+    .small-note{
+      font-size:.92rem;
+      color:var(--muted,#9aa4b2);
+    }
+    .warn{
+      color:#ffd479;
+      font-weight:700;
+    }
+    @media (max-width:760px){
+      .student-row{grid-template-columns:1fr}
+      .submit-panel{flex-direction:column;align-items:stretch}
+    }
+  </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="test-shell" id="app"></div>
+  </div>
+
+<script>
+const TEST_KEY = "american_studies_trouble_areas_recovery_test_attempts_v2";
+const TEST_TITLE = "Recovery Test — Trouble Areas Assessment";
+const SHEET_ENDPOINT = "";
+// Later we will paste your Google Apps Script web app URL above.
+
+const questions = [
+  {
+    type: "single",
+    stem: "Which principle divides power between national and state governments?",
+    help: "Choose one answer.",
+    choices: ["Limited government","Federalism","Checks and balances","Judicial review"],
+    answer: "Federalism",
+    explain: "Federalism divides authority between the national government and state governments."
+  },
+  {
+    type: "single",
+    stem: "Which scenario best reflects federalism?",
+    help: "Choose one answer.",
+    choices: [
+      "Congress impeaches a president",
+      "A state legislature passes school laws while Congress regulates interstate trade",
+      "The Supreme Court strikes down a law",
+      "Voters approve a local levy"
+    ],
+    answer: "A state legislature passes school laws while Congress regulates interstate trade",
+    explain: "Federalism means power is divided between levels of government, not just branches."
+  },
+  {
+    type: "single",
+    stem: "Which group supported ratification of the Constitution?",
+    help: "Choose one answer.",
+    choices: ["Anti-Federalists","Federalists","Populists","Abolitionists"],
+    answer: "Federalists",
+    explain: "Federalists supported the Constitution because they wanted a stronger national government."
+  },
+  {
+    type: "single",
+    stem: "What was a major concern of the Anti-Federalists?",
+    help: "Choose one answer.",
+    choices: [
+      "The national government would be too weak",
+      "States had too much power already",
+      "The Constitution did not adequately protect liberty",
+      "The president had no military role"
+    ],
+    answer: "The Constitution did not adequately protect liberty",
+    explain: "Anti-Federalists feared centralized power and pushed for a bill of rights."
+  },
+  {
+    type: "single",
+    stem: "Which document helped explain and defend the Constitution during ratification debates?",
+    help: "Choose one answer.",
+    choices: ["Federalist Papers","Common Sense","Articles of Confederation","Mayflower Compact"],
+    answer: "Federalist Papers",
+    explain: "The Federalist Papers argued for ratification and explained the new system."
+  },
+  {
+    type: "single",
+    stem: "Which principle did Anti-Federalists believe would best protect liberty?",
+    help: "Choose one answer.",
+    choices: ["Strong national government","Monarchy","Strong state governments","Judicial supremacy"],
+    answer: "Strong state governments",
+    explain: "Anti-Federalists trusted government closer to the people more than a distant national government."
+  },
+  {
+    type: "single",
+    stem: "Which right was protected in the Northwest Territory under the Northwest Ordinance?",
+    help: "Choose one answer.",
+    choices: ["Government censorship","Trial by jury","Unlimited slavery","Royal taxation"],
+    answer: "Trial by jury",
+    explain: "The Northwest Ordinance protected civil liberties such as trial by jury and religious freedom."
+  },
+  {
+    type: "single",
+    stem: "Why did the Northwest Ordinance emphasize education?",
+    help: "Choose one answer.",
+    choices: [
+      "To train factory workers for industrialization",
+      "To build support for monarchy",
+      "To support informed citizenship in republican government",
+      "To reduce westward settlement"
+    ],
+    answer: "To support informed citizenship in republican government",
+    explain: "Education was tied to self-government and responsible citizenship."
+  },
+  {
+    type: "single",
+    stem: "Which evidence best shows the Declaration of Independence influenced modern government?",
+    help: "Choose one answer.",
+    choices: ["Growth of railroads","Amendments expanding voting rights","Rise of corporations","Development of suburbs"],
+    answer: "Amendments expanding voting rights",
+    explain: "Expanding voting rights reflects equality and consent of the governed."
+  },
+  {
+    type: "single",
+    stem: "According to the Declaration of Independence, the main purpose of government is to",
+    help: "Choose one answer.",
+    choices: ["Protect individual rights","Collect maximum taxes","Control trade routes","Promote monarchy"],
+    answer: "Protect individual rights",
+    explain: "The Declaration says government exists to secure natural rights."
+  },
+  {
+    type: "multi",
+    stem: "Select ALL that apply. Which were goals of labor unions?",
+    help: "Select all correct answers.",
+    choices: ["Higher wages","Shorter workdays","Safer working conditions","Weaker worker protections"],
+    answers: ["Higher wages","Shorter workdays","Safer working conditions"],
+    explain: "Labor unions pushed for better pay, shorter hours, and safer working conditions."
+  },
+  {
+    type: "single",
+    stem: "A boycott is best defined as",
+    help: "Choose one answer.",
+    choices: [
+      "A refusal to buy goods or services to pressure a business",
+      "A violent attack on a business",
+      "A federal tax increase",
+      "A military draft"
+    ],
+    answer: "A refusal to buy goods or services to pressure a business",
+    explain: "A boycott uses consumer pressure to force change."
+  },
+  {
+    type: "multi",
+    stem: "Select ALL that apply. Which were Progressive reforms?",
+    help: "Select all correct answers.",
+    choices: ["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act","Black Codes"],
+    answers: ["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act"],
+    explain: "These laws targeted monopolies, unsafe products, and abuses of industrial capitalism."
+  },
+  {
+    type: "single",
+    stem: "Journalists who exposed corruption and abuses during the Progressive Era were known as",
+    help: "Choose one answer.",
+    choices: ["Isolationists","Muckrakers","Nativists","Monopolists"],
+    answer: "Muckrakers",
+    explain: "Muckrakers exposed corruption and unsafe conditions through investigative journalism."
+  },
+  {
+    type: "single",
+    stem: "Which law most directly protected consumers from unsafe food and medicine?",
+    help: "Choose one answer.",
+    choices: ["Pure Food and Drug Act","Homestead Act","Dawes Act","Neutrality Act"],
+    answer: "Pure Food and Drug Act",
+    explain: "The Pure Food and Drug Act focused on product safety and honest labeling."
+  },
+  {
+    type: "multi",
+    stem: "Select TWO. Which actions are examples of U.S. imperialism?",
+    help: "Select exactly two answers.",
+    choices: ["Annexation of Hawaii","Spanish-American War","Federal Reserve Act","Social Security Act"],
+    answers: ["Annexation of Hawaii","Spanish-American War"],
+    explain: "Both reflected expansion overseas rather than domestic reform."
+  },
+  {
+    type: "single",
+    stem: "Big Stick Diplomacy is most closely associated with",
+    help: "Choose one answer.",
+    choices: ["Theodore Roosevelt","Woodrow Wilson","Herbert Hoover","Lyndon Johnson"],
+    answer: "Theodore Roosevelt",
+    explain: "Roosevelt’s approach emphasized strength and readiness to use force in foreign affairs."
+  },
+  {
+    type: "multi",
+    stem: "Select THREE. Which developments reflected U.S. efforts to maintain peace after World War I?",
+    help: "Select exactly three answers.",
+    choices: ["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact","Lend-Lease Act"],
+    answers: ["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact"],
+    explain: "These reflected post-WWI efforts to avoid another major war."
+  },
+  {
+    type: "single",
+    stem: "Why did many Americans support isolationism in the 1920s?",
+    help: "Choose one answer.",
+    choices: [
+      "They wanted to avoid future overseas conflicts",
+      "They hoped to expand colonies in Asia",
+      "They wanted stronger alliances with Europe",
+      "They favored world government"
+    ],
+    answer: "They wanted to avoid future overseas conflicts",
+    explain: "Many Americans wanted to avoid future foreign entanglements after WWI."
+  },
+  {
+    type: "single",
+    stem: "The Red Scare of 1919–1920 was driven largely by fear of",
+    help: "Choose one answer.",
+    choices: ["Radicalism and communism","Japanese expansion","Suburban growth","Consumerism"],
+    answer: "Radicalism and communism",
+    explain: "The Red Scare reflected fear of revolution, communism, and political unrest."
+  },
+  {
+    type: "single",
+    stem: "Which factor most contributed to the stock market crash of 1929?",
+    help: "Choose one answer.",
+    choices: ["Speculation with borrowed money","The GI Bill","Prohibition repeal","Suburbanization"],
+    answer: "Speculation with borrowed money",
+    explain: "Buying on margin and speculation made the market unstable."
+  },
+  {
+    type: "single",
+    stem: "Which institution regulates the U.S. money supply?",
+    help: "Choose one answer.",
+    choices: ["Federal Reserve System","Securities and Exchange Commission","Department of Commerce","Supreme Court"],
+    answer: "Federal Reserve System",
+    explain: "The Federal Reserve manages major monetary tools and the money supply."
+  },
+  {
+    type: "single",
+    stem: "Part A. The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis. Which period does this describe?",
+    help: "Choose one answer.",
+    choices: ["New Deal","Progressive Era","Reconstruction","Cold War"],
+    answer: "New Deal",
+    explain: "This describes Franklin Roosevelt’s response to the Great Depression."
+  },
+  {
+    type: "single",
+    stem: "Part B. Which president is most closely associated with that response?",
+    help: "Choose one answer.",
+    choices: ["Theodore Roosevelt","Franklin D. Roosevelt","Calvin Coolidge","Dwight Eisenhower"],
+    answer: "Franklin D. Roosevelt",
+    explain: "FDR led the New Deal response to the Great Depression."
+  },
+  {
+    type: "multi",
+    stem: "Select TWO. Which actions expanded the role of the federal government during the Great Depression?",
+    help: "Select exactly two answers.",
+    choices: ["Social Security Act","SEC regulations","Homestead Act","Louisiana Purchase"],
+    answers: ["Social Security Act","SEC regulations"],
+    explain: "Both expanded the federal government's economic role."
+  },
+  {
+    type: "single",
+    stem: "Which agency regulated the stock market to prevent fraud after the crash?",
+    help: "Choose one answer.",
+    choices: ["SEC","FDIC","NATO","EPA"],
+    answer: "SEC",
+    explain: "The SEC was created to regulate the stock market and reduce fraud."
+  },
+  {
+    type: "single",
+    stem: "Which policy allowed the United States to supply military aid to Allied nations before entering World War II?",
+    help: "Choose one answer.",
+    choices: ["Lend-Lease Act","Dawes Act","Missouri Compromise","Interstate Commerce Act"],
+    answer: "Lend-Lease Act",
+    explain: "Lend-Lease allowed the U.S. to provide aid before entering the war."
+  },
+  {
+    type: "multi",
+    stem: "Select THREE. Which factors contributed to the outbreak of World War II?",
+    help: "Select exactly three answers.",
+    choices: ["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions","Women’s suffrage"],
+    answers: ["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions"],
+    explain: "Aggression, failed diplomacy, and tension all contributed to WWII."
+  },
+  {
+    type: "single",
+    stem: "The United States became known as the 'Arsenal of Democracy' because it",
+    help: "Choose one answer.",
+    choices: [
+      "Produced massive amounts of war materials for the Allies",
+      "Established colonies in Europe",
+      "Ended all military production",
+      "Refused to help other nations"
+    ],
+    answer: "Produced massive amounts of war materials for the Allies",
+    explain: "The U.S. supplied enormous industrial output to help the Allies."
+  },
+  {
+    type: "multi",
+    stem: "Select ALL that apply. Which were examples of U.S. containment policies?",
+    help: "Select all correct answers.",
+    choices: ["Truman Doctrine","Marshall Plan","NATO","Dawes Act"],
+    answers: ["Truman Doctrine","Marshall Plan","NATO"],
+    explain: "These were all core parts of U.S. containment strategy."
+  },
+  {
+    type: "single",
+    stem: "Which congressional body investigated suspected communist influence during the Cold War?",
+    help: "Choose one answer.",
+    choices: ["HUAC","FDIC","SEC","TVA"],
+    answer: "HUAC",
+    explain: "HUAC investigated alleged communist influence in American institutions."
+  },
+  {
+    type: "single",
+    stem: "McCarthyism is best defined as",
+    help: "Choose one answer.",
+    choices: [
+      "Accusing people of communist ties with little evidence",
+      "A civil rights sit-in campaign",
+      "A federal bank rescue program",
+      "A housing construction policy"
+    ],
+    answer: "Accusing people of communist ties with little evidence",
+    explain: "McCarthyism refers to reckless anti-communist accusations and investigations."
+  },
+  {
+    type: "multi",
+    stem: "Select TWO. Which were important actions of the civil rights movement?",
+    help: "Select exactly two answers.",
+    choices: ["Freedom Rides","March on Washington","Kellogg-Briand Pact","Dawes Act"],
+    answers: ["Freedom Rides","March on Washington"],
+    explain: "Both were major direct actions in the civil rights movement."
+  },
+  {
+    type: "single",
+    stem: "Which legislation most directly outlawed discrimination in public accommodations?",
+    help: "Choose one answer.",
+    choices: ["Civil Rights Act of 1964","Homestead Act","Patriot Act","Neutrality Act"],
+    answer: "Civil Rights Act of 1964",
+    explain: "The Civil Rights Act of 1964 outlawed discrimination in public accommodations and employment."
+  },
+  {
+    type: "single",
+    stem: "Part A. Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same. Which practice is described?",
+    help: "Choose one answer.",
+    choices: ["Redlining","Collective bargaining","Muckraking","Containment"],
+    answer: "Redlining",
+    explain: "Redlining denied many minorities access to mortgages and suburban homeownership."
+  },
+  {
+    type: "single",
+    stem: "Part B. Which effect is most directly connected to that practice?",
+    help: "Choose one answer.",
+    choices: [
+      "Wider suburban homeownership equality",
+      "Increased segregation in housing patterns",
+      "Stronger labor unions",
+      "Faster wartime production"
+    ],
+    answer: "Increased segregation in housing patterns",
+    explain: "Redlining reinforced unequal housing access and long-term segregation."
+  },
+  {
+    type: "single",
+    stem: "Which law changed immigration patterns by allowing more immigrants from Asia, Africa, and Latin America?",
+    help: "Choose one answer.",
+    choices: ["Immigration and Nationality Act of 1965","Chinese Exclusion Act","Sedition Act","Homestead Act"],
+    answer: "Immigration and Nationality Act of 1965",
+    explain: "This law reshaped immigration by loosening earlier quota restrictions."
+  },
+  {
+    type: "single",
+    stem: "The USA PATRIOT Act raised concerns mainly because it",
+    help: "Choose one answer.",
+    choices: [
+      "Expanded government surveillance powers",
+      "Ended the Cold War",
+      "Banned immigration",
+      "Created labor unions"
+    ],
+    answer: "Expanded government surveillance powers",
+    explain: "Critics argued it threatened civil liberties through expanded surveillance."
+  },
+  {
+    type: "single",
+    stem: "Which statement best summarizes a major pattern shown by these trouble areas?",
+    help: "Choose one answer.",
+    choices: [
+      "Students only missed vocabulary questions",
+      "Students mainly struggled with multi-select, cause/effect, and application questions",
+      "Students only struggled with colonial history",
+      "Students mastered all reform-era content"
+    ],
+    answer: "Students mainly struggled with multi-select, cause/effect, and application questions",
+    explain: "The response data showed the biggest breakdowns in sorting, evaluating, and applying content."
+  },
+  {
+    type: "single",
+    stem: "Which strategy would best address the weaknesses shown in this recovery set?",
+    help: "Choose one answer.",
+    choices: [
+      "Assign only memorization drills",
+      "Reteach through multi-select reps, classification practice, and scenario application",
+      "Remove all passage questions",
+      "Avoid federalism and reform content entirely"
+    ],
+    answer: "Reteach through multi-select reps, classification practice, and scenario application",
+    explain: "Students need structured practice applying concepts, not just recalling terms."
+  }
+];
+
+const state = {
+  started: false,
+  submitted: false,
+  studentName: "",
+  attemptNumber: 0,
+  dateStamp: "",
+  startTimeStamp: "",
+  endTimeStamp: "",
+  startEpoch: null,
+  elapsedSeconds: 0,
+  timerInterval: null
+};
+
+const app = document.getElementById("app");
+
+function esc(str){
+  return String(str).replace(/[&<>"]/g, s => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    "\"":"&quot;"
+  }[s]));
+}
+
+function formatDate(d){
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+function formatTime(d){
+  return d.toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+}
+
+function formatElapsed(totalSeconds){
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  if(h > 0){
+    return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  }
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+function getAttemptCount(){
+  const raw = localStorage.getItem(TEST_KEY);
+  return raw ? Number(raw) || 0 : 0;
+}
+
+function incrementAttemptCount(){
+  const next = getAttemptCount() + 1;
+  localStorage.setItem(TEST_KEY, String(next));
+  return next;
+}
+
+function renderLaunch(){
+  const priorAttempts = getAttemptCount();
+  app.innerHTML = `
     <a class="back-link" href="../index.html">← Back to Hub</a>
 
     <section class="hero">
       <div class="kicker">Legend Mastery Series • American Studies</div>
-      <h1>Recovery Test — Trouble Areas Assessment</h1>
+      <h1>${TEST_TITLE}</h1>
       <p class="sub">
-        40-question targeted assessment built from the highest-confusion content clusters found in the uploaded
-        response sheets. Includes multiple choice, select-two/select-three, passage-based Part A/Part B, and
-        application-style questions.
+        Targeted recovery assessment built from the highest-confusion questions across the uploaded response sheets.
+        This version includes name entry, attempt tracking, timestamped submission, live testing timer, and a screenshot-ready completion ticket.
       </p>
       <div class="pills">
-        <span class="pill">40 questions</span>
-        <span class="pill">MC + multi-select</span>
-        <span class="pill">Part A / Part B</span>
-        <span class="pill">Application focus</span>
+        <span class="pill">${questions.length} questions</span>
+        <span class="pill">Auto-graded</span>
+        <span class="pill">Submit ticket</span>
+        <span class="pill">Attempts tracked</span>
       </div>
     </section>
 
-    <section class="panel" style="margin-top:20px">
-      <h3>Questions</h3>
-      <ol class="list-clean" style="padding-left:20px">
-        <li>Which principle divides power between national and state governments?
-          <div class="muted">A. limited government<br>B. federalism<br>C. checks and balances<br>D. judicial review</div>
-        </li>
-        <li>Which scenario best reflects federalism?
-          <div class="muted">A. Congress impeaches a president<br>B. A state legislature passes school laws while Congress regulates interstate trade<br>C. The Supreme Court strikes down a law<br>D. Voters approve a local levy</div>
-        </li>
-        <li>Which group supported ratification of the Constitution?
-          <div class="muted">A. Anti-Federalists<br>B. Federalists<br>C. Populists<br>D. Abolitionists</div>
-        </li>
-        <li>What was a major concern of the Anti-Federalists?
-          <div class="muted">A. The national government would be too weak<br>B. States had too much power already<br>C. The Constitution did not adequately protect liberty<br>D. The president had no military role</div>
-        </li>
-        <li>Which document helped explain and defend the Constitution during ratification debates?
-          <div class="muted">A. Federalist Papers<br>B. Common Sense<br>C. Articles of Confederation<br>D. Mayflower Compact</div>
-        </li>
-        <li>Which principle did Anti-Federalists believe would best protect liberty?
-          <div class="muted">A. strong national government<br>B. monarchy<br>C. strong state governments<br>D. judicial supremacy</div>
-        </li>
-        <li>Which right was protected in the Northwest Territory under the Northwest Ordinance?
-          <div class="muted">A. government censorship<br>B. trial by jury<br>C. unlimited slavery<br>D. royal taxation</div>
-        </li>
-        <li>Why did the Northwest Ordinance emphasize education?
-          <div class="muted">A. to train factory workers for industrialization<br>B. to build support for monarchy<br>C. to support informed citizenship in republican government<br>D. to reduce westward settlement</div>
-        </li>
-        <li>Which evidence best shows the Declaration of Independence influenced modern government?
-          <div class="muted">A. growth of railroads<br>B. amendments expanding voting rights<br>C. rise of corporations<br>D. development of suburbs</div>
-        </li>
-        <li>According to the Declaration of Independence, the main purpose of government is to
-          <div class="muted">A. protect individual rights<br>B. collect maximum taxes<br>C. control trade routes<br>D. promote monarchy</div>
-        </li>
-        <li>Select ALL that apply. Which were goals of labor unions?
-          <div class="muted">A. higher wages<br>B. shorter workdays<br>C. safer working conditions<br>D. weaker worker protections</div>
-        </li>
-        <li>A boycott is best defined as
-          <div class="muted">A. a refusal to buy goods or services to pressure a business<br>B. a violent attack on a business<br>C. a federal tax increase<br>D. a military draft</div>
-        </li>
-        <li>Select ALL that apply. Which were Progressive reforms?
-          <div class="muted">A. Pure Food and Drug Act<br>B. Meat Inspection Act<br>C. Sherman Antitrust Act<br>D. Black Codes</div>
-        </li>
-        <li>Journalists who exposed corruption and abuses during the Progressive Era were known as
-          <div class="muted">A. isolationists<br>B. muckrakers<br>C. nativists<br>D. monopolists</div>
-        </li>
-        <li>Which law most directly protected consumers from unsafe food and medicine?
-          <div class="muted">A. Pure Food and Drug Act<br>B. Homestead Act<br>C. Dawes Act<br>D. Neutrality Act</div>
-        </li>
-        <li>Select TWO. Which actions are examples of U.S. imperialism?
-          <div class="muted">A. annexation of Hawaii<br>B. Spanish-American War<br>C. Federal Reserve Act<br>D. Social Security Act</div>
-        </li>
-        <li>Big Stick Diplomacy is most closely associated with
-          <div class="muted">A. Theodore Roosevelt<br>B. Woodrow Wilson<br>C. Herbert Hoover<br>D. Lyndon Johnson</div>
-        </li>
-        <li>Select THREE. Which developments reflected U.S. efforts to maintain peace after World War I?
-          <div class="muted">A. arms limitation efforts<br>B. debate over the Treaty of Versailles<br>C. Kellogg-Briand Pact<br>D. Lend-Lease Act</div>
-        </li>
-        <li>Why did many Americans support isolationism in the 1920s?
-          <div class="muted">A. to avoid future overseas conflicts<br>B. to build new colonies<br>C. to strengthen European alliances<br>D. to create a world government</div>
-        </li>
-        <li>The Red Scare of 1919–1920 was driven largely by fear of
-          <div class="muted">A. radicalism and communism<br>B. Japanese expansion<br>C. suburban growth<br>D. mass consumerism</div>
-        </li>
-        <li>Which factor most contributed to the stock market crash of 1929?
-          <div class="muted">A. speculation with borrowed money<br>B. the GI Bill<br>C. Prohibition repeal<br>D. suburbanization</div>
-        </li>
-        <li>Which institution regulates the U.S. money supply?
-          <div class="muted">A. Federal Reserve System<br>B. Securities and Exchange Commission<br>C. Department of Commerce<br>D. Supreme Court</div>
-        </li>
-        <li>Part A. The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis. Which period does this describe?
-          <div class="muted">A. New Deal<br>B. Progressive Era<br>C. Reconstruction<br>D. Cold War</div>
-        </li>
-        <li>Part B. Which president is most closely associated with that response?
-          <div class="muted">A. Theodore Roosevelt<br>B. Franklin D. Roosevelt<br>C. Calvin Coolidge<br>D. Dwight Eisenhower</div>
-        </li>
-        <li>Select TWO. Which actions expanded the role of the federal government during the Great Depression?
-          <div class="muted">A. Social Security Act<br>B. SEC regulations<br>C. Homestead Act<br>D. Louisiana Purchase</div>
-        </li>
-        <li>Which agency regulated the stock market to prevent fraud after the crash?
-          <div class="muted">A. SEC<br>B. FDIC<br>C. NATO<br>D. EPA</div>
-        </li>
-        <li>Which policy allowed the United States to supply military aid to Allied nations before entering World War II?
-          <div class="muted">A. Lend-Lease Act<br>B. Dawes Act<br>C. Missouri Compromise<br>D. Interstate Commerce Act</div>
-        </li>
-        <li>Select THREE. Which factors contributed to the outbreak of World War II?
-          <div class="muted">A. expansionist policies of Germany and Japan<br>B. failure of international peace agreements<br>C. global political tensions<br>D. women’s suffrage</div>
-        </li>
-        <li>The United States became known as the “Arsenal of Democracy” because it
-          <div class="muted">A. produced massive amounts of war materials for the Allies<br>B. established colonies in Europe<br>C. ended all military production<br>D. refused to help other nations</div>
-        </li>
-        <li>Select ALL that apply. Which were examples of U.S. containment policies?
-          <div class="muted">A. Truman Doctrine<br>B. Marshall Plan<br>C. NATO<br>D. Dawes Act</div>
-        </li>
-        <li>Which congressional body investigated suspected communist influence during the Cold War?
-          <div class="muted">A. HUAC<br>B. FDIC<br>C. SEC<br>D. TVA</div>
-        </li>
-        <li>McCarthyism is best defined as
-          <div class="muted">A. accusing people of communist ties with little evidence<br>B. a civil rights sit-in campaign<br>C. a federal bank rescue program<br>D. a housing construction policy</div>
-        </li>
-        <li>Select TWO. Which were important actions of the civil rights movement?
-          <div class="muted">A. Freedom Rides<br>B. March on Washington<br>C. Kellogg-Briand Pact<br>D. Dawes Act</div>
-        </li>
-        <li>Which legislation most directly outlawed discrimination in public accommodations?
-          <div class="muted">A. Civil Rights Act of 1964<br>B. Homestead Act<br>C. Patriot Act<br>D. Neutrality Act</div>
-        </li>
-        <li>Part A. Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same. Which practice is described?
-          <div class="muted">A. redlining<br>B. collective bargaining<br>C. muckraking<br>D. containment</div>
-        </li>
-        <li>Part B. Which effect is most directly connected to that practice?
-          <div class="muted">A. wider suburban homeownership equality<br>B. increased segregation in housing patterns<br>C. stronger labor unions<br>D. faster wartime production</div>
-        </li>
-        <li>Which law changed immigration patterns by allowing more immigrants from Asia, Africa, and Latin America?
-          <div class="muted">A. Immigration and Nationality Act of 1965<br>B. Chinese Exclusion Act<br>C. Sedition Act<br>D. Homestead Act</div>
-        </li>
-        <li>The USA PATRIOT Act raised concerns mainly because it
-          <div class="muted">A. expanded government surveillance powers<br>B. ended the Cold War<br>C. banned immigration<br>D. created labor unions</div>
-        </li>
-        <li>Which statement best summarizes a major pattern shown by these trouble areas?
-          <div class="muted">A. students only missed vocabulary questions<br>B. students mainly struggled with multi-select, cause/effect, and application questions<br>C. students only struggled with colonial history<br>D. students mastered all reform-era content</div>
-        </li>
-        <li>Which strategy would best address the weaknesses shown in this recovery set?
-          <div class="muted">A. assign only memorization drills<br>B. reteach through multi-select reps, classification practice, and scenario application<br>C. remove all passage questions<br>D. avoid federalism and reform content entirely</div>
-        </li>
-      </ol>
+    <section class="launch-card" style="margin-top:20px">
+      <h3>Student Launch</h3>
+      <p class="small-note">Enter your name, then begin the test. The timer starts when you click begin.</p>
+
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">Questions</div>
+          <div class="meta-value">${questions.length}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Current Attempts on This Device</div>
+          <div class="meta-value">${priorAttempts}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Submission Ticket</div>
+          <div class="meta-value">Enabled</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Timer</div>
+          <div class="meta-value">Starts on Begin</div>
+        </div>
+      </div>
+
+      <div class="student-row">
+        <div>
+          <label for="studentName">Student name</label>
+          <input id="studentName" type="text" placeholder="Enter first and last name" />
+        </div>
+        <button class="btn" onclick="beginTest()">Begin Recovery Test</button>
+      </div>
     </section>
-  </div>
+
+    <section class="grid grid-2" style="margin-top:20px">
+      <article class="card">
+        <h3>What this test targets</h3>
+        <ul class="list-clean">
+          <li>Federalism and ratification debate confusion</li>
+          <li>Labor union goals and Progressive reforms</li>
+          <li>Post-WWI peace efforts and isolationism</li>
+          <li>New Deal expansion and WWII causation</li>
+          <li>Containment, HUAC, civil rights, and postwar change</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Submission details</h3>
+        <ul class="list-clean">
+          <li>Name is stamped on the ticket</li>
+          <li>Date and time are recorded</li>
+          <li>Elapsed testing time is shown</li>
+          <li>Attempt number is included</li>
+          <li>Ticket is screenshot-ready</li>
+        </ul>
+      </article>
+    </section>
+  `;
+}
+
+function beginTest(){
+  const input = document.getElementById("studentName");
+  const name = input.value.trim();
+  if(!name){
+    input.focus();
+    return;
+  }
+
+  const now = new Date();
+  state.started = true;
+  state.studentName = name;
+  state.attemptNumber = incrementAttemptCount();
+  state.dateStamp = formatDate(now);
+  state.startTimeStamp = formatTime(now);
+  state.startEpoch = Date.now();
+  state.elapsedSeconds = 0;
+  state.submitted = false;
+
+  if(state.timerInterval){
+    clearInterval(state.timerInterval);
+  }
+
+  state.timerInterval = setInterval(() => {
+    state.elapsedSeconds = Math.floor((Date.now() - state.startEpoch) / 1000);
+    const el = document.getElementById("liveTimer");
+    if(el) el.textContent = formatElapsed(state.elapsedSeconds);
+  }, 1000);
+
+  renderTest();
+}
+
+function renderTest(){
+  const questionHtml = questions.map((q, idx) => {
+    const type = q.type === "single" ? "radio" : "checkbox";
+    const name = `q_${idx}`;
+    const choices = q.choices.map((choice, cidx) => `
+      <label class="choice-row" id="row_${idx}_${cidx}">
+        <input type="${type}" name="${name}" value="${esc(choice)}">
+        <span>${esc(choice)}</span>
+      </label>
+    `).join("");
+
+    return `
+      <section class="question-block" data-qindex="${idx}">
+        <div class="question-number">Question ${idx + 1} of ${questions.length}</div>
+        <div class="question-stem">${esc(q.stem)}</div>
+        <div class="question-help">${esc(q.help)}</div>
+        <div class="choice-list">
+          ${choices}
+        </div>
+      </section>
+    `;
+  }).join("");
+
+  app.innerHTML = `
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+
+    <section class="hero">
+      <div class="kicker">Legend Mastery Series • American Studies</div>
+      <h1>${TEST_TITLE}</h1>
+      <p class="sub">Complete all questions, then submit. Your score ticket will include time, date, and attempt number.</p>
+    </section>
+
+    <section class="panel-card" style="margin-top:20px">
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">Student</div>
+          <div class="meta-value">${esc(state.studentName)}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Date</div>
+          <div class="meta-value">${esc(state.dateStamp)}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Start Time</div>
+          <div class="meta-value">${esc(state.startTimeStamp)}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Attempt Number</div>
+          <div class="meta-value">${state.attemptNumber}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Live Testing Time</div>
+          <div class="meta-value" id="liveTimer">${formatElapsed(state.elapsedSeconds)}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="test-list">
+      ${questionHtml}
+    </section>
+
+    <div class="submit-bar">
+      <div class="submit-panel">
+        <div class="left">
+          <span class="mini-pill">Student: ${esc(state.studentName)}</span>
+          <span class="mini-pill">Attempt: ${state.attemptNumber}</span>
+          <span class="mini-pill">Timer: <span id="liveTimerBottom">${formatElapsed(state.elapsedSeconds)}</span></span>
+        </div>
+        <div class="right">
+          <button class="btn" onclick="submitTest()">Submit Recovery Test</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  if(state.timerInterval){
+    clearInterval(state.timerInterval);
+  }
+
+  state.timerInterval = setInterval(() => {
+    state.elapsedSeconds = Math.floor((Date.now() - state.startEpoch) / 1000);
+    const top = document.getElementById("liveTimer");
+    const bottom = document.getElementById("liveTimerBottom");
+    if(top) top.textContent = formatElapsed(state.elapsedSeconds);
+    if(bottom) bottom.textContent = formatElapsed(state.elapsedSeconds);
+  }, 1000);
+}
+
+function getSelectedAnswers(index){
+  const q = questions[index];
+  const inputs = Array.from(document.querySelectorAll(`input[name="q_${index}"]:checked`));
+  if(q.type === "single"){
+    return inputs[0] ? inputs[0].value : null;
+  }
+  return inputs.map(i => i.value).sort();
+}
+
+function arraysEqual(a, b){
+  if(a.length !== b.length) return false;
+  for(let i = 0; i < a.length; i++){
+    if(a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+function gradeTest(){
+  let correctCount = 0;
+  const missed = [];
+
+  questions.forEach((q, idx) => {
+    const selected = getSelectedAnswers(idx);
+    let isCorrect = false;
+
+    if(q.type === "single"){
+      isCorrect = selected === q.answer;
+    } else {
+      if(Array.isArray(selected)){
+        isCorrect = arraysEqual(selected, [...q.answers].sort());
+      }
+    }
+
+    if(isCorrect){
+      correctCount++;
+    } else {
+      missed.push({
+        number: idx + 1,
+        stem: q.stem,
+        correct: q.type === "single" ? q.answer : q.answers.join(", "),
+        explain: q.explain
+      });
+    }
+  });
+
+  return {
+    correctCount,
+    total: questions.length,
+    percent: Math.round((correctCount / questions.length) * 100),
+    missed
+  };
+}
+
+async function postToSheet(payload){
+  if(!SHEET_ENDPOINT) return { skipped: true };
+  try{
+    await fetch(SHEET_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    return { ok: true };
+  }catch(err){
+    return { ok: false, error: String(err) };
+  }
+}
+
+async function submitTest(){
+  if(state.submitted) return;
+
+  const now = new Date();
+  state.endTimeStamp = formatTime(now);
+  state.elapsedSeconds = Math.floor((Date.now() - state.startEpoch) / 1000);
+
+  if(state.timerInterval){
+    clearInterval(state.timerInterval);
+    state.timerInterval = null;
+  }
+
+  const results = gradeTest();
+  state.submitted = true;
+
+  const payload = {
+    testTitle: TEST_TITLE,
+    studentName: state.studentName,
+    date: state.dateStamp,
+    startTime: state.startTimeStamp,
+    endTime: state.endTimeStamp,
+    elapsedTime: formatElapsed(state.elapsedSeconds),
+    elapsedSeconds: state.elapsedSeconds,
+    attemptNumber: state.attemptNumber,
+    correct: results.correctCount,
+    total: results.total,
+    percent: results.percent,
+    missedCount: results.missed.length
+  };
+
+  await postToSheet(payload);
+
+  renderResults(results);
+}
+
+function renderResults(results){
+  app.innerHTML = `
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+
+    <section class="ticket">
+      <div class="kicker">Submission Complete</div>
+      <h2>${TEST_TITLE}</h2>
+      <p class="summary-line">Screenshot this ticket and submit it if required.</p>
+
+      <div class="ticket-grid">
+        <div class="ticket-cell">
+          <div class="label">Student</div>
+          <div class="value">${esc(state.studentName)}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Date</div>
+          <div class="value">${esc(state.dateStamp)}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Start Time</div>
+          <div class="value">${esc(state.startTimeStamp)}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">End Time</div>
+          <div class="value">${esc(state.endTimeStamp)}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Elapsed Testing Time</div>
+          <div class="value">${formatElapsed(state.elapsedSeconds)}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Attempt Number</div>
+          <div class="value">${state.attemptNumber}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Score</div>
+          <div class="value">${results.correctCount} / ${results.total}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Percent</div>
+          <div class="value score-big">${results.percent}%</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Missed</div>
+          <div class="value">${results.missed.length}</div>
+        </div>
+        <div class="ticket-cell">
+          <div class="label">Status</div>
+          <div class="value status-good">Submitted Successfully</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="window.print()">Print / Save Ticket</button>
+        <button class="btn secondary" onclick="location.reload()">Start New Attempt</button>
+      </div>
+    </section>
+
+    <section class="summary-block" style="margin-top:20px">
+      <h3>Performance Summary</h3>
+      <p class="summary-line">Use the review below to target the exact concepts that need another pass.</p>
+      ${
+        results.missed.length
+          ? `<div class="missed-review">
+              ${results.missed.map(item => `
+                <div class="missed-item">
+                  <strong>${item.number}. ${esc(item.stem)}</strong>
+                  <div style="margin-top:8px"><strong>Correct answer:</strong> ${esc(item.correct)}</div>
+                  <div class="small-note" style="margin-top:6px">${esc(item.explain)}</div>
+                </div>
+              `).join("")}
+            </div>`
+          : `<p class="status-good">Perfect score. Clean mastery, Legend style.</p>`
+      }
+    </section>
+  `;
+}
+
+renderLaunch();
+</script>
 </body>
 </html>
