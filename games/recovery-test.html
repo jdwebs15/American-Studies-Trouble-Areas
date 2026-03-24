@@ -6,56 +6,407 @@
   <title>American Studies Trouble Areas Test</title>
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    .mono{font-family:Consolas,Menlo,monospace}
-    .top-test-controls{
-      display:flex;justify-content:flex-end;gap:12px;margin:8px 0 14px;flex-wrap:wrap
+    :root{
+      --bg:#0b1020;
+      --panel:#121936;
+      --panel2:#0f1630;
+      --line:#2a3d7a;
+      --text:#eef3ff;
+      --muted:#aeb9d6;
+      --accent:#6fb1ff;
+      --good:#7ee2a8;
+      --warn:#ffd479;
+      --bad:#ff8f8f;
+      --shadow:0 10px 30px rgba(0,0,0,.28);
     }
-    .response-stack{display:grid;gap:12px;margin-top:14px}
-    .choice-btn{
-      width:100%;text-align:left;padding:14px 16px;border-radius:14px;
-      border:1px solid var(--line);background:rgba(255,255,255,.03);
-      color:var(--text);font-size:1rem;font-weight:600;cursor:pointer
+
+    html, body{
+      height:100%;
+      margin:0;
+      overflow:hidden;
+      background:radial-gradient(circle at top, #0f1740 0%, var(--bg) 55%);
+      color:var(--text);
+      font-family:Arial, Helvetica, sans-serif;
     }
-    .choice-btn:hover{transform:translateY(-1px)}
-    .choice-btn.selected{outline:2px solid rgba(107,154,255,.45);border-color:#5b86ff}
-    .multi-row{
-      display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;
-      border:1px solid var(--line);background:rgba(255,255,255,.03)
+
+    .wrap{
+      max-width:1280px;
+      margin:0 auto;
+      height:100vh;
+      box-sizing:border-box;
+      padding:10px 14px 14px;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
     }
-    .multi-row input{margin-top:3px;transform:scale(1.1)}
-    .submit-row{margin-top:14px}
-    .feedback-box{
-      margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)
+
+    .back-link{
+      color:#cfe0ff;
+      text-decoration:none;
+      font-size:.95rem;
+      margin-bottom:6px;
+      display:inline-block;
     }
+
+    .hero{
+      flex:0 0 auto;
+      background:linear-gradient(180deg, rgba(22,31,69,.96), rgba(15,22,48,.96));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px 16px;
+      box-shadow:var(--shadow);
+      margin-bottom:10px;
+    }
+
+    .kicker{
+      font-size:.72rem;
+      letter-spacing:.08em;
+      font-weight:800;
+      color:#b9c8ef;
+      text-transform:uppercase;
+      margin-bottom:4px;
+    }
+
+    .hero h1{
+      margin:0 0 6px;
+      font-size:1.2rem;
+      line-height:1.15;
+    }
+
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.35;
+    }
+
+    .pills{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.78rem;
+      color:#dbe7ff;
+      white-space:nowrap;
+    }
+
+    .app-shell{
+      flex:1 1 auto;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      overflow:hidden;
+    }
+
+    .hud{
+      flex:0 0 auto;
+      display:grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap:8px;
+      align-items:stretch;
+    }
+
+    .hud-item{
+      background:linear-gradient(180deg, rgba(18,25,54,.98), rgba(15,22,48,.98));
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:9px 10px;
+      box-shadow:var(--shadow);
+      min-width:0;
+    }
+
+    .hud-label{
+      font-size:.66rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#b8c6e9;
+      margin-bottom:4px;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .hud-value{
+      font-size:.96rem;
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .hud-actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      padding:0;
+    }
+
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:10px 14px;
+      font-size:.86rem;
+      font-weight:800;
+      cursor:pointer;
+      color:#06111f;
+      background:linear-gradient(180deg, #86c4ff, #66a7f7);
+      box-shadow:0 8px 22px rgba(79,148,255,.28);
+      white-space:nowrap;
+    }
+
+    .btn.secondary{
+      background:linear-gradient(180deg, #dbe5ff, #b9c7ec);
+      color:#10203b;
+      box-shadow:none;
+    }
+
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .stage{
+      flex:1 1 auto;
+      min-height:0;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .screen-card{
+      flex:1 1 auto;
+      min-height:0;
+      background:linear-gradient(180deg, rgba(18,25,54,.98), rgba(15,22,48,.98));
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:14px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .question-meta{
+      flex:0 0 auto;
+      color:#c5d3f2;
+      font-size:.82rem;
+      margin-bottom:8px;
+      line-height:1.3;
+    }
+
     .passage{
-      margin:12px 0 14px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03);line-height:1.55
+      flex:0 0 auto;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      padding:12px 14px;
+      color:#e4ecff;
+      line-height:1.45;
+      margin-bottom:10px;
+      font-size:.95rem;
     }
-    .dropdown-line{margin:12px 0;line-height:1.85}
-    .dropdown-line select{
-      background:#111831;color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:0 6px
+
+    .stem{
+      flex:0 0 auto;
+      font-size:1.08rem;
+      font-weight:800;
+      line-height:1.35;
+      margin-bottom:10px;
     }
+
+    .response-area{
+      flex:1 1 auto;
+      min-height:0;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .response-stack{
+      display:grid;
+      gap:10px;
+    }
+
+    .choice-btn{
+      width:100%;
+      text-align:left;
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .choice-btn:hover{
+      background:rgba(255,255,255,.06);
+    }
+
+    .multi-row{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-size:1rem;
+      font-weight:700;
+    }
+
+    .multi-row input{
+      margin-top:3px;
+      transform:scale(1.1);
+    }
+
+    .submit-row{
+      margin-top:12px;
+    }
+
+    .feedback-box{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      line-height:1.45;
+    }
+
     .start-card{
-      background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px
+      max-width:760px;
+      margin:0 auto;
+      width:100%;
+      background:linear-gradient(180deg, rgba(18,25,54,.98), rgba(15,22,48,.98));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:22px;
+      box-shadow:var(--shadow);
     }
+
+    .start-card h2{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
     .start-card input{
-      width:100%;padding:14px 16px;border-radius:12px;border:1px solid var(--line);
-      background:#0f141a;color:#fff;font-size:1rem;margin-top:10px
+      width:100%;
+      box-sizing:border-box;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0c1227;
+      color:#fff;
+      font-size:1rem;
+      margin-top:8px;
     }
-    .sep{border:none;border-top:1px solid var(--line);margin:18px 0}
-    .note,.small-muted{color:var(--muted);font-size:.95rem}
+
+    .btn-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .note{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.4;
+    }
+
     .ticket-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px;
+      margin-top:12px;
     }
-    .ticket-item,.stat{
-      padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line)
+
+    .ticket-item{
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
     }
-    .label,.stat-label{font-size:.8rem;color:var(--muted);margin-bottom:6px}
-    .value,.stat-value{font-size:1.05rem;font-weight:800}
-    .result-shell{display:grid;gap:18px}
-    .pass-pill{color:#7ee2a8}
-    .warn-pill{color:#ffd479}
+
+    .label{
+      font-size:.74rem;
+      color:var(--muted);
+      margin-bottom:6px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-weight:700;
+    }
+
+    .value{
+      font-size:1rem;
+      font-weight:800;
+      line-height:1.25;
+      word-break:break-word;
+    }
+
+    .result-scroll{
+      flex:1 1 auto;
+      min-height:0;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .good{ color:var(--good); }
+    .warn{ color:var(--warn); }
+    .bad{ color:var(--bad); }
+
+    .mono{ font-family:Consolas, Menlo, monospace; }
+
+    hr.sep{
+      border:none;
+      border-top:1px solid var(--line);
+      margin:16px 0;
+    }
+
+    @media (max-width: 1180px){
+      .hud{
+        grid-template-columns: repeat(4, minmax(0,1fr));
+      }
+      .hud-actions{
+        grid-column:1 / -1;
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width: 760px){
+      html,body{
+        overflow:auto;
+      }
+      .wrap{
+        height:auto;
+        min-height:100vh;
+        overflow:visible;
+      }
+      .app-shell,
+      .stage,
+      .screen-card{
+        overflow:visible;
+      }
+      .hud{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+      .hud-actions{
+        grid-column:1 / -1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -79,7 +430,7 @@
       </div>
     </header>
 
-    <div id="app"></div>
+    <div id="app" class="app-shell"></div>
   </div>
 
   <iframe name="sheetPostFrame" id="sheetPostFrame" style="display:none"></iframe>
@@ -107,444 +458,61 @@
   </form>
 
 <script>
-/* =========================
-   CONFIG
-========================= */
-/* IMPORTANT:
-   Use the /exec web app URL here, not /dev.
-*/
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4UbNnzOTTVLiKlJQ7d5e8Eu8xNR-0EdiPOI1mo8VHYU3n326slmvYZkwIGZjXJw_O/exec";
-const TEST_KEY = "amstud_trouble_areas_test_v1";
+const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const TEST_KEY = "amstud_trouble_areas_test_v2";
 const PASS_CUTOFF = 70;
 
-/* =========================
-   QUESTION BANK
-========================= */
 const QUESTIONS = [
-  {
-    id:"q1",
-    type:"single",
-    standard:"Federalism / Ratification",
-    skill:"Identify core constitutional principle",
-    stem:"Which principle divides power between national and state governments?",
-    choices:["Limited government","Federalism","Checks and balances","Judicial review"],
-    correct:1
-  },
-  {
-    id:"q2",
-    type:"single",
-    standard:"Federalism / Ratification",
-    skill:"Apply federalism to a scenario",
-    stem:"Which situation best reflects federalism?",
-    choices:[
-      "Congress impeaches a president",
-      "A governor and Congress both make laws within their own powers",
-      "The Supreme Court declares a law unconstitutional",
-      "Citizens vote in a national election"
-    ],
-    correct:1
-  },
-  {
-    id:"q3",
-    type:"single",
-    standard:"Ratification Debate",
-    skill:"Identify ratification supporters",
-    stem:"Which group supported ratification of the Constitution?",
-    choices:["Federalists","Anti-Federalists","Abolitionists","Populists"],
-    correct:0
-  },
-  {
-    id:"q4",
-    type:"single",
-    standard:"Ratification Debate",
-    skill:"Identify founding document role",
-    stem:"Which document helped explain and defend the Constitution during ratification debates?",
-    choices:["Federalist Papers","Articles of Confederation","Common Sense","Northwest Ordinance"],
-    correct:0
-  },
-  {
-    id:"q5",
-    type:"single",
-    standard:"Ratification Debate",
-    skill:"Identify Anti-Federalist concern",
-    stem:"What was a major concern of the Anti-Federalists?",
-    choices:[
-      "The Constitution did not protect individual liberties enough",
-      "The national government was too weak",
-      "The states had too little power under the Articles",
-      "The Constitution created too many local governments"
-    ],
-    correct:0
-  },
-  {
-    id:"q6",
-    type:"single",
-    standard:"Ratification Debate",
-    skill:"Connect ideology to structural preference",
-    stem:"Which principle did Anti-Federalists believe would best protect liberty?",
-    choices:["Strong state governments","A monarchy","Judicial supremacy","Unlimited executive power"],
-    correct:0
-  },
-  {
-    id:"q7",
-    type:"single",
-    standard:"Northwest Ordinance / Declaration",
-    skill:"Identify protected right",
-    stem:"Which right was protected in the Northwest Territory under the Northwest Ordinance?",
-    choices:["Trial by jury","Censorship of newspapers","Restricted religious practice","Military rule"],
-    correct:0
-  },
-  {
-    id:"q8",
-    type:"single",
-    standard:"Northwest Ordinance / Declaration",
-    skill:"Explain purpose of education in republican government",
-    stem:"Why did the Northwest Ordinance emphasize education?",
-    choices:[
-      "An informed citizenry was needed for self-government",
-      "Factories needed skilled machine workers immediately",
-      "The federal government wanted uniform textbooks",
-      "Education was required for military service"
-    ],
-    correct:0
-  },
-  {
-    id:"q9",
-    type:"single",
-    standard:"Northwest Ordinance / Declaration",
-    skill:"Apply Declaration ideals to modern example",
-    stem:"Which evidence best shows the Declaration of Independence influenced modern government?",
-    choices:["Amendments expanding voting rights","Growth of industrialization","Construction of railroads","Development of skyscrapers"],
-    correct:0
-  },
-  {
-    id:"q10",
-    type:"single",
-    standard:"Northwest Ordinance / Declaration",
-    skill:"Identify core purpose of government",
-    stem:"According to the Declaration of Independence, what is the main purpose of government?",
-    choices:["To protect individual rights","To expand national territory","To increase trade","To strengthen monarchies"],
-    correct:0
-  },
-  {
-    id:"q11",
-    type:"multi",
-    standard:"Industrialization / Labor",
-    skill:"Classify labor union goals",
-    stem:"Select ALL that apply. Which were goals of labor unions?",
-    choices:["Higher wages","Shorter workdays","Safer working conditions","Fewer protections for workers"],
-    correct:[0,1,2]
-  },
-  {
-    id:"q12",
-    type:"single",
-    standard:"Industrialization / Labor",
-    skill:"Identify labor tactic",
-    stem:"A boycott is best defined as",
-    choices:[
-      "A refusal to buy goods or services to pressure a business",
-      "A violent attack on a factory",
-      "A legal appeal to the Supreme Court",
-      "A tax on imported goods"
-    ],
-    correct:0
-  },
-  {
-    id:"q13",
-    type:"multi",
-    standard:"Progressive Era",
-    skill:"Classify Progressive reforms",
-    stem:"Select ALL that apply. Which were Progressive reforms?",
-    choices:["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act","Black Codes"],
-    correct:[0,1,2]
-  },
-  {
-    id:"q14",
-    type:"single",
-    standard:"Progressive Era",
-    skill:"Identify reform journalism",
-    stem:"Journalists who exposed corruption and abuses during the Progressive Era were called",
-    choices:["Muckrakers","Isolationists","Nativists","Expansionists"],
-    correct:0
-  },
-  {
-    id:"q15",
-    type:"single",
-    standard:"Progressive Era",
-    skill:"Identify consumer protection law",
-    stem:"Which law most directly protected consumers from unsafe food and medicine?",
-    choices:["Pure Food and Drug Act","Homestead Act","Dawes Act","Neutrality Act"],
-    correct:0
-  },
-  {
-    id:"q16",
-    type:"multi",
-    standard:"Imperialism / WWI",
-    skill:"Identify examples of imperialism",
-    stem:"Select TWO. Which actions are examples of U.S. imperialism?",
-    choices:["Annexation of Hawaii","Spanish-American War","Federal Reserve Act","Social Security Act"],
-    correct:[0,1]
-  },
-  {
-    id:"q17",
-    type:"single",
-    standard:"Imperialism / WWI",
-    skill:"Associate leader with foreign policy",
-    stem:"Big Stick Diplomacy is most closely associated with",
-    choices:["Theodore Roosevelt","Woodrow Wilson","Herbert Hoover","Lyndon Johnson"],
-    correct:0
-  },
-  {
-    id:"q18",
-    type:"multi",
-    standard:"Imperialism / WWI",
-    skill:"Classify post-WWI peace efforts",
-    stem:"Select THREE. Which developments reflected U.S. efforts to maintain peace after World War I?",
-    choices:["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact","Lend-Lease Act"],
-    correct:[0,1,2]
-  },
-  {
-    id:"q19",
-    type:"single",
-    standard:"Imperialism / WWI",
-    skill:"Explain isolationism",
-    stem:"Why did many Americans support isolationism in the 1920s?",
-    choices:[
-      "They wanted to avoid future overseas conflicts",
-      "They hoped to expand colonies in Asia",
-      "They wanted stronger alliances with Europe",
-      "They favored world government"
-    ],
-    correct:0
-  },
-  {
-    id:"q20",
-    type:"single",
-    standard:"Imperialism / WWI",
-    skill:"Identify cause of Red Scare",
-    stem:"The Red Scare of 1919–1920 was driven largely by fear of",
-    choices:["Radicalism and communism","Japanese expansion","Bank failures","Consumerism"],
-    correct:0
-  },
-  {
-    id:"q21",
-    type:"single",
-    standard:"Great Depression / New Deal",
-    skill:"Identify cause of stock crash",
-    stem:"Which factor most contributed to the stock market crash of 1929?",
-    choices:["Speculation with borrowed money","The end of wartime rationing","The passage of the GI Bill","Rapid suburban growth"],
-    correct:0
-  },
-  {
-    id:"q22",
-    type:"single",
-    standard:"Great Depression / New Deal",
-    skill:"Identify federal economic institution",
-    stem:"Which institution regulates the U.S. money supply?",
-    choices:["Federal Reserve System","Securities and Exchange Commission","Department of Commerce","Supreme Court"],
-    correct:0
-  },
-  {
-    id:"q23",
-    type:"single",
-    standard:"Great Depression / New Deal",
-    skill:"Use passage to identify era",
-    passage:"The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis.",
-    stem:"Part A. Which period does this passage describe?",
-    choices:["New Deal","Progressive Era","Reconstruction","Cold War"],
-    correct:0
-  },
-  {
-    id:"q24",
-    type:"single",
-    standard:"Great Depression / New Deal",
-    skill:"Connect policy era to president",
-    passage:"The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis.",
-    stem:"Part B. Which president is most closely associated with that response?",
-    choices:["Theodore Roosevelt","Franklin D. Roosevelt","Calvin Coolidge","Dwight Eisenhower"],
-    correct:1
-  },
-  {
-    id:"q25",
-    type:"multi",
-    standard:"Great Depression / New Deal",
-    skill:"Identify federal expansion measures",
-    stem:"Select TWO. Which actions expanded the role of the federal government during the Great Depression?",
-    choices:["Social Security Act","SEC regulations","Homestead Act","Louisiana Purchase"],
-    correct:[0,1]
-  },
-  {
-    id:"q26",
-    type:"single",
-    standard:"Great Depression / New Deal",
-    skill:"Identify stock market regulation",
-    stem:"Which agency regulated the stock market to prevent fraud after the crash?",
-    choices:["SEC","FDIC","NATO","EPA"],
-    correct:0
-  },
-  {
-    id:"q27",
-    type:"single",
-    standard:"WWII",
-    skill:"Identify prewar aid policy",
-    stem:"Which policy allowed the United States to supply military aid to Allied nations before entering World War II?",
-    choices:["Lend-Lease Act","Dawes Act","Missouri Compromise","Interstate Commerce Act"],
-    correct:0
-  },
-  {
-    id:"q28",
-    type:"multi",
-    standard:"WWII",
-    skill:"Classify causes of WWII",
-    stem:"Select THREE. Which factors contributed to the outbreak of World War II?",
-    choices:["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions","Women’s suffrage"],
-    correct:[0,1,2]
-  },
-  {
-    id:"q29",
-    type:"single",
-    standard:"WWII",
-    skill:"Explain Arsenal of Democracy",
-    stem:"The United States became known as the 'Arsenal of Democracy' because it",
-    choices:[
-      "Produced massive amounts of war materials for the Allies",
-      "Established colonies in Europe",
-      "Ended all military production",
-      "Refused to help other nations"
-    ],
-    correct:0
-  },
-  {
-    id:"q30",
-    type:"multi",
-    standard:"Cold War",
-    skill:"Identify containment policies",
-    stem:"Select ALL that apply. Which were examples of U.S. containment policies?",
-    choices:["Truman Doctrine","Marshall Plan","NATO","Dawes Act"],
-    correct:[0,1,2]
-  },
-  {
-    id:"q31",
-    type:"single",
-    standard:"Cold War",
-    skill:"Identify anti-communist investigative body",
-    stem:"Which congressional body investigated suspected communist influence during the Cold War?",
-    choices:["HUAC","FDIC","SEC","TVA"],
-    correct:0
-  },
-  {
-    id:"q32",
-    type:"single",
-    standard:"Cold War",
-    skill:"Define McCarthyism",
-    stem:"McCarthyism is best defined as",
-    choices:[
-      "Accusing people of communist ties with little evidence",
-      "A civil rights sit-in campaign",
-      "A federal bank rescue program",
-      "A postwar housing policy"
-    ],
-    correct:0
-  },
-  {
-    id:"q33",
-    type:"multi",
-    standard:"Civil Rights",
-    skill:"Identify civil rights actions",
-    stem:"Select TWO. Which were important actions of the civil rights movement?",
-    choices:["Freedom Rides","March on Washington","Kellogg-Briand Pact","Dawes Act"],
-    correct:[0,1]
-  },
-  {
-    id:"q34",
-    type:"single",
-    standard:"Civil Rights",
-    skill:"Identify landmark legislation",
-    stem:"Which legislation most directly outlawed discrimination in public accommodations?",
-    choices:["Civil Rights Act of 1964","Homestead Act","Patriot Act","Neutrality Act"],
-    correct:0
-  },
-  {
-    id:"q35",
-    type:"single",
-    standard:"Postwar Domestic Change",
-    skill:"Use passage to identify practice",
-    passage:"Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same.",
-    stem:"Part A. Which practice is described?",
-    choices:["Redlining","Collective bargaining","Muckraking","Containment"],
-    correct:0
-  },
-  {
-    id:"q36",
-    type:"single",
-    standard:"Postwar Domestic Change",
-    skill:"Connect discriminatory policy to social effect",
-    passage:"Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same.",
-    stem:"Part B. Which effect is most directly connected to that practice?",
-    choices:[
-      "Wider suburban homeownership equality",
-      "Increased segregation in housing patterns",
-      "Stronger labor unions",
-      "Faster wartime production"
-    ],
-    correct:1
-  },
-  {
-    id:"q37",
-    type:"single",
-    standard:"Postwar Domestic Change",
-    skill:"Identify immigration law shift",
-    stem:"Which law changed immigration patterns by allowing more immigrants from Asia, Africa, and Latin America?",
-    choices:["Immigration and Nationality Act of 1965","Chinese Exclusion Act","Sedition Act","Homestead Act"],
-    correct:0
-  },
-  {
-    id:"q38",
-    type:"single",
-    standard:"Modern America / Civil Liberties",
-    skill:"Identify civil-liberties concern",
-    stem:"The USA PATRIOT Act raised concerns mainly because it",
-    choices:[
-      "Expanded government surveillance powers",
-      "Ended the Cold War",
-      "Banned immigration",
-      "Created labor unions"
-    ],
-    correct:0
-  },
-  {
-    id:"q39",
-    type:"single",
-    standard:"Meta Trouble Areas",
-    skill:"Interpret classwide performance pattern",
-    stem:"Which statement best summarizes a major pattern shown by these trouble areas?",
-    choices:[
-      "Students only missed vocabulary questions",
-      "Students mainly struggled with multi-select, cause/effect, and application questions",
-      "Students only struggled with colonial history",
-      "Students mastered all reform-era content"
-    ],
-    correct:1
-  },
-  {
-    id:"q40",
-    type:"single",
-    standard:"Meta Trouble Areas",
-    skill:"Choose best reteach strategy",
-    stem:"Which strategy would best address the weaknesses shown in this recovery set?",
-    choices:[
-      "Assign only memorization drills",
-      "Reteach through multi-select reps, classification practice, and scenario application",
-      "Remove all passage questions",
-      "Avoid federalism and reform content entirely"
-    ],
-    correct:1
-  }
+  {id:"q1",type:"single",standard:"Federalism / Ratification",skill:"Identify core constitutional principle",stem:"Which principle divides power between national and state governments?",choices:["Checks and balances","Limited government","Federalism","Judicial review"],correct:2},
+  {id:"q2",type:"single",standard:"Federalism / Ratification",skill:"Apply federalism to a scenario",stem:"Which situation best reflects federalism?",choices:["Congress impeaches a president","A governor and Congress both make laws within their own powers","The Supreme Court declares a law unconstitutional","Citizens vote in a national election"],correct:1},
+  {id:"q3",type:"single",standard:"Ratification Debate",skill:"Identify ratification supporters",stem:"Which group supported ratification of the Constitution?",choices:["Federalists","Anti-Federalists","Abolitionists","Populists"],correct:0},
+  {id:"q4",type:"single",standard:"Ratification Debate",skill:"Identify founding document role",stem:"Which document helped explain and defend the Constitution during ratification debates?",choices:["Federalist Papers","Articles of Confederation","Common Sense","Northwest Ordinance"],correct:0},
+  {id:"q5",type:"single",standard:"Ratification Debate",skill:"Identify Anti-Federalist concern",stem:"What was a major concern of the Anti-Federalists?",choices:["The Constitution did not protect individual liberties enough","The national government was too weak","The states had too little power under the Articles","The Constitution created too many local governments"],correct:0},
+  {id:"q6",type:"single",standard:"Ratification Debate",skill:"Connect ideology to structural preference",stem:"Which principle did Anti-Federalists believe would best protect liberty?",choices:["Strong state governments","A monarchy","Judicial supremacy","Unlimited executive power"],correct:0},
+  {id:"q7",type:"single",standard:"Northwest Ordinance / Declaration",skill:"Identify protected right",stem:"Which right was protected in the Northwest Territory under the Northwest Ordinance?",choices:["Trial by jury","Censorship of newspapers","Restricted religious practice","Military rule"],correct:0},
+  {id:"q8",type:"single",standard:"Northwest Ordinance / Declaration",skill:"Explain purpose of education in republican government",stem:"Why did the Northwest Ordinance emphasize education?",choices:["An informed citizenry was needed for self-government","Factories needed skilled machine workers immediately","The federal government wanted uniform textbooks","Education was required for military service"],correct:0},
+  {id:"q9",type:"single",standard:"Northwest Ordinance / Declaration",skill:"Apply Declaration ideals to modern example",stem:"Which evidence best shows the Declaration of Independence influenced modern government?",choices:["Amendments expanding voting rights","Growth of industrialization","Construction of railroads","Development of skyscrapers"],correct:0},
+  {id:"q10",type:"single",standard:"Northwest Ordinance / Declaration",skill:"Identify core purpose of government",stem:"According to the Declaration of Independence, what is the main purpose of government?",choices:["To protect individual rights","To expand national territory","To increase trade","To strengthen monarchies"],correct:0},
+
+  {id:"q11",type:"multi",standard:"Industrialization / Labor",skill:"Classify labor union goals",stem:"Select ALL that apply. Which were goals of labor unions?",choices:["Higher wages","Shorter workdays","Safer working conditions","Fewer protections for workers"],correct:[0,1,2]},
+  {id:"q12",type:"single",standard:"Industrialization / Labor",skill:"Identify labor tactic",stem:"A boycott is best defined as",choices:["A refusal to buy goods or services to pressure a business","A violent attack on a factory","A legal appeal to the Supreme Court","A tax on imported goods"],correct:0},
+  {id:"q13",type:"multi",standard:"Progressive Era",skill:"Classify Progressive reforms",stem:"Select ALL that apply. Which were Progressive reforms?",choices:["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act","Black Codes"],correct:[0,1,2]},
+  {id:"q14",type:"single",standard:"Progressive Era",skill:"Identify reform journalism",stem:"Journalists who exposed corruption and abuses during the Progressive Era were called",choices:["Muckrakers","Isolationists","Nativists","Expansionists"],correct:0},
+  {id:"q15",type:"single",standard:"Progressive Era",skill:"Identify consumer protection law",stem:"Which law most directly protected consumers from unsafe food and medicine?",choices:["Pure Food and Drug Act","Homestead Act","Dawes Act","Neutrality Act"],correct:0},
+
+  {id:"q16",type:"multi",standard:"Imperialism / WWI",skill:"Identify examples of imperialism",stem:"Select TWO. Which actions are examples of U.S. imperialism?",choices:["Annexation of Hawaii","Spanish-American War","Federal Reserve Act","Social Security Act"],correct:[0,1]},
+  {id:"q17",type:"single",standard:"Imperialism / WWI",skill:"Associate leader with foreign policy",stem:"Big Stick Diplomacy is most closely associated with",choices:["Theodore Roosevelt","Woodrow Wilson","Herbert Hoover","Lyndon Johnson"],correct:0},
+  {id:"q18",type:"multi",standard:"Imperialism / WWI",skill:"Classify post-WWI peace efforts",stem:"Select THREE. Which developments reflected U.S. efforts to maintain peace after World War I?",choices:["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact","Lend-Lease Act"],correct:[0,1,2]},
+  {id:"q19",type:"single",standard:"Imperialism / WWI",skill:"Explain isolationism",stem:"Why did many Americans support isolationism in the 1920s?",choices:["They wanted to avoid future overseas conflicts","They hoped to expand colonies in Asia","They wanted stronger alliances with Europe","They favored world government"],correct:0},
+  {id:"q20",type:"single",standard:"Imperialism / WWI",skill:"Identify cause of Red Scare",stem:"The Red Scare of 1919–1920 was driven largely by fear of",choices:["Radicalism and communism","Japanese expansion","Bank failures","Consumerism"],correct:0},
+
+  {id:"q21",type:"single",standard:"Great Depression / New Deal",skill:"Identify cause of stock crash",stem:"Which factor most contributed to the stock market crash of 1929?",choices:["Speculation with borrowed money","The end of wartime rationing","The passage of the GI Bill","Rapid suburban growth"],correct:0},
+  {id:"q22",type:"single",standard:"Great Depression / New Deal",skill:"Identify federal economic institution",stem:"Which institution regulates the U.S. money supply?",choices:["Federal Reserve System","Securities and Exchange Commission","Department of Commerce","Supreme Court"],correct:0},
+  {id:"q23",type:"single",standard:"Great Depression / New Deal",skill:"Use passage to identify era",passage:"The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis.",stem:"Part A. Which period does this passage describe?",choices:["New Deal","Progressive Era","Reconstruction","Cold War"],correct:0},
+  {id:"q24",type:"single",standard:"Great Depression / New Deal",skill:"Connect policy era to president",passage:"The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis.",stem:"Part B. Which president is most closely associated with that response?",choices:["Theodore Roosevelt","Franklin D. Roosevelt","Calvin Coolidge","Dwight Eisenhower"],correct:1},
+  {id:"q25",type:"multi",standard:"Great Depression / New Deal",skill:"Identify federal expansion measures",stem:"Select TWO. Which actions expanded the role of the federal government during the Great Depression?",choices:["Social Security Act","SEC regulations","Homestead Act","Louisiana Purchase"],correct:[0,1]},
+  {id:"q26",type:"single",standard:"Great Depression / New Deal",skill:"Identify stock market regulation",stem:"Which agency regulated the stock market to prevent fraud after the crash?",choices:["SEC","FDIC","NATO","EPA"],correct:0},
+
+  {id:"q27",type:"single",standard:"WWII",skill:"Identify prewar aid policy",stem:"Which policy allowed the United States to supply military aid to Allied nations before entering World War II?",choices:["Lend-Lease Act","Dawes Act","Missouri Compromise","Interstate Commerce Act"],correct:0},
+  {id:"q28",type:"multi",standard:"WWII",skill:"Classify causes of WWII",stem:"Select THREE. Which factors contributed to the outbreak of World War II?",choices:["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions","Women’s suffrage"],correct:[0,1,2]},
+  {id:"q29",type:"single",standard:"WWII",skill:"Explain Arsenal of Democracy",stem:"The United States became known as the 'Arsenal of Democracy' because it",choices:["Produced massive amounts of war materials for the Allies","Established colonies in Europe","Ended all military production","Refused to help other nations"],correct:0},
+
+  {id:"q30",type:"multi",standard:"Cold War",skill:"Identify containment policies",stem:"Select ALL that apply. Which were examples of U.S. containment policies?",choices:["Truman Doctrine","Marshall Plan","NATO","Dawes Act"],correct:[0,1,2]},
+  {id:"q31",type:"single",standard:"Cold War",skill:"Identify anti-communist investigative body",stem:"Which congressional body investigated suspected communist influence during the Cold War?",choices:["HUAC","FDIC","SEC","TVA"],correct:0},
+  {id:"q32",type:"single",standard:"Cold War",skill:"Define McCarthyism",stem:"McCarthyism is best defined as",choices:["Accusing people of communist ties with little evidence","A civil rights sit-in campaign","A federal bank rescue program","A postwar housing policy"],correct:0},
+
+  {id:"q33",type:"multi",standard:"Civil Rights",skill:"Identify civil rights actions",stem:"Select TWO. Which were important actions of the civil rights movement?",choices:["Freedom Rides","March on Washington","Kellogg-Briand Pact","Dawes Act"],correct:[0,1]},
+  {id:"q34",type:"single",standard:"Civil Rights",skill:"Identify landmark legislation",stem:"Which legislation most directly outlawed discrimination in public accommodations?",choices:["Civil Rights Act of 1964","Homestead Act","Patriot Act","Neutrality Act"],correct:0},
+
+  {id:"q35",type:"single",standard:"Postwar Domestic Change",skill:"Use passage to identify practice",passage:"Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same.",stem:"Part A. Which practice is described?",choices:["Redlining","Collective bargaining","Muckraking","Containment"],correct:0},
+  {id:"q36",type:"single",standard:"Postwar Domestic Change",skill:"Connect discriminatory policy to social effect",passage:"Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same.",stem:"Part B. Which effect is most directly connected to that practice?",choices:["Wider suburban homeownership equality","Increased segregation in housing patterns","Stronger labor unions","Faster wartime production"],correct:1},
+  {id:"q37",type:"single",standard:"Postwar Domestic Change",skill:"Identify immigration law shift",stem:"Which law changed immigration patterns by allowing more immigrants from Asia, Africa, and Latin America?",choices:["Immigration and Nationality Act of 1965","Chinese Exclusion Act","Sedition Act","Homestead Act"],correct:0},
+
+  {id:"q38",type:"single",standard:"Modern America / Civil Liberties",skill:"Identify civil-liberties concern",stem:"The USA PATRIOT Act raised concerns mainly because it",choices:["Expanded government surveillance powers","Ended the Cold War","Banned immigration","Created labor unions"],correct:0},
+  {id:"q39",type:"single",standard:"Meta Trouble Areas",skill:"Interpret classwide performance pattern",stem:"Which statement best summarizes a major pattern shown by these trouble areas?",choices:["Students only missed vocabulary questions","Students mainly struggled with multi-select, cause/effect, and application questions","Students only struggled with colonial history","Students mastered all reform-era content"],correct:1},
+  {id:"q40",type:"single",standard:"Meta Trouble Areas",skill:"Choose best reteach strategy",stem:"Which strategy would best address the weaknesses shown in this recovery set?",choices:["Assign only memorization drills","Reteach through multi-select reps, classification practice, and scenario application","Remove all passage questions","Avoid federalism and reform content entirely"],correct:1}
 ];
 
-/* =========================
-   HELPERS
-========================= */
 function shuffle(arr){
   const a = [...arr];
   for(let i=a.length-1;i>0;i--){
@@ -552,6 +520,14 @@ function shuffle(arr){
     [a[i],a[j]]=[a[j],a[i]];
   }
   return a;
+}
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
 }
 function formatTime(seconds){
   const h = Math.floor(seconds / 3600).toString().padStart(2,"0");
@@ -561,14 +537,6 @@ function formatTime(seconds){
 }
 function formatStamp(d){
   return d.toLocaleString();
-}
-function escapeHtml(str){
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
 }
 function arraysEqual(a,b){
   return JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
@@ -591,9 +559,6 @@ function setHidden(id, value){
   if(el) el.value = value;
 }
 
-/* =========================
-   APP STATE
-========================= */
 const APP = document.getElementById("app");
 
 let studentName = "";
@@ -602,55 +567,44 @@ let finishedAt = null;
 let elapsed = 0;
 let timer = null;
 let attemptNumber = 1;
-
 let questions = [];
 let current = 0;
 let score = 0;
 let locked = false;
-let selectedMulti = new Set();
 let detailedResults = [];
 let answeredCount = 0;
 
-/* =========================
-   BUILD BANK
-========================= */
 function buildQuestionBank(){
   return QUESTIONS.map((q, idx) => {
-    const out = { ...q, ordinal: idx + 1 };
-
+    const out = {...q, ordinal: idx + 1};
     if(q.type === "single" || q.type === "multi"){
-      const order = shuffle(q.choices.map((choice, i) => ({ choice, originalIndex: i })));
+      const order = shuffle(q.choices.map((choice, i) => ({choice, originalIndex:i})));
       out.renderChoices = order.map(x => x.choice);
-
       if(q.type === "single"){
         out.renderCorrect = order.findIndex(x => x.originalIndex === q.correct);
       } else {
         out.renderCorrect = q.correct.map(ci => order.findIndex(x => x.originalIndex === ci)).sort((a,b)=>a-b);
       }
     }
-
     return out;
   });
 }
 
-/* =========================
-   START SCREEN
-========================= */
-function startScreen(){
+function renderStart(){
   APP.innerHTML = `
-    <div class="start-card">
-      <h2>Enter your name to begin</h2>
-      <p>
-        This test uses OST-style item flow with one question at a time. Your submission ticket includes
-        score, percent, runtime, attempt number, missed stems, and spreadsheet-ready analytics.
-      </p>
-      <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
-      <div class="btn-row" style="margin-top:14px">
-        <button class="btn" id="startBtn">Start Test</button>
+    <div class="stage">
+      <div class="start-card">
+        <h2>Enter your name to begin</h2>
+        <p class="note">
+          This version uses a fixed horizontal top bar and a single locked question area so students do not have to scroll during the test.
+        </p>
+        <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off">
+        <div class="btn-row">
+          <button class="btn" id="startBtn">Start Test</button>
+        </div>
+        <hr class="sep">
+        <p class="note">Apps Script endpoint: <span class="mono">${APPS_SCRIPT_URL ? "Configured" : "Missing"}</span></p>
       </div>
-      <hr class="sep">
-      <p class="note">Use Submit Test during the test if you want to test your Apps Script after only a few questions.</p>
-      <p class="note">Spreadsheet endpoint: <span class="mono">${APPS_SCRIPT_URL ? "Configured" : "Missing"}</span></p>
     </div>
   `;
 
@@ -664,12 +618,11 @@ function startScreen(){
     studentName = name;
     attemptNumber = getAttemptNumber(studentName);
     startedAt = new Date();
-    elapsed = 0;
     finishedAt = null;
+    elapsed = 0;
     current = 0;
     score = 0;
     locked = false;
-    selectedMulti = new Set();
     detailedResults = [];
     answeredCount = 0;
     questions = buildQuestionBank();
@@ -677,7 +630,7 @@ function startScreen(){
     if(timer) clearInterval(timer);
     timer = setInterval(() => {
       elapsed++;
-      const rt = document.getElementById("runtime");
+      const rt = document.getElementById("runtimeVal");
       if(rt) rt.textContent = formatTime(elapsed);
     }, 1000);
 
@@ -685,68 +638,69 @@ function startScreen(){
   });
 }
 
-/* =========================
-   RENDER
-========================= */
+function hudHtml(){
+  const percent = answeredCount === 0 ? 0 : Math.round((score / answeredCount) * 100);
+  return `
+    <div class="hud">
+      <div class="hud-item">
+        <div class="hud-label">Student</div>
+        <div class="hud-value">${escapeHtml(studentName)}</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Question</div>
+        <div class="hud-value">${current + 1} / ${questions.length}</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Answered</div>
+        <div class="hud-value">${answeredCount}</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Correct</div>
+        <div class="hud-value">${score}</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Percent</div>
+        <div class="hud-value">${percent}%</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Attempt</div>
+        <div class="hud-value">${attemptNumber}</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Runtime</div>
+        <div class="hud-value" id="runtimeVal">${formatTime(elapsed)}</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Progress</div>
+        <div class="hud-value">${Math.round((current / questions.length) * 100)}%</div>
+      </div>
+      <div class="hud-item hud-actions">
+        <button class="btn" id="submitTestBtn">Submit Test</button>
+        <button class="btn secondary" id="restartBtn">Restart</button>
+      </div>
+    </div>
+  `;
+}
+
 function renderQuestion(feedbackHtml = ""){
   const q = questions[current];
-  const progressPct = Math.round((current / questions.length) * 100);
-  const percent = answeredCount === 0 ? 0 : Math.round((score / answeredCount) * 100);
 
   APP.innerHTML = `
-    <div class="test-shell">
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="stat-label">Student</div>
-          <div class="stat-value">${escapeHtml(studentName)}</div>
+    ${hudHtml()}
+    <div class="stage">
+      <div class="screen-card">
+        <div class="question-meta">
+          Question ${current + 1} of ${questions.length} • ${escapeHtml(q.standard)} • ${escapeHtml(q.skill)}
         </div>
-        <div class="stat">
-          <div class="stat-label">Question</div>
-          <div class="stat-value">${current + 1} / ${questions.length}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Answered</div>
-          <div class="stat-value">${answeredCount}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Correct</div>
-          <div class="stat-value">${score}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Percent</div>
-          <div class="stat-value">${percent}%</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Attempt</div>
-          <div class="stat-value">${attemptNumber}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Runtime</div>
-          <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
-        </div>
-      </div>
-
-      <div class="progress">
-        <div class="progress-bar" style="width:${progressPct}%"></div>
-      </div>
-
-      <div class="top-test-controls">
-        <button class="btn good" id="submitTestBtn">Submit Test</button>
-        <button class="btn secondary" id="restartBtn">Restart Test</button>
-      </div>
-
-      <div class="question-card">
-        <div class="q-meta">Question ${current + 1} of ${questions.length} • ${escapeHtml(q.standard)} • ${escapeHtml(q.skill)}</div>
         ${q.passage ? `<div class="passage">${escapeHtml(q.passage)}</div>` : ``}
         <div class="stem">${escapeHtml(q.stem)}</div>
-        <div id="responseArea"></div>
-        ${feedbackHtml}
+        <div class="response-area" id="responseArea"></div>
       </div>
     </div>
   `;
 
   document.getElementById("restartBtn").addEventListener("click", () => {
-    if(confirm("Restart the entire test? This will clear the current attempt on screen.")){
+    if(confirm("Restart the entire test?")){
       hardRestart();
     }
   });
@@ -756,19 +710,20 @@ function renderQuestion(feedbackHtml = ""){
     const msg = remaining > 0
       ? `You have answered ${answeredCount} of ${questions.length} questions. Submit now anyway?`
       : "Submit test now?";
-    if(confirm(msg)){
-      await finishTest(true);
-    }
+    if(confirm(msg)) await finishTest();
   });
 
-  renderResponseArea(q);
+  renderResponseArea(q, feedbackHtml);
 }
 
-function renderResponseArea(q){
+function renderResponseArea(q, feedbackHtml){
   const area = document.getElementById("responseArea");
 
   if(q.type === "single"){
-    area.innerHTML = `<div class="response-stack" id="choices"></div>`;
+    area.innerHTML = `
+      <div class="response-stack" id="choices"></div>
+      ${feedbackHtml}
+    `;
     const choicesEl = document.getElementById("choices");
 
     q.renderChoices.forEach((choice, idx) => {
@@ -782,6 +737,7 @@ function renderResponseArea(q){
         const isCorrect = idx === q.renderCorrect;
         detailedResults.push({
           id:q.id,
+          ordinal:q.ordinal,
           standard:q.standard,
           skill:q.skill,
           type:q.type,
@@ -791,25 +747,21 @@ function renderResponseArea(q){
         answeredCount++;
         if(isCorrect) score++;
 
-        const feedback = `
+        const fb = `
           <div class="feedback-box">
             <strong>${isCorrect ? "Correct" : "Incorrect"}</strong><br>
-            ${isCorrect
-              ? "Good work. Move to the next item."
-              : `Correct answer: ${escapeHtml(q.renderChoices[q.renderCorrect])}`
-            }
+            ${isCorrect ? "Good work. Move to the next item." : `Correct answer: ${escapeHtml(q.renderChoices[q.renderCorrect])}`}
           </div>
-          <div class="btn-row" style="margin-top:14px">
+          <div class="btn-row">
             <button class="btn" id="nextBtn">${current === questions.length - 1 ? "Finish Test" : "Next Question"}</button>
           </div>
         `;
-        renderQuestion(feedback);
-
+        renderQuestion(fb);
         document.getElementById("nextBtn").addEventListener("click", async () => {
           locked = false;
           current++;
           if(current >= questions.length){
-            await finishTest(false);
+            await finishTest();
           } else {
             renderQuestion();
           }
@@ -823,12 +775,11 @@ function renderResponseArea(q){
   if(q.type === "multi"){
     area.innerHTML = `
       <div class="response-stack" id="multiWrap"></div>
-      <div class="submit-row">
-        <button class="btn" id="submitMultiBtn">Submit Answer</button>
-      </div>
+      <div class="submit-row"><button class="btn" id="submitMultiBtn">Submit Answer</button></div>
+      ${feedbackHtml}
     `;
-    const wrap = document.getElementById("multiWrap");
 
+    const wrap = document.getElementById("multiWrap");
     q.renderChoices.forEach((choice, idx) => {
       const label = document.createElement("label");
       label.className = "multi-row";
@@ -839,11 +790,13 @@ function renderResponseArea(q){
     document.getElementById("submitMultiBtn").addEventListener("click", () => {
       if(locked) return;
       locked = true;
+
       const selected = [...document.querySelectorAll("#multiWrap input:checked")].map(x => Number(x.dataset.idx)).sort((a,b)=>a-b);
       const isCorrect = arraysEqual(selected, q.renderCorrect);
 
       detailedResults.push({
         id:q.id,
+        ordinal:q.ordinal,
         standard:q.standard,
         skill:q.skill,
         type:q.type,
@@ -854,48 +807,39 @@ function renderResponseArea(q){
       if(isCorrect) score++;
 
       const correctLabels = q.renderCorrect.map(i => q.renderChoices[i]).join(", ");
-      const feedback = `
+      const fb = `
         <div class="feedback-box">
           <strong>${isCorrect ? "Correct" : "Incorrect"}</strong><br>
           ${isCorrect ? "Good work. Move to the next item." : `Correct answer(s): ${escapeHtml(correctLabels)}`}
         </div>
-        <div class="btn-row" style="margin-top:14px">
+        <div class="btn-row">
           <button class="btn" id="nextBtn">${current === questions.length - 1 ? "Finish Test" : "Next Question"}</button>
         </div>
       `;
-      renderQuestion(feedback);
-
+      renderQuestion(fb);
       document.getElementById("nextBtn").addEventListener("click", async () => {
         locked = false;
         current++;
         if(current >= questions.length){
-          await finishTest(false);
+          await finishTest();
         } else {
           renderQuestion();
         }
       });
     });
-    return;
   }
 }
 
-/* =========================
-   SHEET POST
-========================= */
 function postToAppsScript(payload){
   if(!APPS_SCRIPT_URL || !APPS_SCRIPT_URL.startsWith("http")){
     return { ok:false, error:"Apps Script URL missing." };
   }
-
   try{
     const form = document.getElementById("sheetForm");
     form.action = APPS_SCRIPT_URL;
-
     Object.entries(payload).forEach(([key,val]) => {
-      const id = "sheet_" + key;
-      setHidden(id, val);
+      setHidden("sheet_" + key, val);
     });
-
     form.submit();
     return { ok:true };
   }catch(err){
@@ -903,10 +847,7 @@ function postToAppsScript(payload){
   }
 }
 
-/* =========================
-   FINISH
-========================= */
-async function finishTest(manualSubmit){
+async function finishTest(){
   if(timer) clearInterval(timer);
   finishedAt = new Date();
 
@@ -918,10 +859,7 @@ async function finishTest(manualSubmit){
   const standardsMissed = [...new Set(missed.map(r => r.standard))];
   const questionTypesMissed = [...new Set(missed.map(r => r.type))];
   const skillsMissed = [...new Set(missed.map(r => r.skill))];
-  const missedNumbers = missed.map(r => {
-    const q = QUESTIONS.find(x => x.id === r.id);
-    return q ? q.ordinal || "" : "";
-  }).filter(Boolean);
+  const missedNumbers = missed.map(r => r.ordinal);
   const missedStems = missed.map(r => r.stem);
 
   const payload = {
@@ -949,83 +887,49 @@ async function finishTest(manualSubmit){
   const postStatus = postToAppsScript(payload);
 
   APP.innerHTML = `
-    <div class="result-shell">
-      <div class="question-card">
-        <div class="q-meta">Submission Ticket</div>
-        <h2 style="margin:0 0 8px">American Studies Trouble Areas Test</h2>
-        <p class="small-muted">Screenshot this ticket for proof of submission.</p>
+    <div class="stage">
+      <div class="screen-card">
+        <div class="result-scroll">
+          <h2 style="margin-top:0">Submission Ticket</h2>
+          <p class="note">Screenshot this ticket for proof of submission.</p>
 
-        <div class="ticket-grid">
-          <div class="ticket-item">
-            <div class="label">Student</div>
-            <div class="value">${escapeHtml(studentName)}</div>
+          <div class="ticket-grid">
+            <div class="ticket-item"><div class="label">Student</div><div class="value">${escapeHtml(studentName)}</div></div>
+            <div class="ticket-item"><div class="label">Date</div><div class="value">${startedAt ? escapeHtml(startedAt.toLocaleDateString()) : ""}</div></div>
+            <div class="ticket-item"><div class="label">Started</div><div class="value">${startedAt ? escapeHtml(formatStamp(startedAt)) : ""}</div></div>
+            <div class="ticket-item"><div class="label">Finished</div><div class="value">${finishedAt ? escapeHtml(formatStamp(finishedAt)) : ""}</div></div>
+            <div class="ticket-item"><div class="label">Runtime</div><div class="value">${formatTime(elapsed)}</div></div>
+            <div class="ticket-item"><div class="label">Attempt</div><div class="value">${attemptNumber}</div></div>
+            <div class="ticket-item"><div class="label">Score</div><div class="value">${score} / ${answeredCount}</div></div>
+            <div class="ticket-item"><div class="label">Percent</div><div class="value">${percent}%</div></div>
+            <div class="ticket-item"><div class="label">Missed Count</div><div class="value">${missedCount}</div></div>
+            <div class="ticket-item"><div class="label">Result</div><div class="value ${passFail === "PASS" ? "good" : "warn"}">${passFail}</div></div>
           </div>
-          <div class="ticket-item">
-            <div class="label">Date</div>
-            <div class="value">${startedAt ? escapeHtml(startedAt.toLocaleDateString()) : ""}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Started</div>
-            <div class="value">${startedAt ? escapeHtml(formatStamp(startedAt)) : ""}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Finished</div>
-            <div class="value">${finishedAt ? escapeHtml(formatStamp(finishedAt)) : ""}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Runtime</div>
-            <div class="value">${formatTime(elapsed)}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Attempt</div>
-            <div class="value">${attemptNumber}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Score</div>
-            <div class="value">${score} / ${answeredCount}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Percent</div>
-            <div class="value">${percent}%</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Missed Count</div>
-            <div class="value">${missedCount}</div>
-          </div>
-          <div class="ticket-item">
-            <div class="label">Result</div>
-            <div class="value ${passFail === "PASS" ? "pass-pill" : "warn-pill"}">${passFail}</div>
+
+          <hr class="sep">
+
+          <h3>Analytics Summary</h3>
+          <p><strong>Standards Missed:</strong> ${standardsMissed.length ? escapeHtml(standardsMissed.join(", ")) : "None"}</p>
+          <p><strong>Question Types Missed:</strong> ${questionTypesMissed.length ? escapeHtml(questionTypesMissed.join(", ")) : "None"}</p>
+          <p><strong>Skills Missed:</strong> ${skillsMissed.length ? escapeHtml(skillsMissed.join(", ")) : "None"}</p>
+          <p><strong>Missed Stems:</strong></p>
+          <div class="note">${missedStems.length ? missedStems.map(s => `• ${escapeHtml(s)}`).join("<br>") : "None"}</div>
+
+          <hr class="sep">
+
+          <h3>Apps Script Status</h3>
+          <p class="mono">${postStatus.ok ? "POST attempted to Apps Script." : `POST error: ${escapeHtml(postStatus.error || "Unknown error")}`}</p>
+
+          <div class="btn-row">
+            <button class="btn" id="retakeBtn">Retake Test</button>
+            <a class="btn secondary" href="../index.html">Back to Hub</a>
           </div>
         </div>
-      </div>
-
-      <div class="question-card">
-        <div class="q-meta">Analytics Summary</div>
-        <p><strong>Standards Missed:</strong> ${standardsMissed.length ? escapeHtml(standardsMissed.join(", ")) : "None"}</p>
-        <p><strong>Question Types Missed:</strong> ${questionTypesMissed.length ? escapeHtml(questionTypesMissed.join(", ")) : "None"}</p>
-        <p><strong>Skills Missed:</strong> ${skillsMissed.length ? escapeHtml(skillsMissed.join(", ")) : "None"}</p>
-        <p><strong>Missed Stems:</strong></p>
-        <div class="small-muted">${missedStems.length ? missedStems.map(s => `• ${escapeHtml(s)}`).join("<br>") : "None"}</div>
-      </div>
-
-      <div class="question-card">
-        <div class="q-meta">Apps Script Status</div>
-        <p class="mono">${
-          postStatus.ok
-            ? "POST attempted to Apps Script."
-            : `POST error: ${escapeHtml(postStatus.error || "Unknown error")}`
-        }</p>
-        <p class="small-muted">Use the deployed /exec web app URL in this file.</p>
-      </div>
-
-      <div class="controls">
-        <button class="btn" id="playAgain">Retake Test</button>
-        <a class="btn secondary" href="../index.html">Back to Hub</a>
       </div>
     </div>
   `;
 
-  document.getElementById("playAgain").addEventListener("click", hardRestart);
+  document.getElementById("retakeBtn").addEventListener("click", hardRestart);
 }
 
 function hardRestart(){
@@ -1039,13 +943,12 @@ function hardRestart(){
   current = 0;
   score = 0;
   locked = false;
-  selectedMulti = new Set();
   detailedResults = [];
   answeredCount = 0;
-  startScreen();
+  renderStart();
 }
 
-startScreen();
+renderStart();
 </script>
 </body>
 </html>
