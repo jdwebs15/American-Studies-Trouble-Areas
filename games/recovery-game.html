@@ -11,9 +11,12 @@
 
 <script>
 const GAME_TITLE = "American Studies Trouble Areas — Most Missed Mastery Gauntlet";
+const EXPLAIN_LINGER_MS = 5000;
+
 const questions = [
   {
     type:"single",
+    contentArea:"Civic Foundations / Federalism",
     stem:"Which principle divides power between national and state governments?",
     choices:["Federalism","Limited government","Popular sovereignty","Judicial review"],
     answer:"Federalism",
@@ -22,6 +25,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Civic Foundations / Federalism",
     stem:"Which situation best reflects federalism?",
     choices:["A governor and Congress both make laws within their own powers","The Supreme Court declares a law unconstitutional","The president vetoes a bill","Citizens vote in a national election"],
     answer:"A governor and Congress both make laws within their own powers",
@@ -30,6 +34,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Ratification / Federalists vs. Anti-Federalists",
     stem:"Which group supported ratification of the Constitution?",
     choices:["Federalists","Anti-Federalists","Abolitionists","Populists"],
     answer:"Federalists",
@@ -38,6 +43,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Ratification / Federalists vs. Anti-Federalists",
     stem:"Which document helped explain and defend the Constitution during ratification debates?",
     choices:["Federalist Papers","Articles of Confederation","Common Sense","Northwest Ordinance"],
     answer:"Federalist Papers",
@@ -46,6 +52,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Ratification / Federalists vs. Anti-Federalists",
     stem:"What was a major concern of the Anti-Federalists?",
     choices:["The Constitution did not protect individual liberties enough","The national government was too weak","The states had too little power under the Articles","The Constitution created too many local governments"],
     answer:"The Constitution did not protect individual liberties enough",
@@ -54,6 +61,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Ratification / Federalists vs. Anti-Federalists",
     stem:"Which principle did Anti-Federalists believe would best protect liberty?",
     choices:["Strong state governments","A monarchy","Judicial supremacy","Unlimited executive power"],
     answer:"Strong state governments",
@@ -62,6 +70,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Northwest Ordinance / Civil Liberties",
     stem:"Which right was protected in the Northwest Territory under the Northwest Ordinance?",
     choices:["Trial by jury","Censorship of newspapers","Restricted religious practice","Military rule"],
     answer:"Trial by jury",
@@ -70,6 +79,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Northwest Ordinance / Republican Government",
     stem:"Why did the Northwest Ordinance emphasize education?",
     choices:["An informed citizenry was needed for self-government","Factories needed skilled machine workers immediately","The federal government wanted uniform textbooks","Education was required for military service"],
     answer:"An informed citizenry was needed for self-government",
@@ -78,6 +88,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Declaration of Independence / Rights",
     stem:"Which evidence best shows the Declaration of Independence influenced modern government?",
     choices:["Amendments expanding voting rights","Growth of industrialization","Construction of railroads","Development of skyscrapers"],
     answer:"Amendments expanding voting rights",
@@ -86,6 +97,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Declaration of Independence / Rights",
     stem:"According to the Declaration of Independence, what is the main purpose of government?",
     choices:["To protect individual rights","To expand national territory","To increase trade","To strengthen monarchies"],
     answer:"To protect individual rights",
@@ -94,6 +106,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Industrialization / Labor Unions",
     stem:"Select ALL that apply. Which were goals of labor unions?",
     choices:["Higher wages","Shorter workdays","Safer working conditions","Fewer protections for workers"],
     answers:["Higher wages","Shorter workdays","Safer working conditions"],
@@ -102,6 +115,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Industrialization / Labor Tactics",
     stem:"A boycott is best defined as",
     choices:["A refusal to buy goods or services to pressure a business","A violent attack on a factory","A legal appeal to the Supreme Court","A tax on imported goods"],
     answer:"A refusal to buy goods or services to pressure a business",
@@ -110,6 +124,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Progressive Era / Reforms",
     stem:"Select ALL that apply. Which were Progressive reforms?",
     choices:["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act","Black Codes"],
     answers:["Pure Food and Drug Act","Meat Inspection Act","Sherman Antitrust Act"],
@@ -118,6 +133,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Progressive Era / Muckrakers",
     stem:"Journalists who exposed corruption and abuses during the Progressive Era were called",
     choices:["Muckrakers","Isolationists","Nativists","Expansionists"],
     answer:"Muckrakers",
@@ -126,6 +142,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Progressive Era / Consumer Protection",
     stem:"Which law most directly protected consumers from unsafe food and medicine?",
     choices:["Pure Food and Drug Act","Homestead Act","Dawes Act","Neutrality Act"],
     answer:"Pure Food and Drug Act",
@@ -134,6 +151,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Imperialism / Expansion",
     stem:"Select TWO. Which actions are examples of U.S. imperialism?",
     choices:["Annexation of Hawaii","Spanish-American War","Federal Reserve Act","Social Security Act"],
     answers:["Annexation of Hawaii","Spanish-American War"],
@@ -142,6 +160,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Imperialism / Foreign Policy",
     stem:"Big Stick Diplomacy is most closely associated with",
     choices:["Theodore Roosevelt","Woodrow Wilson","Herbert Hoover","Lyndon Johnson"],
     answer:"Theodore Roosevelt",
@@ -150,6 +169,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Post-WWI Foreign Policy / Isolationism",
     stem:"Select THREE. Which developments reflected U.S. efforts to maintain peace after World War I?",
     choices:["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact","Lend-Lease Act"],
     answers:["Arms limitation efforts","Debate over the Treaty of Versailles","Kellogg-Briand Pact"],
@@ -158,6 +178,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Post-WWI Foreign Policy / Isolationism",
     stem:"Why did many Americans support isolationism in the 1920s?",
     choices:["They wanted to avoid future overseas conflicts","They hoped to expand colonies in Asia","They wanted stronger alliances with Europe","They favored world government"],
     answer:"They wanted to avoid future overseas conflicts",
@@ -166,6 +187,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"1920s / Red Scare",
     stem:"The Red Scare of 1919–1920 was driven largely by fear of",
     choices:["Radicalism and communism","Japanese expansion","Bank failures","Consumerism"],
     answer:"Radicalism and communism",
@@ -174,6 +196,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Great Depression / Causes",
     stem:"Which factor most contributed to the stock market crash of 1929?",
     choices:["Speculation with borrowed money","The end of wartime rationing","The passage of the GI Bill","Rapid suburban growth"],
     answer:"Speculation with borrowed money",
@@ -182,6 +205,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Government and the Economy / Monetary Policy",
     stem:"Which institution regulates the U.S. money supply?",
     choices:["Federal Reserve System","Securities and Exchange Commission","Department of Commerce","Supreme Court"],
     answer:"Federal Reserve System",
@@ -190,6 +214,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Great Depression / New Deal",
     stem:"Part A. The federal government created programs to regulate banks, provide jobs, and protect workers during an economic crisis. Which period does this describe?",
     choices:["New Deal","Progressive Era","Reconstruction","Cold War"],
     answer:"New Deal",
@@ -198,6 +223,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Great Depression / Expanded Federal Role",
     stem:"Select TWO. Which actions expanded the role of the federal government during the Great Depression?",
     choices:["Social Security Act","SEC regulations","Homestead Act","Louisiana Purchase"],
     answers:["Social Security Act","SEC regulations"],
@@ -206,6 +232,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Great Depression / New Deal",
     stem:"Which agency regulated the stock market to prevent fraud after the crash?",
     choices:["SEC","FDIC","NATO","EPA"],
     answer:"SEC",
@@ -214,6 +241,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Road to WWII / U.S. Involvement",
     stem:"Which policy allowed the United States to supply military aid to Allied nations before entering World War II?",
     choices:["Lend-Lease Act","Dawes Act","Missouri Compromise","Interstate Commerce Act"],
     answer:"Lend-Lease Act",
@@ -222,6 +250,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Road to WWII / Causes",
     stem:"Select THREE. Which factors contributed to the outbreak of World War II?",
     choices:["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions","Women’s suffrage"],
     answers:["Expansionist policies of Germany and Japan","Failure of international peace agreements","Global political tensions"],
@@ -230,6 +259,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"WWII / Home Front",
     stem:"The United States became known as the 'Arsenal of Democracy' because it",
     choices:["Produced massive amounts of war materials for the Allies","Established colonies in Europe","Ended all military production","Refused to help other nations"],
     answer:"Produced massive amounts of war materials for the Allies",
@@ -238,6 +268,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Cold War / Containment",
     stem:"Select ALL that apply. Which were examples of U.S. containment policies?",
     choices:["Truman Doctrine","Marshall Plan","NATO","Dawes Act"],
     answers:["Truman Doctrine","Marshall Plan","NATO"],
@@ -246,6 +277,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Cold War / Anti-Communism",
     stem:"Which congressional body investigated suspected communist influence during the Cold War?",
     choices:["HUAC","FDIC","SEC","TVA"],
     answer:"HUAC",
@@ -254,6 +286,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Cold War / Anti-Communism",
     stem:"McCarthyism is best defined as",
     choices:["Accusing people of communist ties with little evidence","A civil rights sit-in campaign","A federal bank rescue program","A postwar housing policy"],
     answer:"Accusing people of communist ties with little evidence",
@@ -262,6 +295,7 @@ const questions = [
   },
   {
     type:"multi",
+    contentArea:"Civil Rights Movement / Activism",
     stem:"Select TWO. Which were important actions of the civil rights movement?",
     choices:["Freedom Rides","March on Washington","Kellogg-Briand Pact","Dawes Act"],
     answers:["Freedom Rides","March on Washington"],
@@ -270,6 +304,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Civil Rights Movement / Legislation",
     stem:"Which legislation most directly outlawed discrimination in public accommodations?",
     choices:["Civil Rights Act of 1964","Homestead Act","Patriot Act","Neutrality Act"],
     answer:"Civil Rights Act of 1964",
@@ -278,6 +313,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Postwar America / Housing",
     stem:"Part A. Many families left cities for newly built suburbs while discriminatory lending often blocked minorities from doing the same. Which practice is described?",
     choices:["Redlining","Collective bargaining","Muckraking","Containment"],
     answer:"Redlining",
@@ -286,6 +322,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Postwar America / Immigration",
     stem:"Which law changed immigration patterns by allowing more immigrants from Asia, Africa, and Latin America?",
     choices:["Immigration and Nationality Act of 1965","Chinese Exclusion Act","Sedition Act","Homestead Act"],
     answer:"Immigration and Nationality Act of 1965",
@@ -294,6 +331,7 @@ const questions = [
   },
   {
     type:"single",
+    contentArea:"Civil Liberties / Patriot Act",
     stem:"The USA PATRIOT Act raised concerns mainly because it",
     choices:["Expanded government surveillance powers","Ended the Cold War","Banned immigration","Created labor unions"],
     answer:"Expanded government surveillance powers",
@@ -311,32 +349,99 @@ function shuffle(arr){
   return a;
 }
 
-const state = {
-  name:"",
-  started:false,
-  index:0,
-  correct:0,
-  tried:0,
-  missed:[],
-  questions:shuffle(questions).map(q => ({...q, choices: shuffle(q.choices)}))
-};
+function formatTime(totalSeconds){
+  const m = Math.floor(totalSeconds / 60).toString().padStart(2,'0');
+  const s = (totalSeconds % 60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
 
-const app = document.getElementById("app");
+function formatClock(d){
+  return d.toLocaleTimeString([], { hour:'numeric', minute:'2-digit', second:'2-digit' });
+}
+
+function formatDate(d){
+  return d.toLocaleDateString();
+}
 
 function escapeHtml(str){
   return String(str).replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
 }
+
+const state = {
+  name:"",
+  started:false,
+  index:0,
+  tried:0,
+  questions:shuffle(questions).map(q => ({
+    ...q,
+    choices: shuffle(q.choices),
+    everMissed:false,
+    mastered:false
+  })),
+  missedQuestions:[],
+  missedAreas:new Set(),
+  startTime:null,
+  endTime:null,
+  timerNow:Date.now(),
+  timerHandle:null
+};
+
+const app = document.getElementById("app");
 
 function startGame(){
   const name = document.getElementById("studentName").value.trim();
   if(!name) return;
   state.name = name;
   state.started = true;
+  state.startTime = new Date();
+  state.timerNow = Date.now();
+  if(state.timerHandle) clearInterval(state.timerHandle);
+  state.timerHandle = setInterval(() => {
+    state.timerNow = Date.now();
+    const timerEl = document.getElementById("runtimeClock");
+    if(timerEl){
+      timerEl.textContent = formatElapsed();
+    }
+  }, 1000);
   render();
+}
+
+function formatElapsed(){
+  if(!state.startTime) return "00:00";
+  const endMs = state.endTime ? state.endTime.getTime() : state.timerNow;
+  const seconds = Math.max(0, Math.floor((endMs - state.startTime.getTime()) / 1000));
+  return formatTime(seconds);
 }
 
 function progressPct(){
   return Math.round((state.index / state.questions.length) * 100);
+}
+
+function firstTryCorrectCount(){
+  return state.questions.filter(q => q.mastered && !q.everMissed).length;
+}
+
+function perfectRunAchieved(){
+  return state.questions.every(q => q.mastered && !q.everMissed);
+}
+
+function markMiss(q){
+  if(!q.everMissed){
+    q.everMissed = true;
+    state.missedQuestions.push({
+      stem:q.stem,
+      contentArea:q.contentArea || "Unlabeled content area",
+      correct:q.type === "single" ? q.answer : q.answers.join(", "),
+      explain:q.explain
+    });
+    state.missedAreas.add(q.contentArea || "Unlabeled content area");
+  }
+}
+
+function showFeedback(kind, title, msg){
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback show ${kind}`;
+  fb.innerHTML = `<div class="feedback-title">${title}</div><div>${msg}</div>`;
 }
 
 function render(){
@@ -348,14 +453,14 @@ function render(){
         <h1>${GAME_TITLE}</h1>
         <p class="sub">
           Recovery build from the most-missed trouble areas across the uploaded American Studies review forms.
-          Same basic hub style: shuffled questions, directional hints, progress bar, auto-advance on correct,
-          and brief explanation linger so students actually absorb the correction.
+          Students must correct errors to continue, but a miss still counts against a perfect mastery ticket.
         </p>
         <div class="pills">
           <span class="pill">${state.questions.length} questions</span>
           <span class="pill">Single + multi-select</span>
           <span class="pill">Hint on miss</span>
-          <span class="pill">100% mindset</span>
+          <span class="pill">No restart</span>
+          <span class="pill">Perfect run required</span>
         </div>
       </section>
 
@@ -370,22 +475,21 @@ function render(){
 
       <section class="grid grid-2" style="margin-top:20px">
         <article class="card">
-          <h3>Most-missed focus</h3>
+          <h3>How this works</h3>
           <ul class="list-clean">
-            <li>Federalism and ratification debates</li>
-            <li>Labor union and Progressive reform confusion</li>
-            <li>Post-WWI peace efforts and isolationism</li>
-            <li>New Deal expansion and WWII causation</li>
-            <li>Containment, HUAC, civil rights, and postwar change</li>
+            <li>Wrong answer = hint only</li>
+            <li>Students must still fix the answer to move on</li>
+            <li>Correct answer = explanation shown before auto-advance</li>
+            <li>Only a perfect first-try run earns the ticket</li>
           </ul>
         </article>
         <article class="card">
-          <h3>How this round works</h3>
+          <h3>Teacher intent</h3>
           <ul class="list-clean">
-            <li>Wrong answer = hint only, not the answer</li>
-            <li>Correct answer = quick explanation + auto-advance</li>
-            <li>Multi-select items require exact choices</li>
-            <li>End screen shows misses for reteach/replay</li>
+            <li>No restart during play</li>
+            <li>Missed content areas shown at the end</li>
+            <li>Students finish the full gauntlet either way</li>
+            <li>Ticket appears only for clean mastery</li>
           </ul>
         </article>
       </section>`;
@@ -393,29 +497,96 @@ function render(){
   }
 
   if(state.index >= state.questions.length){
-    const pct = Math.round((state.correct / state.questions.length) * 100);
+    if(state.timerHandle){
+      clearInterval(state.timerHandle);
+      state.timerHandle = null;
+    }
+    if(!state.endTime) state.endTime = new Date();
+
+    const firstTry = firstTryCorrectCount();
+    const masteryPct = Math.round((firstTry / state.questions.length) * 100);
+    const missedAreas = [...state.missedAreas];
+    const passed = perfectRunAchieved();
+
     app.innerHTML = `
       <a class="back-link" href="../index.html">← Back to Hub</a>
+
       <section class="result-card">
-        <div class="kicker">Recovery Complete</div>
+        <div class="kicker">${passed ? 'Mastery Ticket Earned' : 'Recovery Complete — Ticket Locked'}</div>
         <h1>${escapeHtml(state.name)} — Trouble Areas Results</h1>
-        <p class="sub">Use the missed-question list below for a second pass or mini-conference reteach.</p>
+        <p class="sub">
+          ${passed
+            ? 'Perfect first-try mastery. This run earns the submit ticket.'
+            : 'You completed the full game, but any question missed during the run blocks the mastery ticket.'}
+        </p>
+
         <div class="stat-row">
-          <div class="stat"><div class="stat-label">Score</div><div class="stat-value">${pct}%</div></div>
-          <div class="stat"><div class="stat-label">Correct</div><div class="stat-value">${state.correct}/${state.questions.length}</div></div>
+          <div class="stat"><div class="stat-label">Mastery Score</div><div class="stat-value">${masteryPct}%</div></div>
+          <div class="stat"><div class="stat-label">1st-Try Correct</div><div class="stat-value">${firstTry}/${state.questions.length}</div></div>
           <div class="stat"><div class="stat-label">Attempts</div><div class="stat-value">${state.tried}</div></div>
-          <div class="stat"><div class="stat-label">Missed at least once</div><div class="stat-value">${state.missed.length}</div></div>
+          <div class="stat"><div class="stat-label">Missed Areas</div><div class="stat-value">${missedAreas.length}</div></div>
         </div>
-        <div class="btn-row">
-          <button class="btn" onclick="location.reload()">Play Again</button>
-          <a class="btn secondary" href="recovery-test.html">Open Recovery Test</a>
-        </div>
-        ${state.missed.length ? `<div class="missed-list">${state.missed.map((m,i)=>`<div class="missed-item"><strong>${i+1}. ${escapeHtml(m.stem)}</strong><div class="muted" style="margin-top:8px"><strong>Correct:</strong> ${escapeHtml(m.correct)}</div><div class="muted" style="margin-top:6px">${escapeHtml(m.explain)}</div></div>`).join('')}</div>` : `<p class="sub" style="margin-top:18px">Perfect run. That is clean mastery, Legend style.</p>`}
+
+        ${passed ? `
+          <section class="panel" style="margin-top:18px">
+            <h3>Completion Ticket</h3>
+            <div class="grid grid-2">
+              <article class="card">
+                <div><strong>Name:</strong> ${escapeHtml(state.name)}</div>
+                <div><strong>Date:</strong> ${escapeHtml(formatDate(state.endTime))}</div>
+                <div><strong>Start Time:</strong> ${escapeHtml(formatClock(state.startTime))}</div>
+                <div><strong>End Time:</strong> ${escapeHtml(formatClock(state.endTime))}</div>
+              </article>
+              <article class="card">
+                <div><strong>Runtime:</strong> ${escapeHtml(formatElapsed())}</div>
+                <div><strong>Result:</strong> PERFECT RUN</div>
+                <div><strong>Score:</strong> ${masteryPct}%</div>
+                <div><strong>Status:</strong> SUBMIT TICKET APPROVED</div>
+              </article>
+            </div>
+          </section>
+        ` : `
+          <section class="panel" style="margin-top:18px">
+            <h3>Submit Ticket Locked</h3>
+            <p class="sub" style="margin:0">
+              To earn the ticket, the student must complete a perfect first-try run with no missed questions.
+            </p>
+          </section>
+        `}
+
+        <section class="panel" style="margin-top:18px">
+          <h3>Content Areas Missed</h3>
+          ${
+            missedAreas.length
+              ? `<div class="missed-list">${missedAreas.map((area, i) =>
+                  `<div class="missed-item"><strong>${i + 1}. ${escapeHtml(area)}</strong></div>`
+                ).join('')}</div>`
+              : `<p class="sub" style="margin:0">No content areas missed. Clean mastery.</p>`
+          }
+        </section>
+
+        ${state.missedQuestions.length ? `
+          <section class="panel" style="margin-top:18px">
+            <h3>Questions Missed During the Run</h3>
+            <div class="missed-list">
+              ${state.missedQuestions.map((m,i)=>`
+                <div class="missed-item">
+                  <strong>${i+1}. ${escapeHtml(m.stem)}</strong>
+                  <div class="muted" style="margin-top:8px"><strong>Content Area:</strong> ${escapeHtml(m.contentArea)}</div>
+                  <div class="muted" style="margin-top:6px"><strong>Correct:</strong> ${escapeHtml(m.correct)}</div>
+                  <div class="muted" style="margin-top:6px">${escapeHtml(m.explain)}</div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
       </section>`;
     return;
   }
 
   const q = state.questions[state.index];
+
   app.innerHTML = `
     <a class="back-link" href="../index.html">← Back to Hub</a>
     <section class="question-card">
@@ -423,23 +594,34 @@ function render(){
         <div class="hud-left">
           <div class="hud-chip">Student: ${escapeHtml(state.name)}</div>
           <div class="hud-chip">Question ${state.index + 1} / ${state.questions.length}</div>
+          <div class="hud-chip">Runtime: <span id="runtimeClock">${formatElapsed()}</span></div>
         </div>
         <div class="hud-right">
-          <div class="hud-chip">Correct: ${state.correct}</div>
+          <div class="hud-chip">1st-Try Correct: ${firstTryCorrectCount()}</div>
           <div class="hud-chip">Attempts: ${state.tried}</div>
         </div>
       </div>
+
       <div class="progress-shell"><div class="progress-bar" style="width:${progressPct()}%"></div></div>
+
       <div class="question-title">${escapeHtml(q.stem)}</div>
-      <div class="help">${q.type === 'single' ? 'Choose one answer.' : 'Select all required answers, then submit.'}</div>
+      <div class="help">
+        <strong>Content Area:</strong> ${escapeHtml(q.contentArea || 'Unlabeled content area')}
+        <br>
+        ${q.type === 'single' ? 'Choose one answer.' : 'Select all required answers, then submit.'}
+      </div>
+
       <div class="choices" id="choices"></div>
+
       <div class="btn-row" id="multiActions" ${q.type==='single' ? 'style="display:none"' : ''}>
         <button class="btn" onclick="submitMulti()">Submit Answer</button>
       </div>
+
       <div class="feedback" id="feedback"></div>
     </section>`;
 
   const choicesDiv = document.getElementById('choices');
+
   if(q.type === 'single'){
     q.choices.forEach(choice => {
       const btn = document.createElement('button');
@@ -458,33 +640,21 @@ function render(){
   }
 }
 
-function showFeedback(kind, title, msg){
-  const fb = document.getElementById('feedback');
-  fb.className = `feedback show ${kind}`;
-  fb.innerHTML = `<div class="feedback-title">${title}</div><div>${msg}</div>`;
-}
-
-function markMiss(q){
-  if(!q._missedLogged){
-    state.missed.push({
-      stem:q.stem,
-      correct:q.type==='single' ? q.answer : q.answers.join(', '),
-      explain:q.explain
-    });
-    q._missedLogged = true;
-  }
-}
-
 function submitSingle(choice, btn){
   const q = state.questions[state.index];
   state.tried++;
+
   const all = [...document.querySelectorAll('.choice')];
+
   if(choice === q.answer){
-    state.correct++;
+    q.mastered = true;
     all.forEach(b => b.disabled = true);
     btn.classList.add('correct');
     showFeedback('good','Correct', q.explain);
-    setTimeout(()=>{ state.index++; render(); }, 2200);
+    setTimeout(() => {
+      state.index++;
+      render();
+    }, EXPLAIN_LINGER_MS);
   } else {
     markMiss(q);
     btn.classList.add('incorrect');
@@ -495,15 +665,20 @@ function submitSingle(choice, btn){
 
 function submitMulti(){
   const q = state.questions[state.index];
-  const checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value).sort();
+  const checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(x => x.value).sort();
   const correct = [...q.answers].sort();
+
   state.tried++;
+
   if(JSON.stringify(checked) === JSON.stringify(correct)){
-    state.correct++;
+    q.mastered = true;
     document.querySelectorAll('input[type="checkbox"]').forEach(x => x.disabled = true);
     document.getElementById('multiActions').querySelector('button').disabled = true;
     showFeedback('good','Correct', q.explain);
-    setTimeout(()=>{ state.index++; render(); }, 2200);
+    setTimeout(() => {
+      state.index++;
+      render();
+    }, EXPLAIN_LINGER_MS);
   } else {
     markMiss(q);
     showFeedback('bad','Try again', q.hint);
