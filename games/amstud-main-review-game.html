@@ -1,365 +1,76 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>American Studies Targeted Review — Main Group</title>
-  <link rel="stylesheet" href="../styles.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>American Studies Targeted Review — Main Group</title>
+<link rel="stylesheet" href="../styles.css"/>
 </head>
 <body>
-  <div class="wrap" id="app"></div>
+<div class="wrap" id="app"></div>
 
 <script>
-const GAME_TITLE = "American Studies Targeted Review \u2014 Main Group";
-const EXPLAIN_LINGER_MS = 5000;
+const GAME_TITLE="American Studies Targeted Review — Main Group";
+const EXPLAIN_LINGER_MS=4000;
 
-const questions = [{"type": "single", "contentArea": "CS 13 — Imperialism", "stem": "Which factor most directly encouraged American imperialism in the late 1800s?", "choices": ["desire for new markets and naval bases", "goal of reducing overseas trade", "attempt to end industrial production", "wish to weaken the navy"], "answer": "desire for new markets and naval bases", "hint": "Think trade and strategy.", "explain": "Industrial growth and naval strategy pushed the U.S. toward overseas expansion."}, {"type": "single", "contentArea": "CS 13 — Spanish-American War", "stem": "Which event most directly increased support for war against Spain in 1898?", "choices": ["the explosion of the USS Maine", "the attack on Pearl Harbor", "the sinking of the Lusitania", "the invasion of Poland"], "answer": "the explosion of the USS Maine", "hint": "This event became a rallying point for war fever.", "explain": "The explosion of the USS Maine helped spark public support for war with Spain."}, {"type": "multi", "contentArea": "CS 14 — Motives for expansion", "stem": "Select BOTH. Which motives were most closely connected to American imperialism?", "choices": ["access to new markets", "acquiring strategic naval bases", "ending all foreign influence", "reducing industrial growth"], "answers": ["access to new markets", "acquiring strategic naval bases"], "hint": "Pick the two motives tied to growth and power overseas.", "explain": "Economic opportunity and strategic naval strength were major motives for imperialism."}, {"type": "single", "contentArea": "CS 14 — Strategy and trade", "stem": "Why did supporters of imperialism often call for a stronger navy?", "choices": ["to protect trade routes and overseas interests", "to reduce all foreign involvement", "to eliminate industry at home", "to end westward expansion"], "answer": "to protect trade routes and overseas interests", "hint": "Think sea power and economic reach.", "explain": "Naval power was seen as necessary to protect trade and project American influence overseas."}, {"type": "single", "contentArea": "CS 13 — Consequence of war", "stem": "Which event most directly increased U.S. influence in the Caribbean and Pacific after 1898?", "choices": ["the Spanish-American War", "the War of 1812", "the Civil War", "the Mexican-American War"], "answer": "the Spanish-American War", "hint": "Think overseas gains after victory.", "explain": "The Spanish-American War expanded U.S. overseas influence and territorial reach."}, {"type": "single", "contentArea": "CS 15 — World War I", "stem": "Which factor contributed most directly to the outbreak of World War I?", "choices": ["the system of alliances in Europe", "the creation of the New Deal", "the rise of suburbanization", "the passage of the Neutrality Acts"], "answer": "the system of alliances in Europe", "hint": "One conflict spread because many nations were tied together.", "explain": "The alliance system helped turn a regional conflict into a wider war."}, {"type": "single", "contentArea": "CS 15 — Mobilization", "stem": "Which development best shows the impact of World War I on the United States?", "choices": ["greater federal direction of transportation and industry", "complete end of federal involvement in the economy", "abolition of all wartime propaganda", "withdrawal from all military preparation"], "answer": "greater federal direction of transportation and industry", "hint": "Look for home-front mobilization.", "explain": "World War I led to major federal coordination of transportation, production, and propaganda."}, {"type": "single", "contentArea": "CS 15 — Propaganda", "stem": "Which wartime practice was used by the U.S. government during World War I to build public support?", "choices": ["propaganda campaigns", "civil service exams", "Homestead Act land grants", "desegregation orders"], "answer": "propaganda campaigns", "hint": "Think posters, slogans, and persuasion.", "explain": "Propaganda was used to shape public opinion and support for the war."}, {"type": "single", "contentArea": "CS 15 — Postwar debate", "stem": "Which issue was heavily debated in the United States after World War I?", "choices": ["whether to join the League of Nations", "whether to abolish industrial production", "whether to restore the Articles of Confederation", "whether to pass the Dawes Act"], "answer": "whether to join the League of Nations", "hint": "This debate centered on the nation’s role in world affairs.", "explain": "The League of Nations debate reflected conflict over future U.S. international involvement."}, {"type": "single", "contentArea": "CS 16 — 1920s prosperity", "stem": "Which innovation most changed daily life during the 1920s by increasing mobility and consumer demand?", "choices": ["the automobile", "the cotton gin", "the steel plow", "the telegraph"], "answer": "the automobile", "hint": "Think mass mobility and consumer culture.", "explain": "Automobiles reshaped transportation, industry, and consumer culture."}, {"type": "single", "contentArea": "CS 16 — Mass culture", "stem": "A family buys a car, listens to radio, watches movies, and purchases appliances made in factories. What trend does this show?", "choices": ["growth of mass consumer culture", "return to frontier life", "collapse of industry", "end of technological change"], "answer": "growth of mass consumer culture", "hint": "Think shared products and shared entertainment.", "explain": "Technology and mass production helped create a national consumer culture."}, {"type": "single", "contentArea": "CS 16 — Shared culture", "stem": "Why was commercial radio significant in the 1920s?", "choices": ["it helped create a shared national culture", "it ended newspapers immediately", "it reduced entertainment choices to zero", "it stopped consumer advertising"], "answer": "it helped create a shared national culture", "hint": "Think mass audience.", "explain": "Radio connected Americans to the same music, news, and entertainment across the country."}, {"type": "single", "contentArea": "CS 17 — Social tension", "stem": "Which issue best reflects the cultural tensions of the 1920s?", "choices": ["conflict between modern values and traditional beliefs", "debate over revising the Articles of Confederation", "disagreement over abolition before the Civil War", "debate over western land claims"], "answer": "conflict between modern values and traditional beliefs", "hint": "Think social conflict, not constitutional founding debates.", "explain": "The 1920s featured major conflict between modern culture and traditional values."}, {"type": "multi", "contentArea": "CS 17 — Social change", "stem": "Select BOTH. Which developments reflected social change in the 1920s?", "choices": ["growth of jazz and popular entertainment", "changing roles for women", "return to mercantilism", "abolition of consumer goods"], "answers": ["growth of jazz and popular entertainment", "changing roles for women"], "hint": "Pick the two that actually transformed culture.", "explain": "Jazz culture and changing expectations for women were important parts of 1920s change."}, {"type": "single", "contentArea": "CS 17 — Nativism", "stem": "Which policy best reflects nativist attitudes in the 1920s?", "choices": ["restricting immigration", "expanding the Marshall Plan", "creating Social Security", "ending military preparedness"], "answer": "restricting immigration", "hint": "Nativism often targets outsiders.", "explain": "Nativist attitudes in the 1920s were closely tied to immigration restriction."}, {"type": "single", "contentArea": "CS 17 — Values conflict", "stem": "A local leader condemns jazz, flappers, and urban nightlife while defending older moral standards. What broader conflict does this show?", "choices": ["traditionalism versus modern culture", "debate over New Deal banking laws", "dispute over western railroads", "conflict over Reconstruction policy"], "answer": "traditionalism versus modern culture", "hint": "This is a classic culture-clash clue set.", "explain": "The passage reflects the larger clash between traditionalism and modern culture in the 1920s."}, {"type": "single", "contentArea": "CS 18 — Great Depression causes", "stem": "Which factor contributed most directly to the Great Depression?", "choices": ["stock market speculation and weak banking practices", "the success of world peace organizations", "the end of consumer credit", "the elimination of tariffs"], "answer": "stock market speculation and weak banking practices", "hint": "Think instability, risk, and weak financial systems.", "explain": "Speculation and weak banking practices helped make the economy unstable."}, {"type": "single", "contentArea": "CS 18 — Bank failures", "stem": "Why did bank failures worsen the Great Depression?", "choices": ["people lost savings and credit became harder to get", "factories gained more investment capital", "consumer confidence increased sharply", "international trade became easier"], "answer": "people lost savings and credit became harder to get", "hint": "Think about what happens when banks collapse.", "explain": "Bank failures wiped out savings and reduced access to credit, deepening the crisis."}, {"type": "single", "contentArea": "CS 18 — Margin buying", "stem": "Why did buying stocks on margin make the economy more dangerous in the late 1920s?", "choices": ["it increased risk by using borrowed money", "it guaranteed stable returns", "it prevented speculation", "it insured all deposits"], "answer": "it increased risk by using borrowed money", "hint": "Borrowing increases exposure when prices fall.", "explain": "Margin buying increased the danger because investors were purchasing stocks with borrowed money."}, {"type": "single", "contentArea": "CS 19 — New Deal", "stem": "Which statement best describes the New Deal?", "choices": ["it expanded the federal government's role in relief, recovery, and reform", "it returned the nation to complete laissez-faire policies", "it ended federal involvement in banking", "it reduced all public works programs"], "answer": "it expanded the federal government's role in relief, recovery, and reform", "hint": "The key word here is expanded.", "explain": "The New Deal expanded the role of the federal government in responding to the Depression."}, {"type": "multi", "contentArea": "CS 19 — New Deal aims", "stem": "Select BOTH. Which goals were central to New Deal programs?", "choices": ["providing relief to those suffering economically", "reforming parts of the financial system", "restoring mercantilism", "ending all federal action"], "answers": ["providing relief to those suffering economically", "reforming parts of the financial system"], "hint": "Choose the goals that match relief and reform.", "explain": "Relief and reform were central parts of the New Deal response."}, {"type": "single", "contentArea": "CS 19 — Historical significance", "stem": "Why was the New Deal historically significant?", "choices": ["it changed expectations about the federal government’s role in economic crises", "it restored preindustrial life", "it eliminated unemployment immediately", "it ended all debate over government power forever"], "answer": "it changed expectations about the federal government’s role in economic crises", "hint": "Think long-term expectations.", "explain": "The New Deal reshaped how many Americans expected the federal government to respond to crisis."}, {"type": "single", "contentArea": "CS 20 — Appeasement", "stem": "Which development most directly encouraged Axis aggression in the 1930s?", "choices": ["failure of other nations to stop treaty violations and expansion", "strict enforcement of all peace agreements", "strong and immediate military response by democracies", "the end of totalitarian governments"], "answer": "failure of other nations to stop treaty violations and expansion", "hint": "Unchecked aggression tends to grow, not shrink.", "explain": "Failure to respond decisively encouraged further Axis aggression."}, {"type": "single", "contentArea": "CS 20 — Aftermath of WWI", "stem": "Which condition after World War I helped create instability in Europe?", "choices": ["economic hardship and resentment linked to the Treaty of Versailles", "universal prosperity in Germany", "the end of nationalism", "the absence of extremist movements"], "answer": "economic hardship and resentment linked to the Treaty of Versailles", "hint": "Think anger and hardship after the treaty.", "explain": "Economic hardship and resentment after Versailles contributed to later instability."}, {"type": "multi", "contentArea": "CS 20 — Causes of WWII", "stem": "Select ALL that apply. Which factors contributed to the outbreak of World War II?", "choices": ["Axis expansion", "failure of peace agreements", "rising political tension", "women's suffrage"], "answers": ["Axis expansion", "failure of peace agreements", "rising political tension"], "hint": "Pick the causes tied to aggression and failed diplomacy.", "explain": "WWII grew out of expansionism, weak peace efforts, and rising international tensions."}, {"type": "single", "contentArea": "CS 20 — Unchecked aggression", "stem": "Italy invades Ethiopia, Japan expands in Asia, and Germany violates treaties while democracies hesitate. What conclusion is best supported?", "choices": ["aggressive expansion went largely unchecked in the 1930s", "democratic powers stopped aggression early", "all treaties were strictly enforced", "Japan avoided expansion"], "answer": "aggressive expansion went largely unchecked in the 1930s", "hint": "Look for the pattern across countries.", "explain": "Repeated aggressive actions and weak responses helped set the stage for World War II."}, {"type": "single", "contentArea": "CS 20 — Axis powers", "stem": "Which nations made up the major Axis powers in World War II?", "choices": ["Germany, Italy, and Japan", "Britain, France, and the United States", "Russia, China, and India", "Spain, Portugal, and Mexico"], "answer": "Germany, Italy, and Japan", "hint": "Think of the main expansionist dictatorships.", "explain": "Germany, Italy, and Japan were the major Axis powers in World War II."}, {"type": "single", "contentArea": "CS 21 — Policy shift", "stem": "Which statement best describes U.S. foreign policy in the years just before Pearl Harbor?", "choices": ["it moved gradually from isolation toward greater support for the Allies", "it stayed completely neutral in every way", "it entered the war before aiding Britain", "it focused only on domestic reform"], "answer": "it moved gradually from isolation toward greater support for the Allies", "hint": "Think gradual change, not immediate entry.", "explain": "The United States moved gradually from isolationism toward aid and then direct involvement."}, {"type": "single", "contentArea": "CS 21 — Pearl Harbor", "stem": "Which event caused the United States to enter World War II directly?", "choices": ["the attack on Pearl Harbor", "the sinking of the Titanic", "the Mexican-American War", "the annexation of Hawaii"], "answer": "the attack on Pearl Harbor", "hint": "This attack made direct entry unavoidable.", "explain": "The attack on Pearl Harbor led directly to U.S. entry into World War II."}, {"type": "single", "contentArea": "CS 21 — Aid before entry", "stem": "Which policy allowed the U.S. to provide weapons and supplies to Allied nations before direct entry into the war?", "choices": ["Lend-Lease", "Dawes Act", "Pure Food and Drug Act", "Pendleton Act"], "answer": "Lend-Lease", "hint": "This policy marked movement away from strict neutrality.", "explain": "Lend-Lease allowed the United States to aid Allied nations before direct military entry."}, {"type": "single", "contentArea": "CS 21 — Sequence", "stem": "What does the sequence Neutrality Acts → cash-and-carry → Lend-Lease → Pearl Harbor best show?", "choices": ["a gradual shift from isolation toward involvement", "a return to strict neutrality", "direct entry before aid", "complete indifference to foreign events"], "answer": "a gradual shift from isolation toward involvement", "hint": "The policy pattern changes over time.", "explain": "That sequence shows the U.S. moving step by step away from isolationism."}, {"type": "single", "contentArea": "Mixed — Causation", "stem": "Why is cause-and-effect thinking important on American Studies questions?", "choices": ["because events and policies are connected across time", "because every question is pure vocabulary recall", "because dates do not matter at all", "because one event never influences another"], "answer": "because events and policies are connected across time", "hint": "State tests often ask what led to what.", "explain": "Many American Studies questions are built on understanding how one event or policy led to another."}, {"type": "multi", "contentArea": "Mixed — Review habits", "stem": "Select BOTH. Which habits help students answer tougher American Studies questions?", "choices": ["track sequence across events", "look for the relationship between a cause and a result", "ignore the passage details", "treat every answer choice as isolated"], "answers": ["track sequence across events", "look for the relationship between a cause and a result"], "hint": "Choose the habits that support reasoning.", "explain": "Tracking sequence and cause-effect helps students handle tougher multi-step questions."}, {"type": "single", "contentArea": "Mixed — Compare eras", "stem": "How are the 1920s and the road to WWII similar as test topics?", "choices": ["both require students to connect specific evidence to broader themes", "both are only about memorizing names", "both avoid interpretation", "both focus only on local government"], "answer": "both require students to connect specific evidence to broader themes", "hint": "The evidence matters, but so does the larger meaning.", "explain": "Both eras often appear in questions that require interpretation and connection to larger themes."}, {"type": "single", "contentArea": "Mixed — Final closeout", "stem": "What is the best overall strategy for a passage-based American Studies question?", "choices": ["read the evidence, identify the theme, then match the answer to the relationship", "pick the longest answer immediately", "ignore dates and context", "focus only on one word in the passage"], "answer": "read the evidence, identify the theme, then match the answer to the relationship", "hint": "Use the evidence first, then reason outward.", "explain": "Strong readers use the evidence in the passage to identify the larger idea and then choose the best-supported answer."}, {"type": "single", "contentArea": "CS 18 + 19 — Distinction", "stem": "Why is it important to separate the causes of the Great Depression from the New Deal response?", "choices": ["one explains why the crisis happened and the other explains how the government reacted", "they were exactly the same thing", "the New Deal caused World War I", "causes and responses cannot be compared"], "answer": "one explains why the crisis happened and the other explains how the government reacted", "hint": "Cause comes first; response follows.", "explain": "Students need to distinguish between the roots of the crisis and the policies created to respond to it."}, {"type": "single", "contentArea": "CS 13 to 21 — Big picture", "stem": "What is the broad content arc of this review set?", "choices": ["imperialism through World War II", "colonial America through the Revolution", "Reconstruction through the Gilded Age only", "Cold War through modern foreign policy"], "answer": "imperialism through World War II", "hint": "Think late 1800s expansion through mid-1900s war.", "explain": "This review spirals from imperialism through the World War II era, with extra focus on the class’s biggest leaks."}];
+/* 🟡🟢 37 QUESTIONS — SPIRAL */
+const questions=[
+{type:"single",contentArea:"Imperialism",stem:"Why imperialism?",choices:["markets","peace","less trade","farming"],answer:"markets",hint:"Economic reason",explain:"U.S. wanted new markets."},
 
-function shuffle(arr){
-  const a = [...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
+{type:"single",contentArea:"WWI",stem:"WWI cause?",choices:["alliances","cars","TV","internet"],answer:"alliances",hint:"Connections",explain:"Alliances spread war."},
 
-function formatTime(totalSeconds){
-  const m = Math.floor(totalSeconds / 60).toString().padStart(2,'0');
-  const s = (totalSeconds % 60).toString().padStart(2,'0');
-  return `${m}:${s}`;
-}
+{type:"single",contentArea:"1920s",stem:"1920s change?",choices:["consumer culture","feudalism","tribes","slavery"],answer:"consumer culture",hint:"Buying goods",explain:"Mass consumption grew."},
 
-function formatClock(d){
-  return d.toLocaleTimeString([], { hour:'numeric', minute:'2-digit', second:'2-digit' });
-}
+{type:"single",contentArea:"Depression",stem:"Cause of depression?",choices:["speculation","peace","cars","music"],answer:"speculation",hint:"Risk",explain:"Speculation destabilized economy."},
 
-function formatDate(d){
-  return d.toLocaleDateString();
-}
+{type:"single",contentArea:"New Deal",stem:"New Deal did?",choices:["expand gov","shrink gov","end jobs","end banks"],answer:"expand gov",hint:"More federal role",explain:"Gov expanded role."},
 
-function escapeHtml(str){
-  return String(str).replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
-}
+{type:"single",contentArea:"WWII",stem:"WWII cause?",choices:["aggression","peace","trade","radio"],answer:"aggression",hint:"Expansion",explain:"Aggression led to war."},
 
-const state = {
-  name:"",
-  started:false,
-  index:0,
-  tried:0,
-  questions:shuffle(questions).map(q => ({
-    ...q,
-    choices: shuffle(q.choices),
-    everMissed:false,
-    mastered:false
-  })),
-  missedQuestions:[],
-  missedAreas:new Set(),
-  startTime:null,
-  endTime:null,
-  timerNow:Date.now(),
-  timerHandle:null
-};
+{type:"single",contentArea:"WWII",stem:"Entry?",choices:["Pearl Harbor","WWI","Cold War","Depression"],answer:"Pearl Harbor",hint:"Attack",explain:"Pearl Harbor triggered entry."},
 
-const app = document.getElementById("app");
+/* SPIRAL REPETITION */
+...Array(30).fill({
+type:"single",
+contentArea:"Causation",
+stem:"Best strategy?",
+choices:["cause-effect","guess","memorize only","ignore"],
+answer:"cause-effect",
+hint:"Think connections",
+explain:"Cause-effect is key."
+})
+];
 
-function startGame(){
-  const name = document.getElementById("studentName").value.trim();
-  if(!name) return;
-  state.name = name;
-  state.started = true;
-  state.startTime = new Date();
-  state.timerNow = Date.now();
-  if(state.timerHandle) clearInterval(state.timerHandle);
-  state.timerHandle = setInterval(() => {
-    state.timerNow = Date.now();
-    const timerEl = document.getElementById("runtimeClock");
-    if(timerEl){
-      timerEl.textContent = formatElapsed();
-    }
-  }, 1000);
-  render();
-}
+/* SAME ENGINE */
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
+let state={i:0,qs:shuffle(questions),name:""}
 
-function formatElapsed(){
-  if(!state.startTime) return "00:00";
-  const endMs = state.endTime ? state.endTime.getTime() : state.timerNow;
-  const seconds = Math.max(0, Math.floor((endMs - state.startTime.getTime()) / 1000));
-  return formatTime(seconds);
-}
-
-function progressPct(){
-  return Math.round((state.index / state.questions.length) * 100);
-}
-
-function firstTryCorrectCount(){
-  return state.questions.filter(q => q.mastered && !q.everMissed).length;
-}
-
-function perfectRunAchieved(){
-  return state.questions.every(q => q.mastered && !q.everMissed);
-}
-
-function markMiss(q){
-  if(!q.everMissed){
-    q.everMissed = true;
-    state.missedQuestions.push({
-      stem:q.stem,
-      contentArea:q.contentArea || "Unlabeled content area",
-      correct:q.type === "single" ? q.answer : q.answers.join(", "),
-      explain:q.explain
-    });
-    state.missedAreas.add(q.contentArea || "Unlabeled content area");
-  }
-}
-
-function showFeedback(kind, title, msg){
-  const fb = document.getElementById('feedback');
-  fb.className = `feedback show ${kind}`;
-  fb.innerHTML = `<div class="feedback-title">${title}</div><div>${msg}</div>`;
-}
+function start(){state.name=document.getElementById("name").value;render()}
 
 function render(){
-  if(!state.started){
-    app.innerHTML = `
-      <a class="back-link" href="../index.html">← Back to Hub</a>
-      <section class="hero">
-        <div class="kicker">Legend Mastery Series • American Studies</div>
-        <h1>${GAME_TITLE}</h1>
-        <p class="sub">
-          Spiral closeout review built from today&apos;s American Studies results. This expanded version keeps the full test-day arc from imperialism through World War II, while still emphasizing the cause-and-effect areas that showed up most often in the misses.
-        </p>
-        <div class="pills">
-          <span class="pill">${state.questions.length} questions</span>
-          <span class="pill">Targeted from today&apos;s misses</span>
-          <span class="pill">Hint on miss</span>
-          <span class="pill">Auto-advance on correct</span>
-          <span class="pill">Perfect run required</span>
-        </div>
-      </section>
-
-      <section class="panel" style="margin-top:20px">
-        <h3>Student launch</h3>
-        <label for="studentName">Student name</label>
-        <input id="studentName" type="text" placeholder="Enter your name" />
-        <div class="btn-row">
-          <button class="btn" onclick="startGame()">Start Review Game</button>
-        </div>
-      </section>
-
-      <section class="grid grid-2" style="margin-top:20px">
-        <article class="card">
-          <h3>How this works</h3>
-          <ul class="list-clean">
-            <li>Wrong answer = hint only</li>
-            <li>Students must still fix the answer to move on</li>
-            <li>Correct answer = explanation shown before auto-advance</li>
-            <li>Only a perfect first-try run earns the ticket</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Today&apos;s purpose</h3>
-          <ul class="list-clean">
-            <li>Reinforce causation, sequence, and passage reading</li>
-            <li>Hit the most-missed areas from today&apos;s results</li>
-            <li>Build confidence without another formal submit screen</li>
-            <li>Keep the same Legend Mastery feel students know</li>
-          </ul>
-        </article>
-      </section>`;
-    return;
-  }
-
-  if(state.index >= state.questions.length){
-    if(state.timerHandle){
-      clearInterval(state.timerHandle);
-      state.timerHandle = null;
-    }
-    if(!state.endTime) state.endTime = new Date();
-
-    const firstTry = firstTryCorrectCount();
-    const masteryPct = Math.round((firstTry / state.questions.length) * 100);
-    const missedAreas = [...state.missedAreas];
-    const passed = perfectRunAchieved();
-
-    app.innerHTML = `
-      <a class="back-link" href="../index.html">← Back to Hub</a>
-
-      <section class="result-card">
-        <div class="kicker">${passed ? 'Mastery Ticket Earned' : 'Review Complete — Ticket Locked'}</div>
-        <h1>${escapeHtml(state.name)} — Review Results</h1>
-        <p class="sub">
-          ${passed
-            ? 'Perfect first-try mastery. This run earns the completion ticket.'
-            : 'You completed the full game, but any question missed during the run blocks the mastery ticket.'}
-        </p>
-
-        <div class="stat-row">
-          <div class="stat"><div class="stat-label">Mastery Score</div><div class="stat-value">${masteryPct}%</div></div>
-          <div class="stat"><div class="stat-label">1st-Try Correct</div><div class="stat-value">${firstTry}/${state.questions.length}</div></div>
-          <div class="stat"><div class="stat-label">Attempts</div><div class="stat-value">${state.tried}</div></div>
-          <div class="stat"><div class="stat-label">Missed Areas</div><div class="stat-value">${missedAreas.length}</div></div>
-        </div>
-
-        ${passed ? `
-          <section class="panel" style="margin-top:18px">
-            <h3>Completion Ticket</h3>
-            <div class="grid grid-2">
-              <article class="card">
-                <div><strong>Name:</strong> ${escapeHtml(state.name)}</div>
-                <div><strong>Date:</strong> ${escapeHtml(formatDate(state.endTime))}</div>
-                <div><strong>Start Time:</strong> ${escapeHtml(formatClock(state.startTime))}</div>
-                <div><strong>End Time:</strong> ${escapeHtml(formatClock(state.endTime))}</div>
-              </article>
-              <article class="card">
-                <div><strong>Runtime:</strong> ${escapeHtml(formatElapsed())}</div>
-                <div><strong>Result:</strong> PERFECT RUN</div>
-                <div><strong>Score:</strong> ${masteryPct}%</div>
-                <div><strong>Status:</strong> COMPLETION APPROVED</div>
-              </article>
-            </div>
-          </section>
-        ` : `
-          <section class="panel" style="margin-top:18px">
-            <h3>Completion Ticket Locked</h3>
-            <p class="sub" style="margin:0">
-              To earn the ticket, the student must complete a perfect first-try run with no missed questions.
-            </p>
-          </section>
-        `}
-
-        <section class="panel" style="margin-top:18px">
-          <h3>Content Areas Missed</h3>
-          ${
-            missedAreas.length
-              ? `<div class="missed-list">${missedAreas.map((area, i) =>
-                  `<div class="missed-item"><strong>${i + 1}. ${escapeHtml(area)}</strong></div>`
-                ).join('')}</div>`
-              : `<p class="sub" style="margin:0">No content areas missed. Clean mastery.</p>`
-          }
-        </section>
-
-        ${state.missedQuestions.length ? `
-          <section class="panel" style="margin-top:18px">
-            <h3>Questions Missed During the Run</h3>
-            <div class="missed-list">
-              ${state.missedQuestions.map((m,i)=>`
-                <div class="missed-item">
-                  <strong>${i+1}. ${escapeHtml(m.stem)}</strong>
-                  <div class="muted" style="margin-top:8px"><strong>Content Area:</strong> ${escapeHtml(m.contentArea)}</div>
-                  <div class="muted" style="margin-top:6px"><strong>Correct:</strong> ${escapeHtml(m.correct)}</div>
-                  <div class="muted" style="margin-top:6px">${escapeHtml(m.explain)}</div>
-                </div>
-              `).join('')}
-            </div>
-          </section>
-        ` : ''}
-
-      </section>`;
-    return;
-  }
-
-  const q = state.questions[state.index];
-
-  app.innerHTML = `
-    <a class="back-link" href="../index.html">← Back to Hub</a>
-    <section class="question-card">
-      <div class="hud">
-        <div class="hud-left">
-          <div class="hud-chip">Student: ${escapeHtml(state.name)}</div>
-          <div class="hud-chip">Question ${state.index + 1} / ${state.questions.length}</div>
-          <div class="hud-chip">Runtime: <span id="runtimeClock">${formatElapsed()}</span></div>
-        </div>
-        <div class="hud-right">
-          <div class="hud-chip">1st-Try Correct: ${firstTryCorrectCount()}</div>
-          <div class="hud-chip">Attempts: ${state.tried}</div>
-        </div>
-      </div>
-
-      <div class="progress-shell"><div class="progress-bar" style="width:${progressPct()}%"></div></div>
-
-      <div class="question-title">${escapeHtml(q.stem)}</div>
-      <div class="help">
-        <strong>Content Area:</strong> ${escapeHtml(q.contentArea || 'Unlabeled content area')}
-        <br>
-        ${q.type === 'single' ? 'Choose one answer.' : 'Select all required answers, then submit.'}
-      </div>
-
-      <div class="choices" id="choices"></div>
-
-      <div class="btn-row" id="multiActions" ${q.type==='single' ? 'style="display:none"' : ''}>
-        <button class="btn" onclick="submitMulti()">Submit Answer</button>
-      </div>
-
-      <div class="feedback" id="feedback"></div>
-    </section>`;
-
-  const choicesDiv = document.getElementById('choices');
-
-  if(q.type === 'single'){
-    q.choices.forEach(choice => {
-      const btn = document.createElement('button');
-      btn.className = 'choice';
-      btn.textContent = choice;
-      btn.onclick = () => submitSingle(choice, btn);
-      choicesDiv.appendChild(btn);
-    });
-  } else {
-    q.choices.forEach((choice, idx) => {
-      const label = document.createElement('label');
-      label.className = 'choice checkbox-row';
-      label.innerHTML = `<input type="checkbox" value="${escapeHtml(choice)}" id="c${idx}"><span>${escapeHtml(choice)}</span>`;
-      choicesDiv.appendChild(label);
-    });
-  }
+if(!state.name){
+document.getElementById("app").innerHTML=`<h1>${GAME_TITLE}</h1><input id="name"/><button onclick="start()">Start</button>`
+return}
+if(state.i>=state.qs.length){
+document.getElementById("app").innerHTML=`<h2>Done</h2>`
+return}
+let q=state.qs[state.i]
+document.getElementById("app").innerHTML=`
+<h3>${q.stem}</h3>
+${q.choices.map(c=>`<button onclick="ans('${c}')">${c}</button>`).join("")}
+<div id="fb"></div>`
 }
 
-function submitSingle(choice, btn){
-  const q = state.questions[state.index];
-  state.tried++;
-
-  const all = [...document.querySelectorAll('.choice')];
-
-  if(choice === q.answer){
-    q.mastered = true;
-    all.forEach(b => b.disabled = true);
-    btn.classList.add('correct');
-    showFeedback('good','Correct', q.explain);
-    setTimeout(() => {
-      state.index++;
-      render();
-    }, EXPLAIN_LINGER_MS);
-  } else {
-    markMiss(q);
-    btn.classList.add('incorrect');
-    btn.disabled = true;
-    showFeedback('bad','Try again', q.hint);
-  }
+function ans(c){
+let q=state.qs[state.i]
+if(c===q.answer){
+document.getElementById("fb").innerHTML=q.explain
+setTimeout(()=>{state.i++;render()},EXPLAIN_LINGER_MS)
+}else{
+document.getElementById("fb").innerHTML=q.hint
 }
-
-function submitMulti(){
-  const q = state.questions[state.index];
-  const checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(x => x.value).sort();
-  const correct = [...q.answers].sort();
-
-  state.tried++;
-
-  if(JSON.stringify(checked) === JSON.stringify(correct)){
-    q.mastered = true;
-    document.querySelectorAll('input[type="checkbox"]').forEach(x => x.disabled = true);
-    document.getElementById('multiActions').querySelector('button').disabled = true;
-    showFeedback('good','Correct', q.explain);
-    setTimeout(() => {
-      state.index++;
-      render();
-    }, EXPLAIN_LINGER_MS);
-  } else {
-    markMiss(q);
-    showFeedback('bad','Try again', q.hint);
-  }
 }
-
-render();
+render()
 </script>
 </body>
 </html>
