@@ -1,0 +1,1246 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>American Studies Period 7 Main Group — Segment 2</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    :root{
+      --bg:#071226;
+      --panel:#0b1730;
+      --line:#23365c;
+      --text:#eaf2ff;
+      --muted:#a9bbdd;
+      --warn:#f4b740;
+      --good:#4fd18b;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background:radial-gradient(circle at top,#0b1b3d 0%,#061124 65%,#040b19 100%);
+      color:var(--text);
+      font-family:Arial, Helvetica, sans-serif;
+    }
+    body{min-height:100vh}
+    .wrap{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+    .back-link{display:inline-block;color:#9db8ff;text-decoration:none;font-weight:700;margin-bottom:10px}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .topbar-left,.topbar-right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill,.tag{
+      border:1px solid var(--line);background:#081326;color:var(--text);
+      border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700;
+    }
+    .panel{
+      background:rgba(8,19,38,.92);border:1px solid var(--line);border-radius:16px;
+      padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.28);
+    }
+    .name-card{max-width:760px;margin:24px auto 0}
+    .kicker{
+      color:#8eb1ff;font-size:12px;font-weight:800;text-transform:uppercase;
+      letter-spacing:.08em;margin-bottom:8px;
+    }
+    h1,h2{margin:0 0 10px;line-height:1.2}
+    .sub,.help,.muted{color:var(--muted);line-height:1.5}
+    .input{
+      width:100%;min-height:44px;border-radius:12px;border:1px solid var(--line);
+      background:#071222;color:var(--text);padding:10px 12px;font-size:16px;
+    }
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .stat{background:#081326;border:1px solid var(--line);border-radius:12px;padding:12px}
+    .stat-label{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:6px}
+    .stat-value{font-size:18px;font-weight:800;color:var(--text)}
+    .progress-wrap{
+      margin-top:12px;width:100%;height:12px;border-radius:999px;overflow:hidden;
+      background:#071222;border:1px solid var(--line);
+    }
+    .progress-bar{height:100%;background:linear-gradient(90deg,#6ea2ff,#9bc2ff)}
+    .question-card{margin-top:4px}
+    .q-type{color:#9db8ff;font-size:13px;font-weight:800;margin-bottom:10px}
+    .q-stem{font-size:22px;line-height:1.35;font-weight:800;margin-bottom:16px}
+    .prompt-box,.passage{
+      background:#081326;border:1px solid var(--line);border-radius:12px;
+      padding:12px;margin-bottom:14px;line-height:1.6;
+    }
+    .choices{display:grid;gap:10px}
+    .choice{
+      width:100%;text-align:left;border:1px solid var(--line);background:#071222;color:var(--text);
+      border-radius:12px;padding:12px 14px;min-height:50px;font-size:16px;font-weight:700;cursor:pointer;
+    }
+    .choice:hover{border-color:#5f8fff}
+    .choice.selected{background:#11254b;border-color:#79a9ff}
+    .choice-letter{display:inline-block;min-width:28px;color:#aecdff}
+    .footer-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+    button{
+      min-height:42px;border:none;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:800;
+      cursor:pointer;background:#7ea9ff;color:#071426;
+    }
+    button.secondary{background:#1a2d52;color:var(--text);border:1px solid var(--line)}
+    button.warn{background:#f4b740;color:#2a1b00}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    .review-box{display:grid;gap:12px;margin-top:12px}
+    .review-item{border:1px solid var(--line);border-radius:12px;padding:12px;background:#081326}
+    .review-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+    .sep{border:none;border-top:1px solid var(--line);margin:16px 0}
+    .result-ready{color:var(--good)}
+    .result-review{color:var(--warn)}
+    .submit-status{margin-top:10px;color:var(--muted);font-weight:700}
+    .submit-status.error{color:#ff9b9b}
+    .submit-status.good{color:var(--good)}
+    @media (max-width:760px){
+      .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .q-stem{font-size:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app"></div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxs-3yj0_p8rPFP3H3a3E8vv6YXBH6U3ssNs_Wv5JM_Zm_8XwmBwrtaDNpBUfyjKmauOg/exec";
+
+const TEST_META = {
+  "subject": "American Studies",
+  "week": "Period 7 Small-Group Targeted Build",
+  "day": "Main Group",
+  "segment": "Segment 2",
+  "title": "American Studies Period 7 Main Group — Segment 2",
+  "focus": "Application / Analysis"
+};
+
+const ATTEMPT_KEY = "AMSTUD_MAIN_S2_ATTEMPT_LOCK";
+const STORAGE_KEY = "LEGEND_AMSTUD_MAIN_S2_STATE_V1";
+const TEACHER_SECRET = "legend";
+const TEACHER_OVERRIDE = new URLSearchParams(location.search).get("unlock") === TEACHER_SECRET;
+
+const QUESTION_BANK = [
+  {
+    "id": "MGS2-Q01",
+    "type": "partab",
+    "cs": "CS 13",
+    "efl": "Explain the causes and consequences of American imperialism.",
+    "contentElaboration": "Spanish-American War and expansion",
+    "passage": "Newspapers sensationalized events in Cuba, public anger rose after the USS Maine exploded, and pressure grew for intervention against Spain.",
+    "partA": {
+      "stem": "Part A: Which war is best described?",
+      "choices": [
+        "Spanish-American War",
+        "World War I",
+        "Mexican-American War",
+        "Korean War"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What was one consequence of that war?",
+      "choices": [
+        "The United States gained overseas influence and territories",
+        "The United States adopted permanent isolation from foreign affairs",
+        "Congress abolished the navy",
+        "All U.S. trade with Latin America ended"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "The Spanish-American War accelerated U.S. overseas expansion."
+  },
+  {
+    "id": "MGS2-Q02",
+    "type": "passage-mcq",
+    "cs": "CS 13",
+    "efl": "Explain the causes and consequences of American imperialism.",
+    "contentElaboration": "territorial consequences",
+    "passage": "Following victory in war, the United States controlled Puerto Rico and had increased influence in the Caribbean and Pacific.",
+    "stem": "Which event most directly produced this result?",
+    "choices": [
+      "Spanish-American War",
+      "Civil War",
+      "Mexican-American War",
+      "War of 1812"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The Spanish-American War greatly expanded U.S. overseas influence."
+  },
+  {
+    "id": "MGS2-Q03",
+    "type": "passage-mcq",
+    "cs": "CS 14",
+    "efl": "Explain the causes of American imperialism.",
+    "contentElaboration": "markets and naval strategy",
+    "passage": "A senator argues that a modern nation needs overseas markets, coaling stations, and a strong navy to protect trade and project power.",
+    "stem": "Which motive for imperialism is most clearly shown?",
+    "choices": [
+      "economic and strategic expansion",
+      "withdrawal from world affairs",
+      "ending industrial growth",
+      "reducing naval power"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The passage links imperialism to markets and military strategy."
+  },
+  {
+    "id": "MGS2-Q04",
+    "type": "partab",
+    "cs": "CS 14",
+    "efl": "Explain the causes of American imperialism.",
+    "contentElaboration": "economic and strategic motives",
+    "passage": "Business leaders call for overseas customers while naval strategists demand more coaling stations and protected sea lanes.",
+    "partA": {
+      "stem": "Part A: Which two motives are reflected most clearly?",
+      "choices": [
+        "economic opportunity and military strategy",
+        "temperance and prohibition repeal",
+        "agrarian self-sufficiency and isolation",
+        "settlement of western territories only"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What broader policy did those motives support?",
+      "choices": [
+        "imperial expansion",
+        "neutrality in Europe",
+        "the New Deal",
+        "civil rights reform"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Economic and strategic motives both supported imperial expansion."
+  },
+  {
+    "id": "MGS2-Q05",
+    "type": "partab",
+    "cs": "CS 15",
+    "efl": "Explain how World War I affected the United States and the world.",
+    "contentElaboration": "mobilization and debate",
+    "passage": "The federal government coordinated railroads, encouraged bond purchases, and directed industrial production while Americans later debated the peace settlement.",
+    "partA": {
+      "stem": "Part A: Which effect of World War I is best shown?",
+      "choices": [
+        "expanded federal mobilization",
+        "complete end of federal economic activity",
+        "abolition of public messaging",
+        "permanent U.S. membership in the League of Nations"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: Which postwar question did many Americans debate?",
+      "choices": [
+        "whether the United States should join the League of Nations",
+        "whether slavery should expand westward",
+        "whether the colonies should ratify the Constitution",
+        "whether the Northwest Territory should become a state"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "WWI expanded federal mobilization and sparked a debate over international involvement."
+  },
+  {
+    "id": "MGS2-Q06",
+    "type": "partab",
+    "cs": "CS 15",
+    "efl": "Explain how World War I affected the United States and the world.",
+    "contentElaboration": "wartime messaging and limits",
+    "passage": "The government promoted wartime unity, encouraged bond purchases, and punished some forms of antiwar speech during World War I.",
+    "partA": {
+      "stem": "Part A: Which method did the government use to build support for the war?",
+      "choices": [
+        "propaganda campaigns",
+        "civil service reform",
+        "interstate highway construction",
+        "desegregation rulings"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What broader point does the passage illustrate?",
+      "choices": [
+        "War can expand federal influence over society and speech",
+        "Wars always reduce government power",
+        "Foreign conflict never affects domestic life",
+        "The Bill of Rights ends during wartime"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "World War I increased federal influence over mobilization and public messaging."
+  },
+  {
+    "id": "MGS2-Q07",
+    "type": "passage-mcq",
+    "cs": "CS 15",
+    "efl": "Explain how World War I affected the United States and the world.",
+    "contentElaboration": "draft and mobilization",
+    "passage": "Millions of men registered for military service while factories adjusted production to meet wartime needs.",
+    "stem": "Which conclusion is best supported?",
+    "choices": [
+      "World War I required large-scale national mobilization",
+      "The war had little effect on the home front",
+      "The draft ended before the United States entered the war",
+      "Industry played no role in the conflict"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The passage shows both military and industrial mobilization."
+  },
+  {
+    "id": "MGS2-Q08",
+    "type": "partab",
+    "cs": "CS 16",
+    "efl": "Explain how postwar prosperity and technology changed American life.",
+    "contentElaboration": "consumerism and media",
+    "passage": "A family buys a car, listens to radio programs, watches movies, and purchases appliances that factories produce in large numbers.",
+    "partA": {
+      "stem": "Part A: Which broader trend is best illustrated?",
+      "choices": [
+        "growth of mass consumer culture",
+        "return to subsistence farming",
+        "collapse of entertainment industries",
+        "end of technological innovation"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What helped produce that trend?",
+      "choices": [
+        "mass production and new communication technology",
+        "decline of transportation networks",
+        "elimination of advertising",
+        "rejection of industrial goods"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Mass production and new media helped reshape American life in the 1920s."
+  },
+  {
+    "id": "MGS2-Q09",
+    "type": "passage-mcq",
+    "cs": "CS 16",
+    "efl": "Explain how postwar prosperity and technology changed American life.",
+    "contentElaboration": "suburbanization and mobility",
+    "passage": "After World War II, families moved into suburbs, commuted on highways, and relied on automobiles for work and daily life.",
+    "stem": "Which conclusion is best supported by the passage?",
+    "choices": [
+      "Transportation and prosperity reshaped settlement patterns",
+      "Most Americans abandoned automobiles after the war",
+      "Suburban life reduced mobility",
+      "Postwar life returned to preindustrial patterns"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "Highways, cars, and prosperity helped drive suburban growth."
+  },
+  {
+    "id": "MGS2-Q10",
+    "type": "partab",
+    "cs": "CS 16",
+    "efl": "Explain how postwar prosperity and technology changed American life.",
+    "contentElaboration": "technology and leisure",
+    "passage": "Millions of Americans listened to the same songs, news, and sports events at home through a new entertainment technology.",
+    "partA": {
+      "stem": "Part A: Which technology is best described?",
+      "choices": [
+        "radio",
+        "telegraph",
+        "steel plow",
+        "cotton gin"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What was one important effect?",
+      "choices": [
+        "creation of a shared national culture",
+        "end of all local communities",
+        "collapse of consumer advertising",
+        "reduction of mass entertainment"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Radio helped create shared experiences across the country."
+  },
+  {
+    "id": "MGS2-Q11",
+    "type": "passage-mcq",
+    "cs": "CS 17",
+    "efl": "Explain how social and cultural tensions developed in the 1920s.",
+    "contentElaboration": "modern vs traditional values",
+    "passage": "One group celebrates jazz, films, and changing gender norms, while another condemns those trends and calls for stricter moral standards and older values.",
+    "stem": "Which broader theme is best illustrated?",
+    "choices": [
+      "conflict between modern and traditional values",
+      "universal agreement on social change",
+      "the end of nativism",
+      "disappearance of rural-urban differences"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The passage highlights the clash between modernism and traditionalism."
+  },
+  {
+    "id": "MGS2-Q12",
+    "type": "partab",
+    "cs": "CS 17",
+    "efl": "Explain how social and cultural tensions developed in the 1920s.",
+    "contentElaboration": "nativism and restriction",
+    "passage": "Lawmakers warn that newcomers are changing American culture and push for limits on immigration from certain parts of the world.",
+    "partA": {
+      "stem": "Part A: Which attitude is most clearly shown?",
+      "choices": [
+        "nativism",
+        "containment",
+        "laissez-faire",
+        "abolitionism"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: Which policy best fits that attitude?",
+      "choices": [
+        "immigration restriction",
+        "creation of Social Security",
+        "Lend-Lease aid",
+        "desegregation orders"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Nativism in the 1920s often led to restrictive immigration policies."
+  },
+  {
+    "id": "MGS2-Q13",
+    "type": "passage-mcq",
+    "cs": "CS 17",
+    "efl": "Explain how social and cultural tensions developed in the 1920s.",
+    "contentElaboration": "religion and science",
+    "passage": "A teacher is attacked for presenting modern scientific ideas that some community members believe contradict traditional religious teaching.",
+    "stem": "Which broader 1920s conflict does the passage best reflect?",
+    "choices": [
+      "tension between modern ideas and traditional beliefs",
+      "debate over the New Deal",
+      "argument over imperialism",
+      "conflict about Reconstruction policy"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The passage reflects the clash between modern thought and traditional religious belief."
+  },
+  {
+    "id": "MGS2-Q14",
+    "type": "partab",
+    "cs": "CS 18",
+    "efl": "Explain the causes of the Great Depression.",
+    "contentElaboration": "speculation and debt",
+    "passage": "In the late 1920s, many investors bought stocks on margin, banks made risky loans, and consumers purchased goods using increasing amounts of credit.",
+    "partA": {
+      "stem": "Part A: Which crisis followed these conditions?",
+      "choices": [
+        "Great Depression",
+        "Era of Good Feelings",
+        "Progressive Era",
+        "Reconstruction"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: Which explanation is best supported?",
+      "choices": [
+        "Underlying weaknesses made economic collapse more likely",
+        "Debt and speculation made the economy permanently stable",
+        "Banks were insulated from all risk",
+        "Consumers avoided financial danger"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Speculation, risky lending, and heavy debt made the economy vulnerable."
+  },
+  {
+    "id": "MGS2-Q15",
+    "type": "passage-mcq",
+    "cs": "CS 18",
+    "efl": "Explain the causes of the Great Depression.",
+    "contentElaboration": "banking weakness",
+    "passage": "As banks failed, people lost savings and many businesses and families could no longer borrow money to keep operating.",
+    "stem": "Which conclusion is best supported?",
+    "choices": [
+      "Bank failures deepened the Depression by reducing savings and credit",
+      "Bank failures immediately solved the crisis",
+      "Credit became easier to obtain during the Depression",
+      "Consumers gained more financial confidence"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "Bank failures wiped out savings and restricted credit."
+  },
+  {
+    "id": "MGS2-Q16",
+    "type": "passage-mcq",
+    "cs": "CS 18",
+    "efl": "Explain the causes of the Great Depression.",
+    "contentElaboration": "interconnected causes",
+    "passage": "Farm prices were weak, consumers carried debt, investors speculated, and banks made risky loans during the late 1920s.",
+    "stem": "Which statement best explains the passage?",
+    "choices": [
+      "The Great Depression had multiple interconnected causes",
+      "The Depression resulted from only one isolated event",
+      "The economy was secure because agriculture was strong",
+      "Speculation had no impact on economic stability"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The passage shows several overlapping weaknesses that contributed to collapse."
+  },
+  {
+    "id": "MGS2-Q17",
+    "type": "partab",
+    "cs": "CS 19",
+    "efl": "Explain federal responses to the Great Depression.",
+    "contentElaboration": "New Deal and relief",
+    "passage": "The federal government funded work projects, insured bank deposits, and created old-age pensions while expanding economic regulation.",
+    "partA": {
+      "stem": "Part A: Which broader response is described?",
+      "choices": [
+        "New Deal programs",
+        "Imperialist expansion",
+        "strict laissez-faire withdrawal",
+        "postwar suburbanization"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What major effect did this response have?",
+      "choices": [
+        "The federal government's role expanded",
+        "The federal government ended all relief efforts",
+        "States gained complete control over national banking",
+        "Public works were abolished"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "New Deal programs significantly expanded the federal role in economic life."
+  },
+  {
+    "id": "MGS2-Q18",
+    "type": "partab",
+    "cs": "CS 19",
+    "efl": "Explain federal responses to the Great Depression.",
+    "contentElaboration": "program purpose",
+    "passage": "A worker receives a temporary job building roads and bridges through a federally funded project during the 1930s.",
+    "partA": {
+      "stem": "Part A: Which New Deal goal is most clearly shown?",
+      "choices": [
+        "relief and recovery through public works",
+        "ending all federal spending",
+        "returning to mercantilism",
+        "promoting imperialism"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: Why did programs like this matter?",
+      "choices": [
+        "They provided employment while improving infrastructure",
+        "They eliminated all economic hardship immediately",
+        "They removed the federal government from the economy",
+        "They replaced private property with state ownership"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Public works programs aimed to provide jobs and stimulate recovery."
+  },
+  {
+    "id": "MGS2-Q19",
+    "type": "passage-mcq",
+    "cs": "CS 19",
+    "efl": "Explain federal responses to the Great Depression.",
+    "contentElaboration": "changing government role",
+    "passage": "Citizens begin to expect the federal government to act when banks fail, unemployment rises, or the economy collapses.",
+    "stem": "Why is this historically significant?",
+    "choices": [
+      "It reflects a long-term shift in expectations about federal responsibility",
+      "It proves the government stopped responding to crises",
+      "It shows Americans rejected all public programs",
+      "It means economic problems disappeared after the 1930s"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The New Deal era changed expectations about the federal government's role in crisis."
+  },
+  {
+    "id": "MGS2-Q20",
+    "type": "partab",
+    "cs": "CS 20",
+    "efl": "Explain the causes and consequences of World War II.",
+    "contentElaboration": "appeasement and aggression",
+    "passage": "Germany violated treaty limits, remilitarized, absorbed nearby territory, and faced weak responses from other powers in the 1930s.",
+    "partA": {
+      "stem": "Part A: What was one result of weak responses to aggression?",
+      "choices": [
+        "Axis leaders became more aggressive",
+        "World peace became secure",
+        "Military buildups ended",
+        "The League of Nations gained strong enforcement power"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: Which global conflict followed?",
+      "choices": [
+        "World War II",
+        "War of 1812",
+        "Spanish-American War",
+        "Cold War only"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Unchecked aggression in the 1930s helped lead directly to World War II."
+  },
+  {
+    "id": "MGS2-Q21",
+    "type": "passage-mcq",
+    "cs": "CS 20",
+    "efl": "Explain the causes and consequences of World War II.",
+    "contentElaboration": "Versailles and instability",
+    "passage": "After World War I, many Germans faced economic hardship and resentment tied to the Treaty of Versailles, while extremist movements gained support.",
+    "stem": "Which conclusion is best supported?",
+    "choices": [
+      "Postwar conditions helped create instability that later fueled World War II",
+      "The Treaty of Versailles created lasting political harmony",
+      "Economic prosperity prevented extremism",
+      "European nationalism disappeared after the war"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "Economic hardship and resentment contributed to later instability and extremism."
+  },
+  {
+    "id": "MGS2-Q22",
+    "type": "partab",
+    "cs": "CS 20",
+    "efl": "Explain the causes and consequences of World War II.",
+    "contentElaboration": "war origins",
+    "passage": "Leaders hoped concessions would preserve peace, but dictators interpreted those concessions as weakness and continued expanding.",
+    "partA": {
+      "stem": "Part A: Which policy is best described?",
+      "choices": [
+        "appeasement",
+        "containment",
+        "isolationism",
+        "detente"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: What was a major consequence of that policy?",
+      "choices": [
+        "Aggression continued and war became more likely",
+        "The Axis powers immediately stopped expanding",
+        "All international tensions disappeared",
+        "The League of Nations gained complete authority"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "Appeasement failed to stop aggression and made a larger war more likely."
+  },
+  {
+    "id": "MGS2-Q23",
+    "type": "partab",
+    "cs": "CS 21",
+    "efl": "Explain the U.S. transition from isolationism to involvement in World War II.",
+    "contentElaboration": "policy sequence",
+    "passage": "The United States first passed Neutrality Acts, then used cash-and-carry, later approved Lend-Lease, and finally entered the war after Pearl Harbor.",
+    "partA": {
+      "stem": "Part A: Which statement best summarizes this sequence?",
+      "choices": [
+        "The nation moved gradually from isolation toward intervention",
+        "The nation remained completely neutral throughout the war",
+        "The United States entered the war before aiding other nations",
+        "Policy returned to strict isolation after Pearl Harbor"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "partB": {
+      "stem": "Part B: Which event triggered direct U.S. entry into the war?",
+      "choices": [
+        "attack on Pearl Harbor",
+        "passage of the Dawes Act",
+        "sinking of the Titanic",
+        "formation of NATO"
+      ],
+      "answer": [
+        0
+      ]
+    },
+    "explain": "The sequence shows a gradual shift away from isolation, with Pearl Harbor prompting direct entry."
+  },
+  {
+    "id": "MGS2-Q24",
+    "type": "passage-mcq",
+    "cs": "CS 21",
+    "efl": "Explain the U.S. transition from isolationism to involvement in World War II.",
+    "contentElaboration": "aid before entry",
+    "passage": "Before entering the war directly, the United States provided weapons and supplies to Allied nations fighting Axis powers.",
+    "stem": "Which policy best matches the passage?",
+    "choices": [
+      "Lend-Lease",
+      "Dawes Act",
+      "Pure Food and Drug Act",
+      "Pendleton Act"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "Lend-Lease allowed the United States to aid Allied nations before direct entry."
+  },
+  {
+    "id": "MGS2-Q25",
+    "type": "passage-mcq",
+    "cs": "CS 21",
+    "efl": "Explain the U.S. transition from isolationism to involvement in World War II.",
+    "contentElaboration": "causation and sequence",
+    "passage": "Neutrality laws came first, then limited aid, then larger-scale support for the Allies, and finally direct military entry after an attack.",
+    "stem": "Which historical skill is most useful for analyzing the passage?",
+    "choices": [
+      "understanding sequence and cause-effect",
+      "memorizing unrelated dates",
+      "studying only geography",
+      "focusing only on individual biographies"
+    ],
+    "answer": [
+      0
+    ],
+    "explain": "The passage is best understood by tracing the sequence and causation of policy change."
+  }
+];
+
+function hash32(str){
+  let h = 2166136261 >>> 0;
+  for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    let t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function shuffleArray(arr, seedStr){
+  const a = arr.slice(), rand = mulberry32(hash32(seedStr));
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleIndices(length, seedStr){
+  const arr = Array.from({length}, (_, i) => i), rand = mulberry32(hash32(seedStr));
+  for(let i=arr.length-1;i>0;i--){ const j = Math.floor(rand() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+  return arr;
+}
+function cloneQuestion(q){ return JSON.parse(JSON.stringify(q)); }
+function remapQuestion(q, seedStr){
+  const question = cloneQuestion(q);
+  if(question.type === "mc" || question.type === "multiselect" || question.type === "dropdown" || question.type === "passage-mcq"){
+    if(Array.isArray(question.choices) && question.choices.length > 1){
+      const order = shuffleIndices(question.choices.length, seedStr), inverseMap = {};
+      order.forEach((oldIdx, newIdx) => inverseMap[oldIdx] = newIdx);
+      question.choices = order.map(i => question.choices[i]);
+      question.answer = question.answer.map(oldIdx => inverseMap[oldIdx]).sort((a,b)=>a-b);
+    }
+  }
+  if(question.type === "partab"){
+    if(Array.isArray(question.partA?.choices) && question.partA.choices.length > 1){
+      const orderA = shuffleIndices(question.partA.choices.length, `${seedStr}|partA`), inverseA = {};
+      orderA.forEach((oldIdx, newIdx) => inverseA[oldIdx] = newIdx);
+      question.partA.choices = orderA.map(i => question.partA.choices[i]);
+      question.partA.answer = question.partA.answer.map(oldIdx => inverseA[oldIdx]).sort((a,b)=>a-b);
+    }
+    if(Array.isArray(question.partB?.choices) && question.partB.choices.length > 1){
+      const orderB = shuffleIndices(question.partB.choices.length, `${seedStr}|partB`), inverseB = {};
+      orderB.forEach((oldIdx, newIdx) => inverseB[oldIdx] = newIdx);
+      question.partB.choices = orderB.map(i => question.partB.choices[i]);
+      question.partB.answer = question.partB.answer.map(oldIdx => inverseB[oldIdx]).sort((a,b)=>a-b);
+    }
+  }
+  return question;
+}
+function escapeHtml(str){
+  return String(str ?? "").replace(/[&<>"']/g, s => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[s]);
+}
+function nowLocalString(d){ return new Date(d).toLocaleString(); }
+function formatRuntime(seconds){
+  const total = Math.max(0, Math.floor(seconds));
+  const h = Math.floor(total / 3600).toString().padStart(2,"0");
+  const m = Math.floor((total % 3600) / 60).toString().padStart(2,"0");
+  const s = Math.floor(total % 60).toString().padStart(2,"0");
+  return `${h}:${m}:${s}`;
+}
+function letter(i){ return ["A","B","C","D","E","F"][i] || ""; }
+function normalizeArray(arr){ return Array.isArray(arr) ? [...arr].sort((a,b)=>a-b) : []; }
+function sameArray(a,b){
+  const aa = normalizeArray(a), bb = normalizeArray(b);
+  return aa.length === bb.length && aa.every((v,i)=>v===bb[i]);
+}
+
+let QUESTIONS = [];
+let state = { studentName:"", startedAt:null, current:0, answers:[], submitted:false, score:null, attemptNumber:1, questionOrderSeed:null };
+let submitInFlight = false;
+
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(parsed && !parsed.submitted) state = parsed;
+    }
+  }catch(err){}
+}
+function isLocked(){ return TEACHER_OVERRIDE ? false : localStorage.getItem(ATTEMPT_KEY) === "USED"; }
+function teacherBadge(){ return TEACHER_OVERRIDE ? `<span class="pill">Teacher Override Active</span>` : ``; }
+function teacherUnlockNow(){ localStorage.removeItem(ATTEMPT_KEY); localStorage.removeItem(STORAGE_KEY); location.reload(); }
+function countAnswered(){ return state.answers.filter(a => a !== null).length; }
+function buildQuestions(){
+  const seed = state.questionOrderSeed || "default-seed";
+  QUESTIONS = QUESTION_BANK.map((q, idx) => remapQuestion(q, `${seed}|${q.id || idx}|choices`));
+  QUESTIONS = shuffleArray(QUESTIONS, `${seed}|question-order`);
+  if(!Array.isArray(state.answers) || state.answers.length !== QUESTIONS.length){
+    state.answers = Array(QUESTIONS.length).fill(null);
+  }
+}
+function isCorrect(q, answer){
+  if(q.type === "mc" || q.type === "multiselect" || q.type === "dropdown" || q.type === "passage-mcq") return sameArray(answer, q.answer);
+  if(q.type === "matching") return sameArray(answer, q.answer);
+  if(q.type === "partab"){
+    if(!answer || !Array.isArray(answer.partA) || !Array.isArray(answer.partB)) return false;
+    return sameArray(answer.partA, q.partA.answer) && sameArray(answer.partB, q.partB.answer);
+  }
+  return false;
+}
+function currentAnswerLabel(q, ans){
+  if(ans === null) return "No answer";
+  if(q.type === "mc" || q.type === "multiselect" || q.type === "dropdown" || q.type === "passage-mcq") return ans.map(i => letter(i)).join(", ");
+  if(q.type === "matching") return "Answered";
+  if(q.type === "partab"){
+    const a = (ans.partA || []).map(i => letter(i)).join(", ");
+    const b = (ans.partB || []).map(i => letter(i)).join(", ");
+    return `Part A: ${a || "-"} | Part B: ${b || "-"}`;
+  }
+  return "Answered";
+}
+function buildLockedScreen(){
+  document.getElementById("app").innerHTML = `
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+    <div class="panel">
+      <div class="kicker">Attempt Locked</div>
+      <h1>${TEST_META.title}</h1>
+      <p class="sub">This segment has already been completed on this device/browser.</p>
+      <div class="footer-actions">
+        ${TEACHER_OVERRIDE ? `<button class="warn" onclick="teacherUnlockNow()">Teacher Unlock This Browser</button>` : ``}
+        <button onclick="location.href='../index.html'">Back to Hub</button>
+      </div>
+    </div>`;
+}
+function buildIntro(){
+  document.getElementById("app").innerHTML = `
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+    <div class="panel name-card">
+      <div class="kicker">Legend Mastery Series • American Studies</div>
+      <h1>${TEST_META.title}</h1>
+      <p class="sub">30-question OST-style segment. Name is required to begin. One attempt only.</p>
+      <input id="nameInput" class="input" type="text" maxlength="60" placeholder="Enter your name to begin" />
+      <div class="help">This is a locked test shell. Questions and answer choices are shuffled for test realism. There is no student restart.</div>
+      <div class="footer-actions">
+        ${TEACHER_OVERRIDE ? `<span class="tag">Teacher Override Active</span>` : ``}
+        <button id="startBtn">Start Test</button>
+      </div>
+    </div>`;
+  document.getElementById("startBtn").onclick = () => {
+    const name = document.getElementById("nameInput").value.trim();
+    if(!name){ alert("Enter your name to begin."); return; }
+    state.studentName = name;
+    state.startedAt = new Date().toISOString();
+    state.attemptNumber = 1;
+    state.questionOrderSeed = `${state.studentName}|${state.startedAt}|${TEST_META.title}`;
+    buildQuestions(); save(); renderTest();
+  };
+}
+function confirmReviewOpen(){ if(confirm("Open the review screen? From there, students can inspect answers and submit the segment.")) reviewScreen(); }
+function buildTopbar(){
+  const started = new Date(state.startedAt);
+  const runtime = formatRuntime((Date.now() - started.getTime()) / 1000);
+  const answered = countAnswered();
+  const progressPct = Math.round((answered / QUESTIONS.length) * 100);
+  return `
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+    <div class="topbar">
+      <div class="topbar-left">${TEACHER_OVERRIDE ? `<button class="warn" onclick="teacherUnlockNow()">Teacher Unlock</button>` : ``}</div>
+      <div class="topbar-right">
+        <button class="secondary" onclick="confirmReviewOpen()">Open Review Screen</button>
+        ${teacherBadge()}
+        <span class="pill">Name: ${escapeHtml(state.studentName)}</span>
+        <span class="pill">Attempt: ${state.attemptNumber}</span>
+        <span class="pill">Started: ${escapeHtml(nowLocalString(started))}</span>
+        <span class="pill">Runtime: <span id="runtimeDisplay">${runtime}</span></span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Test</div><div class="stat-value">${TEST_META.day} ${TEST_META.segment}</div></div>
+        <div class="stat"><div class="stat-label">Focus</div><div class="stat-value">${TEST_META.focus}</div></div>
+        <div class="stat"><div class="stat-label">Progress</div><div class="stat-value">${answered} / ${QUESTIONS.length}</div></div>
+        <div class="stat"><div class="stat-label">Completion</div><div class="stat-value">${progressPct}%</div></div>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:${progressPct}%"></div></div>
+    </div>`;
+}
+function renderQuestion(){
+  const q = QUESTIONS[state.current], currentAnswer = state.answers[state.current];
+  document.getElementById("app").innerHTML = buildTopbar() + `
+    <div class="panel question-card">
+      <div class="q-type">Question ${state.current + 1} of ${QUESTIONS.length} • ${escapeHtml(q.type.toUpperCase())} • ${escapeHtml(q.cs)}</div>
+      ${q.passage ? `<div class="passage">${escapeHtml(q.passage)}</div>` : ``}
+      ${q.prompt ? `<div class="prompt-box">${escapeHtml(q.prompt)}</div>` : ``}
+      <div class="q-stem">${escapeHtml(q.stem)}</div>
+      ${renderInputForQuestion(q, currentAnswer)}
+      <div class="footer-actions">
+        <button class="secondary" ${state.current === 0 ? "disabled" : ""} onclick="prevQuestion()">Previous</button>
+        <button class="secondary" onclick="skipQuestion()">Skip</button>
+      </div>
+    </div>`;
+}
+function renderInputForQuestion(q, currentAnswer){
+  if(q.type === "mc" || q.type === "passage-mcq" || q.type === "dropdown"){
+    return `<div class="choices">${q.choices.map((choice, i) => `
+      <button class="choice ${currentAnswer !== null && currentAnswer[0] === i ? "selected" : ""}" onclick="selectChoice([${i}])">
+        <span class="choice-letter">${letter(i)}.</span> ${escapeHtml(choice)}
+      </button>`).join("")}</div>`;
+  }
+  if(q.type === "multiselect"){
+    const selected = Array.isArray(currentAnswer) ? currentAnswer : [];
+    return `<div class="choices">${q.choices.map((choice, i) => `
+      <button class="choice ${selected.includes(i) ? "selected" : ""}" onclick="toggleMulti(${i})">
+        <span class="choice-letter">${letter(i)}.</span> ${escapeHtml(choice)}
+      </button>`).join("")}</div>
+      <div class="footer-actions"><button onclick="submitMulti()">Submit Answer</button></div>`;
+  }
+  if(q.type === "matching"){
+    const current = Array.isArray(currentAnswer) ? currentAnswer.slice() : Array(q.left.length).fill(null);
+    return q.left.map((leftText, idx) => `
+      <div class="prompt-box">
+        <div><strong>${escapeHtml(leftText)}</strong></div>
+        <select class="input" onchange="selectMatch(${idx}, this.value)">
+          <option value="">Choose a match</option>
+          ${q.right.map((r, i) => `<option value="${i}" ${current[idx] === i ? "selected" : ""}>${escapeHtml(r)}</option>`).join("")}
+        </select>
+      </div>`).join("") + `<div class="footer-actions"><button onclick="submitMatching()">Submit Answer</button></div>`;
+  }
+  if(q.type === "partab"){
+    const ans = currentAnswer || {partA:[], partB:[]};
+    const partAReady = Array.isArray(ans.partA) && ans.partA.length > 0;
+    const partBReady = Array.isArray(ans.partB) && ans.partB.length > 0;
+    return `
+      <div class="prompt-box"><strong>${escapeHtml(q.partA.stem)}</strong></div>
+      <div class="choices">${q.partA.choices.map((choice, i) => `
+        <button class="choice ${ans.partA.includes(i) ? "selected" : ""}" onclick="selectPart('A', [${i}])">
+          <span class="choice-letter">${letter(i)}.</span> ${escapeHtml(choice)}
+        </button>`).join("")}</div>
+      <div class="prompt-box" style="margin-top:14px;"><strong>${escapeHtml(q.partB.stem)}</strong></div>
+      <div class="choices">${q.partB.choices.map((choice, i) => `
+        <button class="choice ${ans.partB.includes(i) ? "selected" : ""}" onclick="selectPart('B', [${i}])">
+          <span class="choice-letter">${letter(i)}.</span> ${escapeHtml(choice)}
+        </button>`).join("")}</div>
+      <div class="footer-actions">
+        <button onclick="submitPartAB()" ${(!partAReady || !partBReady) ? "disabled" : ""}>Submit Answer</button>
+      </div>`;
+  }
+  return `<div class="muted">Unsupported question type.</div>`;
+}
+function selectChoice(arr){ state.answers[state.current] = arr; save(); nextQuestion(); }
+function toggleMulti(idx){
+  let current = Array.isArray(state.answers[state.current]) ? [...state.answers[state.current]] : [];
+  if(current.includes(idx)) current = current.filter(v => v !== idx);
+  else current.push(idx);
+  state.answers[state.current] = current.sort((a,b)=>a-b);
+  save(); renderQuestion();
+}
+function submitMulti(){ if(!Array.isArray(state.answers[state.current]) || !state.answers[state.current].length){ alert("Select at least one answer."); return; } nextQuestion(); }
+function selectMatch(idx, value){
+  let current = Array.isArray(state.answers[state.current]) ? [...state.answers[state.current]] : Array(QUESTIONS[state.current].left.length).fill(null);
+  current[idx] = value === "" ? null : Number(value);
+  state.answers[state.current] = current;
+  save();
+}
+function submitMatching(){
+  const ans = state.answers[state.current];
+  if(!Array.isArray(ans) || ans.some(v => v === null)){ alert("Complete all matches before continuing."); return; }
+  nextQuestion();
+}
+function selectPart(which, arr){
+  const current = state.answers[state.current] || {partA:[], partB:[]};
+  if(which === 'A') current.partA = arr;
+  if(which === 'B') current.partB = arr;
+  state.answers[state.current] = current;
+  save(); renderQuestion();
+}
+function submitPartAB(){
+  const ans = state.answers[state.current];
+  if(!ans || !Array.isArray(ans.partA) || !ans.partA.length || !Array.isArray(ans.partB) || !ans.partB.length){
+    alert("Answer both Part A and Part B before continuing.");
+    return;
+  }
+  nextQuestion();
+}
+function setSubmitStatus(message, kind=""){
+  const el = document.getElementById("submitStatus");
+  if(!el) return;
+  el.className = `submit-status${kind ? " " + kind : ""}`;
+  el.textContent = message || "";
+}
+function withTimeout(promise, ms){
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms))
+  ]);
+}
+function prevQuestion(){ if(state.current > 0){ state.current--; save(); renderQuestion(); } }
+function skipQuestion(){ if(state.current < QUESTIONS.length - 1){ state.current++; save(); renderQuestion(); } else reviewScreen(); }
+function nextQuestion(){
+  if(state.current < QUESTIONS.length - 1){ state.current++; save(); renderQuestion(); }
+  else reviewScreen();
+}
+function jumpToQuestion(idx){ state.current = idx; save(); renderQuestion(); }
+function renderTest(){ renderQuestion(); }
+function reviewScreen(){
+  const answered = countAnswered();
+  const unanswered = QUESTIONS.length - answered;
+  document.getElementById("app").innerHTML = buildTopbar() + `
+    <div class="panel">
+      <h2>Review Before Submitting</h2>
+      <p class="sub">Answered: ${answered} of ${QUESTIONS.length}. Unanswered: ${unanswered}.</p>
+      <div class="review-box">
+        ${QUESTIONS.map((q, idx) => `
+          <div class="review-item">
+            <div class="review-top">
+              <strong>Q${String(idx + 1).padStart(2,"0")}</strong>
+              <span class="tag">${q.cs}</span>
+            </div>
+            <div class="muted">${escapeHtml(q.stem)}</div>
+            <div style="margin-top:8px;">
+              ${state.answers[idx] === null
+                ? `<span class="tag">No answer</span>`
+                : `<span class="tag">Answered: ${escapeHtml(currentAnswerLabel(q, state.answers[idx]))}</span>`
+              }
+            </div>
+            <div class="footer-actions">
+              <button class="secondary" onclick="jumpToQuestion(${idx})">Go to Question</button>
+            </div>
+          </div>`).join("")}
+      </div>
+      <hr class="sep">
+      <div class="footer-actions">
+        <button class="secondary" onclick="renderQuestion()">Back to Test</button>
+        <button id="submitSegmentBtn" onclick="submitTest()">Submit Segment</button>
+      </div>
+      <div id="submitStatus" class="submit-status"></div>
+    </div>`;
+}
+async function submitTest(){
+  if(state.submitted || submitInFlight) return;
+
+  const unanswered = QUESTIONS.length - countAnswered();
+  if(unanswered > 0){
+    const proceed = confirm(`There ${unanswered === 1 ? "is" : "are"} still ${unanswered} unanswered question${unanswered === 1 ? "" : "s"}. Submit anyway?`);
+    if(!proceed) return;
+  }
+
+  submitInFlight = true;
+  const submitBtn = document.getElementById("submitSegmentBtn");
+  if(submitBtn){
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+  }
+  setSubmitStatus("Submitting to the spreadsheet. Please wait...", "");
+
+  const endedAt = new Date().toISOString();
+  const score = QUESTIONS.reduce((sum, q, idx) => sum + (isCorrect(q, state.answers[idx]) ? 1 : 0), 0);
+  const accuracy = Math.round((score / QUESTIONS.length) * 100);
+
+  const payload = {
+    studentName: state.studentName,
+    subject: TEST_META.subject,
+    week: TEST_META.week,
+    day: TEST_META.day,
+    segment: TEST_META.segment,
+    title: TEST_META.title,
+    focus: TEST_META.focus,
+    startedAt: state.startedAt,
+    endedAt,
+    runtimeSeconds: Math.round((new Date(endedAt) - new Date(state.startedAt)) / 1000),
+    score,
+    total: QUESTIONS.length,
+    accuracy,
+    attemptNumber: state.attemptNumber,
+    questions: QUESTIONS.map((q, idx) => ({
+      id: q.id,
+      cs: q.cs,
+      efl: q.efl,
+      contentElaboration: q.contentElaboration,
+      type: q.type,
+      stem: q.stem,
+      correctAnswer: q.type === "partab" ? {partA:q.partA.answer, partB:q.partB.answer} : q.answer,
+      studentAnswer: state.answers[idx],
+      correct: isCorrect(q, state.answers[idx]) ? 1 : 0
+    }))
+  };
+
+  try{
+    const res = await withTimeout(fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }), 20000);
+
+    if(!res || !res.ok){
+      throw new Error("bad_response");
+    }
+
+    const text = await withTimeout(res.text(), 10000);
+    let parsed = {};
+    try{ parsed = JSON.parse(text); }catch(err){}
+    if(parsed && parsed.ok === false){
+      throw new Error(parsed.message || "Submission failed.");
+    }
+  }catch(err){
+    submitInFlight = false;
+    if(submitBtn){
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Segment";
+    }
+    if(err && err.message === "timeout"){
+      setSubmitStatus("The submission is taking too long. Check the Apps Script connection, then try again.", "error");
+      return;
+    }
+    setSubmitStatus("Submission did not reach the spreadsheet. Check the Apps Script URL and deployment settings, then try again.", "error");
+    return;
+  }
+
+  if(!TEACHER_OVERRIDE){
+    localStorage.setItem(ATTEMPT_KEY, "USED");
+  }
+  state.submitted = true;
+  state.score = score;
+  save();
+  submitInFlight = false;
+
+  document.getElementById("app").innerHTML = `
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+    <div class="panel">
+      <div class="kicker">Submission Complete</div>
+      <h1>${TEST_META.title}</h1>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Name</div><div class="stat-value">${escapeHtml(state.studentName)}</div></div>
+        <div class="stat"><div class="stat-label">Attempt</div><div class="stat-value">${state.attemptNumber}</div></div>
+        <div class="stat"><div class="stat-label">Date</div><div class="stat-value">${escapeHtml(new Date(endedAt).toLocaleDateString())}</div></div>
+        <div class="stat"><div class="stat-label">Start</div><div class="stat-value">${escapeHtml(nowLocalString(state.startedAt))}</div></div>
+        <div class="stat"><div class="stat-label">End</div><div class="stat-value">${escapeHtml(nowLocalString(endedAt))}</div></div>
+        <div class="stat"><div class="stat-label">Runtime</div><div class="stat-value">${formatRuntime(payload.runtimeSeconds)}</div></div>
+        <div class="stat"><div class="stat-label">Score</div><div class="stat-value">${score} / ${QUESTIONS.length}</div></div>
+        <div class="stat"><div class="stat-label">Accuracy</div><div class="stat-value">${accuracy}%</div></div>
+        <div class="stat"><div class="stat-label">Result</div><div class="stat-value ${accuracy >= 80 ? "result-ready" : "result-review"}">${accuracy >= 80 ? "READY" : "REVIEW"}</div></div>
+      </div>
+      <div class="submit-status good">Submission reached the spreadsheet successfully.</div>
+      <div class="footer-actions" style="margin-top:14px;">
+        <button onclick="location.href='../index.html'">Return to Hub</button>
+      </div>
+    </div>`;
+}
+function tick(){
+  const el = document.getElementById("runtimeDisplay");
+  if(el && state.startedAt){
+    el.textContent = formatRuntime((Date.now() - new Date(state.startedAt).getTime()) / 1000);
+  }
+}
+
+load();
+if(isLocked()){ buildLockedScreen(); }
+else if(!state.studentName || !state.startedAt){ buildIntro(); }
+else{ buildQuestions(); renderTest(); }
+setInterval(tick, 1000);
+
+window.prevQuestion = prevQuestion;
+window.skipQuestion = skipQuestion;
+window.reviewScreen = reviewScreen;
+window.jumpToQuestion = jumpToQuestion;
+window.selectChoice = selectChoice;
+window.submitTest = submitTest;
+window.teacherUnlockNow = teacherUnlockNow;
+window.toggleMulti = toggleMulti;
+window.submitMulti = submitMulti;
+window.selectMatch = selectMatch;
+window.submitMatching = submitMatching;
+window.selectPart = selectPart;
+</script>
+</body>
+</html>
